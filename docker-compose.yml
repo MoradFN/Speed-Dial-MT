@@ -18,6 +18,7 @@ services:
       - ./html:/var/www/html
       - ./src:/var/www/src
       - ./config:/var/www/config
+      - ./vendor:/var/www/vendor
     image: php-local:local
     restart: always
     ports:
