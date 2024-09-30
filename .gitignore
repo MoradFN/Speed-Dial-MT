@@ -11,8 +11,8 @@ node_modules/
 /db_data
 
 # Ignore temporary and miscellaneous files
-/zOther/Temp
-Project structure desc.txt
+/zOther
+
 
 # Ignore operating system-specific files
 .DS_Store
