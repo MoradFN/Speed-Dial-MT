@@ -1,4 +1,5 @@
 <?php
+//config/config.php
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // Show errors for development
