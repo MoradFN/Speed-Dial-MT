@@ -54,16 +54,30 @@ class TargetListModel {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
     
-
-    // Fetch a single target list by ID
-    public function getTargetListById($targetListId) {
-        $sql = "SELECT * FROM target_lists WHERE id = ?";
-        $stmt = $this->db->query($sql, [$targetListId]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////        DONE       ///////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Fetch a single target list by ID
+    public function getTargetListById($targetListId) {
+        $sql = "SELECT * FROM target_lists WHERE id = ?";
+        
+        // Prepare the statement
+        $stmt = $this->db->prepare($sql);
+        if (!$stmt) {
+            die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+        }
+        // Bind the parameter (targetListId) to the query
+        $stmt->bind_param('i', $targetListId); // 'i' stands for integer
+        
+        // Execute the query
+        if (!$stmt->execute()) {
+            die('Execute failed: (' . $stmt->errno . ') ' . $stmt->error);
+        }
+        // Get the result
+        $result = $stmt->get_result();
+        return $result->fetch_assoc(); // Fetch a single row as an associative array
+    }
+
     // Fetch accounts and their related contacts for a specific target list
     public function getAccountsAndContactsByTargetList($targetListId) {
         $sql = "SELECT a.id AS account_id, a.name AS account_name, a.address, a.city, a.state, a.postal_code, 
