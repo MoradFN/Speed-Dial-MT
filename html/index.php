@@ -1,8 +1,7 @@
 <?php
+// html/index.php
 // Include config.php to establish the database connection
 require_once __DIR__ . '/../config/config.php';
-
-// Include the AccountModel
 require_once __DIR__ . '/../src/models/AccountModel.php';
 
 // Create an instance of AccountModel and pass the $db connection

@@ -1,48 +1,44 @@
-<!-- src/views/targetlist.view.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Target List Overview</title>
-    <link rel="stylesheet" href="/path/to/style.css">
+    <title>Target Lists</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Target List: <?= htmlspecialchars($targetListData['name']) ?></h1>
-    
+    <h1>All Target Lists</h1>
+
     <table border="1">
         <thead>
             <tr>
-                <th>Account</th>
-                <th>Contact Name</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
                 <th>Status</th>
-                <th>Role</th>
-                <th>Phone</th>
-                <th>Action</th>
+                <th>Campaign</th>
+                <th>Assigned To</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($targetListData['accounts'] as $account): ?>
+            <?php foreach ($targetLists as $list): ?>
                 <tr>
-                    <td rowspan="<?= count($account['contacts']) + 1 ?>"><strong><?= htmlspecialchars($account['name']) ?></strong></td>
+                    <td><?= htmlspecialchars($list['id']) ?></td>
+                    <td><?= htmlspecialchars($list['name']) ?></td>
+                    <td><?= htmlspecialchars($list['description']) ?></td>
+                    <td><?= htmlspecialchars($list['status']) ?></td>
+                    <td><?= htmlspecialchars($list['campaign_name']) ?></td>
+                    <td><?= htmlspecialchars($list['assigned_to']) ?></td>
+                    <td>
+                        <a href="targetlist_detail.php?id=<?= $list['id'] ?>">View</a> | 
+                        <a href="edit_targetlist.php?id=<?= $list['id'] ?>">Edit</a>
+                    </td>
                 </tr>
-                <?php foreach ($account['contacts'] as $contact): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($contact['first_name'] . ' ' . $contact['last_name']) ?></td>
-                        <td><?= htmlspecialchars($contact['status']) ?></td>
-                        <td><?= htmlspecialchars($contact['job_title']) ?></td>
-                        <td><?= htmlspecialchars($contact['phone']) ?></td>
-                        <td><button onclick="startDialer(<?= $contact['id'] ?>)">Start Dialing</button></td>
-                    </tr>
-                <?php endforeach; ?>
             <?php endforeach; ?>
         </tbody>
     </table>
 
-    <script>
-        function startDialer(contactId) {
-            window.location.href = "/speeddialer.php?contact=" + contactId;
-        }
-    </script>
+    <a href="create_targetlist.php">Create New Target List</a>
 </body>
 </html>
