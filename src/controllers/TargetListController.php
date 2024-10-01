@@ -1,20 +1,22 @@
 <?php
 
 // src/controllers/TargetListController.php
-
+////////////////// KAN SKAPA APIER HÄR FÖR FRONTEND FUNKIONALTITET(VUE) //////////////////
 class TargetListController {
     private $targetListService;
 
     public function __construct($targetListService) {
         $this->targetListService = $targetListService;
     }
-
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////     DONE   //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Display all target lists with optional filtering
     public function listAllTargetLists($filters = []) {
         try {
             // Get all target lists from the service layer
             $targetLists = $this->targetListService->getAllTargetLists($filters);
-
+    
             // Render the view or return a JSON response
             include __DIR__ . '/../views/targetlist.view.php'; // Render HTML view
             // Alternatively, you can return as JSON if this is an API:
@@ -30,7 +32,6 @@ class TargetListController {
         try {
             // Fetch the target list with accounts and contacts
             $targetList = $this->targetListService->getTargetListWithAccountsAndContacts($targetListId);
-
             // Render the view or return as JSON
             include __DIR__ . '/../views/targetlist_detail.view.php'; // Render HTML view for a detailed list
             // For API response:
@@ -41,6 +42,9 @@ class TargetListController {
         }
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Create a new target list
     public function createTargetList($postData) {
         try {

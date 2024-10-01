@@ -1,19 +1,21 @@
 <?php
-// public/targetlist.php
 require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../src/Database.php';
 require_once __DIR__ . '/../src/models/TargetListModel.php';
 require_once __DIR__ . '/../src/services/TargetListService.php';
 require_once __DIR__ . '/../src/controllers/TargetListController.php';
 
-// Create database connection
-$pdo = Database::connect();
-$db = new Database($pdo);
-
-// Instantiate models, services, and controllers
+// Instantiate the TargetListModel and TargetListService
 $targetListModel = new TargetListModel($db);
 $targetListService = new TargetListService($targetListModel);
-$targetListController = new TargetListController($targetListService);
 
-// Display the target list
-$targetListController->showTargetList(1);  // Example target list ID
+// Initialize the controller with the service
+$controller = new TargetListController($targetListService);
+
+// Check if an ID is passed (show details) or not (list all)
+if (isset($_GET['id'])) {
+    // Show the details of the specific target list
+    $controller->showTargetList($_GET['id']);
+} else {
+    // List all target lists
+    $controller->listAllTargetLists();
+}
