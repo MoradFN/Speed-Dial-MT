@@ -1,12 +1,12 @@
 <?php
-require_once __DIR__ . '/../html/vendor/autoload.php';  // Make sure autoload is correct
+//config/config.php
+require_once __DIR__ . '/../vendor/autoload.php';
 
 // Show errors for development
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
-// Load environment variables from the config folder (.env file)
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);  // Load the .env from the current directory (config/)
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__); 
 $dotenv->load();
 
 // Correctly access the environment variables
