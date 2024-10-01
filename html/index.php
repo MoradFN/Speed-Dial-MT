@@ -7,6 +7,7 @@ require_once __DIR__ . '/../src/models/AccountModel.php';
 // Create an instance of AccountModel and pass the $db connection
 $accountModel = new AccountModel($db);
 
+
 // Fetch all accounts using the model
 $accounts = $accountModel->getAllAccounts();
 
