@@ -7,7 +7,7 @@ class AccountInteractionModel {
     }
 
     // Log an interaction for an account
-    public function logInteraction($accountId, $userId, $notes, $outcome, $contactMethod, $duration, $contactedAt, $nextContactDate = null) {
+    public function logAccountInteraction($accountId, $userId, $notes, $outcome, $contactMethod, $duration, $contactedAt, $nextContactDate = null) {
         $sql = "INSERT INTO account_interaction_history (account_id, user_id, notes, outcome, contact_method, interaction_duration, contacted_at, next_contact_date)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);

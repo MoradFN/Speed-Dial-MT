@@ -11,6 +11,9 @@ include __DIR__ . '/header.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Target List Details</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+
+    
 </head>
 <body>
      <!-- //////////////////MODAL 2 START//////////////////////// -->
@@ -19,6 +22,7 @@ include __DIR__ . '/header.php';
     Open Speed Dialer
 </button>
 
+<!-- Speed Dialer Modal Structure -->
 <!-- Speed Dialer Modal Structure -->
 <div class="modal fade" id="interactionModal" tabindex="-1" aria-labelledby="interactionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -30,10 +34,12 @@ include __DIR__ . '/header.php';
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Account and Contact Info -->
+                <!-- Account Info -->
                 <h3>Account: <span id="modalAccountName"></span></h3>
-                <h4>Contact: <span id="modalContactName"></span></h4>
-                <p>Phone: <span id="modalPhone"></span></p>
+
+                <!-- Contact Info -->
+                <h4>Contact Information</h4>
+                <div id="modalContacts"></div> <!-- This will be populated with multiple contacts' details -->
 
                 <!-- Call Logging Form -->
                 <form id="interactionForm">
@@ -58,6 +64,7 @@ include __DIR__ . '/header.php';
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="previousTargetBtn">Previous Target</button>
                 <button type="button" class="btn btn-primary" id="nextTargetBtn">Next Target</button>
             </div>
         </div>
@@ -66,6 +73,7 @@ include __DIR__ . '/header.php';
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    
 
     <!-- //////////////////MODAL END//////////////////////// -->
     <h1>Target List: <?= htmlspecialchars($targetList['name']) ?></h1>
@@ -103,5 +111,10 @@ include __DIR__ . '/header.php';
         </table>
     <?php endif; ?>
     <a href="?route=target-lists">Back to all target lists</a>
+    <script>
+    // Pass the PHP account data to JavaScript
+    const accounts = <?= json_encode($targetList['accounts']) ?>;
+</script>
+<script src="/assets/js/script.js"></script>
 </body>
 </html>

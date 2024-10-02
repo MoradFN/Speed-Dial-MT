@@ -7,13 +7,22 @@ require_once __DIR__ . '/../src/models/ContactModel.php';
 require_once __DIR__ . '/../src/services/TargetListService.php';
 require_once __DIR__ . '/../src/models/TargetListAccountRelationModel.php';
 require_once __DIR__ . '/../src/controllers/TargetListController.php';
+require_once __DIR__ . '/../src/models/AccountInteractionModel.php';
+require_once __DIR__ . '/../src/models/ContactInteractionModel.php';
+require_once __DIR__ . '/../src/services/InteractionService.php';
+require_once __DIR__ . '/../src/controllers/InteractionController.php';
 
 // Instantiate the model and service
 $targetListModel = new TargetListModel($db);
 $accountModel = new AccountModel($db);
 $contactModel = new ContactModel($db);
 $targetListAccountRelationModel = new TargetListAccountRelationModel($db);
+$accountInteractionModel = new AccountInteractionModel($db);
+$contactInteractionModel = new ContactInteractionModel($db);
+// Instantiate the unified interaction service -- De är i samma service?
+$interactionService = new InteractionService($accountInteractionModel, $contactInteractionModel);
 $targetListService = new TargetListService($targetListModel, $accountModel, $contactModel, $targetListAccountRelationModel);  // Pass the model to the service
+
 
 // Routing logic
 $route = isset($_GET['route']) ? $_GET['route'] : 'home'; // Default route is home
@@ -38,14 +47,14 @@ if ($method === 'GET') {
             $controller->showTargetList($id);
             break;
 
+        case 'test':
+            include __DIR__ . '/../html/test.php';  // Load the test page
+            break;            
+
         default:
             include __DIR__ . '/../src/views/404.php';  // Load 404 page if no matching route is found
             break;
 
-            
-        case 'test':
-            include __DIR__ . '/../html/test.php';  // Load the test page
-            break;
     }
     
 } elseif ($method === 'POST') {
@@ -56,6 +65,12 @@ if ($method === 'GET') {
             $controller = new TargetListController($targetListService);  // Pass the service to the controller
             $controller->createTargetList($_POST);
             break;
+            
+        case 'log-interaction':
+                    // Initialize the InteractionController
+                    $interactionController = new InteractionController($interactionService);
+                    $interactionController->logInteraction($_POST);  // Handle logging interactions
+                    break;
 
         default:
             include __DIR__ . '/../src/views/404.php';  // Load 404 page if no matching route is found
