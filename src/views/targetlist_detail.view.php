@@ -22,8 +22,7 @@ include __DIR__ . '/header.php';
     Open Speed Dialer
 </button>
 
-<!-- Speed Dialer Modal Structure -->
-<!-- Speed Dialer Modal Structure -->
+<!-- Modal Structure -->
 <div class="modal fade" id="interactionModal" tabindex="-1" aria-labelledby="interactionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -36,6 +35,11 @@ include __DIR__ . '/header.php';
             <div class="modal-body">
                 <!-- Account Info -->
                 <h3>Account: <span id="modalAccountName"></span></h3>
+                <p>Address: <span id="modalAccountAddress"></span></p>
+                <p>Email: <span id="modalAccountEmail"></span></p>
+                <p>Phone: <span id="modalAccountPhone"></span></p>
+                <p>Website: <span id="modalAccountWebsite"></span></p>
+                <p>Industry: <span id="modalAccountIndustry"></span></p>
 
                 <!-- Contact Info -->
                 <h4>Contact Information</h4>
