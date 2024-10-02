@@ -34,12 +34,38 @@ include __DIR__ . '/header.php';
             </div>
             <div class="modal-body">
                 <!-- Account Info -->
-                <h3>Account: <span id="modalAccountName"></span></h3>
-                <p>Address: <span id="modalAccountAddress"></span></p>
-                <p>Email: <span id="modalAccountEmail"></span></p>
-                <p>Phone: <span id="modalAccountPhone"></span></p>
-                <p>Website: <span id="modalAccountWebsite"></span></p>
-                <p>Industry: <span id="modalAccountIndustry"></span></p>
+                <h3>Account Information</h3>
+                <div class="container">
+                    <!-- Row for Account Name and Industry -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Account Name:</strong> <span id="modalAccountName"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Industry:</strong> <span id="modalAccountIndustry"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Row for Address and Website -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Address:</strong> <span id="modalAccountAddress"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Website:</strong> <span id="modalAccountWebsite"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- Row for Email and Phone -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Email:</strong> <span id="modalAccountEmail"></span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Phone:</strong> <span id="modalAccountPhone"></span></p>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Contact Info -->
                 <h4>Contact Information</h4>
@@ -47,6 +73,7 @@ include __DIR__ . '/header.php';
 
                 <!-- Call Logging Form -->
                 <form id="interactionForm">
+                    <!-- Outcome and Notes -->
                     <div class="form-group">
                         <label for="outcome">Call Outcome</label>
                         <input type="text" class="form-control" id="outcome" placeholder="Outcome (e.g., successful, busy)">
@@ -74,6 +101,10 @@ include __DIR__ . '/header.php';
         </div>
     </div>
 </div>
+
+
+
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>

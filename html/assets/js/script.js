@@ -1,5 +1,3 @@
-// script.js
-
 let currentAccountIndex = 0; // Index to keep track of the current account
 
 function updateModal(account) {
@@ -26,18 +24,50 @@ function updateModal(account) {
     // Loop through all contacts and display their details
     account.contacts.forEach((contact) => {
       const contactInfo = document.createElement("div");
-      contactInfo.classList.add("contact-info");
+      contactInfo.classList.add("container", "border", "mb-3", "p-3");
 
       contactInfo.innerHTML = `
-                  <h5>${contact.first_name} ${contact.last_name}</h5>
-                  <p>Email: ${contact.contact_email || "N/A"}</p>
-                  <p>Phone: ${contact.contact_phone || "N/A"}</p>
-                  <p>Mobile Phone: ${contact.mobile_phone || "N/A"}</p>
-                  <p>Job Title: ${contact.job_title || "N/A"}</p>
-                  <p>Status: ${contact.contact_status || "N/A"}</p>
-                  <p>Notes: ${contact.notes || "N/A"}</p>
-                  <hr>
-              `;
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>${contact.first_name} ${
+        contact.last_name
+      }</strong></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Job Title:</strong> ${
+                          contact.job_title || "N/A"
+                        }</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Email:</strong> ${
+                          contact.contact_email || "N/A"
+                        }</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Phone:</strong> ${
+                          contact.contact_phone || "N/A"
+                        }</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Mobile:</strong> ${
+                          contact.mobile_phone || "N/A"
+                        }</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Status:</strong> ${
+                          contact.contact_status || "N/A"
+                        }</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Notes:</strong> ${contact.notes || "N/A"}</p>
+                    </div>
+                </div>
+                <hr>
+            `;
 
       contactsDiv.appendChild(contactInfo);
     });
