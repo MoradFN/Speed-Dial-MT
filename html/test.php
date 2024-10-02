@@ -1,4 +1,6 @@
 <?php
+// Include the header navigation
+include __DIR__ . '/../src/views/header.php';
 // html/test_targetlist.php
 require_once __DIR__ . '/../config/config.php'; // Load database configuration
 require_once __DIR__ . '/../src/models/TargetListModel.php'; // Load TargetListModel
