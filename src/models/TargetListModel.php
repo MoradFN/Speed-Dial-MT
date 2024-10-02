@@ -1,6 +1,7 @@
 <?php
 // src/models/TargetListModel.php
-
+require_once __DIR__ . '/AccountModel.php';
+require_once __DIR__ . '/ContactModel.php';
 class TargetListModel {
     private $db;
 
@@ -81,67 +82,20 @@ class TargetListModel {
 
     // Fetch accounts and their related contacts for a specific target list
     public function getAccountsAndContactsByTargetList($targetListId) {
-        $sql = "SELECT a.id AS account_id, a.name AS account_name, a.address, a.city, a.state, a.postal_code, 
-                       a.country, a.phone AS account_phone, a.email AS account_email, a.website, a.industry, 
-                       c.id AS contact_id, c.first_name, c.last_name, c.phone AS contact_phone, c.email AS contact_email, 
-                       c.status AS contact_status
-                FROM target_list_relation tlr
-                INNER JOIN accounts a ON tlr.account_id = a.id
-                INNER JOIN contacts c ON a.id = c.account_id
-                WHERE tlr.target_list_id = ?";
-    
-        $stmt = $this->db->prepare($sql);
-        if (!$stmt) {
-            die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
-        }
-    
-        // Bind the targetListId to the query
-        $stmt->bind_param('i', $targetListId);
-    
-        // Execute the query
-        if (!$stmt->execute()) {
-            die('Execute failed: (' . $stmt->errno . ') ' . $stmt->error);
-        }
-    
-        // Fetch the result
-        $result = $stmt->get_result();
+        $accountModel = new AccountModel($this->db);
+        $contactModel = new ContactModel($this->db);
+
+        // Get accounts related to the target list
+        $accounts = $accountModel->getAccountsByTargetList($targetListId);
         
-        // Group contacts under their respective accounts
-        $accounts = [];
-        while ($row = $result->fetch_assoc()) {
-            $accountId = $row['account_id'];
-    
-            // If the account is not already in the array, add it
-            if (!isset($accounts[$accountId])) {
-                $accounts[$accountId] = [
-                    'id' => $row['account_id'],
-                    'name' => $row['account_name'],
-                    'address' => $row['address'],
-                    'city' => $row['city'],
-                    'state' => $row['state'],
-                    'postal_code' => $row['postal_code'],
-                    'country' => $row['country'],
-                    'phone' => $row['account_phone'],
-                    'email' => $row['account_email'],
-                    'website' => $row['website'],
-                    'industry' => $row['industry'],
-                    'contacts' => [] // This will hold the contacts for this account
-                ];
-            }
-    
-            // Add the contact to the account
-            $accounts[$accountId]['contacts'][] = [
-                'id' => $row['contact_id'],
-                'first_name' => $row['first_name'],
-                'last_name' => $row['last_name'],
-                'phone' => $row['contact_phone'],
-                'email' => $row['contact_email'],
-                'status' => $row['contact_status']
-            ];
+        // Loop through accounts and fetch their related contacts
+        foreach ($accounts as &$account) {
+            $account['contacts'] = $contactModel->getContactsByAccountId($account['account_id']);
         }
-    
-        return $accounts; // Return the grouped accounts with their contacts
+        return $accounts; // Return accounts with their related contacts
     }
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Insert a new target list

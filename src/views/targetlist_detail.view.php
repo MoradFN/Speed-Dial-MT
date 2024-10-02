@@ -13,7 +13,7 @@ include __DIR__ . '/header.php';
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-      <!-- //////////////////MODAL 1 START//////////////////////// -->
+     <!-- //////////////////MODAL 2 START//////////////////////// -->
 <!-- Button to trigger the modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#interactionModal">
     Open Speed Dialer
@@ -88,14 +88,14 @@ include __DIR__ . '/header.php';
             <tbody>
                 <?php foreach ($targetList['accounts'] as $account): ?>
                     <tr>
-                        <td rowspan="<?= count($account['contacts']) + 1 ?>"><strong><?= htmlspecialchars($account['name']) ?></strong></td>
+                        <td rowspan="<?= count($account['contacts']) + 1 ?>"><strong><?= htmlspecialchars($account['account_name']) ?></strong></td>
                     </tr>
                     <?php foreach ($account['contacts'] as $contact): ?>
                         <tr>
                             <td><?= htmlspecialchars($contact['first_name']) ?> <?= htmlspecialchars($contact['last_name']) ?></td>
-                            <td><?= htmlspecialchars($contact['phone']) ?></td>
-                            <td><?= htmlspecialchars($contact['email']) ?></td>
-                            <td><?= htmlspecialchars($contact['status']) ?></td>
+                            <td><?= htmlspecialchars($contact['contact_phone']) ?></td>
+                            <td><?= htmlspecialchars($contact['contact_email']) ?></td>
+                            <td><?= htmlspecialchars($contact['contact_status']) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endforeach; ?>
@@ -105,12 +105,3 @@ include __DIR__ . '/header.php';
     <a href="?route=target-lists">Back to all target lists</a>
 </body>
 </html>
-
-
-
-
-
-
-    
- 
-

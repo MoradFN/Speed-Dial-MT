@@ -43,4 +43,25 @@ class AccountModel {
         $stmt->bind_param("ss", $name, $email);  // "ss" means both parameters are strings
         return $stmt->execute();
     }
+
+
+    // Get accounts by target list ID
+    public function getAccountsByTargetList($targetListId) {
+        $sql = "SELECT a.id AS account_id, a.name AS account_name, a.address, a.city, a.state, a.postal_code, 
+                       a.country, a.phone AS account_phone, a.email AS account_email, a.website, a.industry
+                FROM target_list_relation tlr
+                INNER JOIN accounts a ON tlr.account_id = a.id
+                WHERE tlr.target_list_id = ?";
+        
+        $stmt = $this->db->prepare($sql);
+        if (!$stmt) {
+            die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+        }
+        $stmt->bind_param('i', $targetListId);
+        if (!$stmt->execute()) {
+            die('Execute failed: (' . $stmt->errno . ') ' . $stmt->error);
+        }
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
 }
