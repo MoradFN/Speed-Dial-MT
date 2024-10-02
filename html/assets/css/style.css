@@ -1,0 +1,7 @@
+.modal-xl {
+  max-width: 95%; /* Set the modal to take up 95% of the screen width */
+}
+
+.modal-body {
+  overflow-x: hidden; /* Ensure there’s no horizontal scrolling */
+}

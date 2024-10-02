@@ -56,30 +56,35 @@ include __DIR__ . '/header.php';
                     </div>
                 </div>
 
-                <!-- Contact Info -->
+                <!-- Contact Info (Collapsible) -->
                 <div id="modalContacts"></div> <!-- This will be populated with multiple contacts' details -->
 
-                <!-- Call Logging Form -->
-                <form id="interactionForm">
-                    <!-- Outcome and Notes -->
-                    <div class="form-group">
-                        <label for="outcome">Call Outcome</label>
-                        <input type="text" class="form-control" id="outcome" placeholder="Outcome (e.g., successful, busy)">
-                    </div>
-                    <div class="form-group">
-                        <label for="notes">Notes</label>
-                        <textarea class="form-control" id="notes" rows="3" placeholder="Enter any notes"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="nextContact">Next Contact Date</label>
-                        <input type="datetime-local" class="form-control" id="nextContact">
-                    </div>
-                    <div class="form-group">
-                        <label for="duration">Call Duration (seconds)</label>
-                        <input type="number" class="form-control" id="duration" placeholder="Enter call duration">
-                    </div>
-                    <button type="button" class="btn btn-primary" id="logInteractionBtn">Log Interaction</button>
-                </form>
+                <!-- Call Logging Form (Collapsible) -->
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+                    Show/Hide Call Logging Form
+                </button>
+                <div id="collapseForm" class="collapse">
+                    <form id="interactionForm">
+                        <!-- Outcome and Notes -->
+                        <div class="form-group">
+                            <label for="outcome">Call Outcome</label>
+                            <input type="text" class="form-control" id="outcome" placeholder="Outcome (e.g., successful, busy)">
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">Notes</label>
+                            <textarea class="form-control" id="notes" rows="3" placeholder="Enter any notes"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="nextContact">Next Contact Date</label>
+                            <input type="datetime-local" class="form-control" id="nextContact">
+                        </div>
+                        <div class="form-group">
+                            <label for="duration">Call Duration (seconds)</label>
+                            <input type="number" class="form-control" id="duration" placeholder="Enter call duration">
+                        </div>
+                        <button type="button" class="btn btn-primary" id="logInteractionBtn">Log Interaction</button>
+                    </form>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -89,6 +94,7 @@ include __DIR__ . '/header.php';
         </div>
     </div>
 </div>
+
 
 
 

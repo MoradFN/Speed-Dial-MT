@@ -19,47 +19,42 @@ function updateModal(account) {
   contactsDiv.innerHTML = "";
 
   if (account.contacts.length > 0) {
-    // Loop through all contacts and display their details
-    account.contacts.forEach((contact) => {
+    // Loop through all contacts and create a collapsible section for each one
+    account.contacts.forEach((contact, index) => {
+      const contactId = `collapseContact${index}`;
       const contactInfo = document.createElement("div");
-      contactInfo.classList.add("contact-info", "mb-3", "border", "p-3"); // Added Bootstrap border and padding classes
+      contactInfo.classList.add("contact-info", "mb-3", "border", "p-3");
 
       contactInfo.innerHTML = `
-                <div class="row">
-                    <div class="col-md-12">
-                        <h5 style="display:inline;">${contact.first_name} ${
-        contact.last_name
-      }</h5>
-                        <span style="font-size: 0.9em; color: #555;"> - ${
-                          contact.job_title || "N/A"
-                        }</span>
-                        <span style="font-size: 0.9em; color: #555;"> - <strong>Status:</strong> ${
-                          contact.contact_status || "N/A"
-                        }</span>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-4">
-                        <p><strong>Email:</strong> ${
-                          contact.contact_email || "N/A"
-                        }</p>
-                    </div>
-                    <div class="col-md-4">
-                        <p><strong>Phone:</strong> ${
-                          contact.contact_phone || "N/A"
-                        }</p>
-                    </div>
-                    <div class="col-md-4">
-                        <p><strong>Mobile:</strong> ${
-                          contact.mobile_phone || "N/A"
-                        }</p>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-12">
-                        <p><strong>Notes:</strong> ${contact.notes || "N/A"}</p>
+                <h5>
+                    <a class="btn btn-link" data-toggle="collapse" href="#${contactId}" role="button" aria-expanded="false" aria-controls="${contactId}">
+                        ${contact.first_name} ${contact.last_name} - ${
+        contact.job_title || "N/A"
+      } (${contact.contact_status || "N/A"})
+                    </a>
+                </h5>
+                <div class="collapse" id="${contactId}">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Email:</strong> ${
+                              contact.contact_email || "N/A"
+                            }</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Phone:</strong> ${
+                              contact.contact_phone || "N/A"
+                            }</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Mobile:</strong> ${
+                              contact.mobile_phone || "N/A"
+                            }</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Notes:</strong> ${
+                              contact.notes || "N/A"
+                            }</p>
+                        </div>
                     </div>
                 </div>
             `;
