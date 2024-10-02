@@ -1,10 +1,13 @@
 <?php
 // src/services/AccountService.php
+
 class AccountService {
     private $accountModel;
+    private $contactModel;  // Add this if you need to interact with contacts as well
 
-    public function __construct($accountModel) {
+    public function __construct($accountModel, $contactModel = null) {
         $this->accountModel = $accountModel;
+        $this->contactModel = $contactModel;
     }
 
     // Fetch and process all accounts
@@ -26,6 +29,18 @@ class AccountService {
         // Example business logic: Check if the account is VIP
         if ($account['name'] === 'VIP Customer') {
             $account['vip_status'] = true;  // Business logic example
+        }
+
+        return $account;
+    }
+
+    // Fetch account with its related contacts
+    public function getAccountWithContacts($accountId) {
+        $account = $this->getAccountById($accountId);
+
+        if ($this->contactModel) {
+            // Fetch related contacts if the contact model is injected
+            $account['contacts'] = $this->contactModel->getContactsByAccountId($accountId);
         }
 
         return $account;

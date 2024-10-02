@@ -1,6 +1,7 @@
 <?php
 // src/models/TargetListModel.php
-
+require_once __DIR__ . '/AccountModel.php';
+require_once __DIR__ . '/ContactModel.php';
 class TargetListModel {
     private $db;
 
@@ -79,69 +80,6 @@ class TargetListModel {
         return $result->fetch_assoc(); // Fetch a single row as an associative array
     }
 
-    // Fetch accounts and their related contacts for a specific target list
-    public function getAccountsAndContactsByTargetList($targetListId) {
-        $sql = "SELECT a.id AS account_id, a.name AS account_name, a.address, a.city, a.state, a.postal_code, 
-                       a.country, a.phone AS account_phone, a.email AS account_email, a.website, a.industry, 
-                       c.id AS contact_id, c.first_name, c.last_name, c.phone AS contact_phone, c.email AS contact_email, 
-                       c.status AS contact_status
-                FROM target_list_relation tlr
-                INNER JOIN accounts a ON tlr.account_id = a.id
-                INNER JOIN contacts c ON a.id = c.account_id
-                WHERE tlr.target_list_id = ?";
-    
-        $stmt = $this->db->prepare($sql);
-        if (!$stmt) {
-            die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
-        }
-    
-        // Bind the targetListId to the query
-        $stmt->bind_param('i', $targetListId);
-    
-        // Execute the query
-        if (!$stmt->execute()) {
-            die('Execute failed: (' . $stmt->errno . ') ' . $stmt->error);
-        }
-    
-        // Fetch the result
-        $result = $stmt->get_result();
-        
-        // Group contacts under their respective accounts
-        $accounts = [];
-        while ($row = $result->fetch_assoc()) {
-            $accountId = $row['account_id'];
-    
-            // If the account is not already in the array, add it
-            if (!isset($accounts[$accountId])) {
-                $accounts[$accountId] = [
-                    'id' => $row['account_id'],
-                    'name' => $row['account_name'],
-                    'address' => $row['address'],
-                    'city' => $row['city'],
-                    'state' => $row['state'],
-                    'postal_code' => $row['postal_code'],
-                    'country' => $row['country'],
-                    'phone' => $row['account_phone'],
-                    'email' => $row['account_email'],
-                    'website' => $row['website'],
-                    'industry' => $row['industry'],
-                    'contacts' => [] // This will hold the contacts for this account
-                ];
-            }
-    
-            // Add the contact to the account
-            $accounts[$accountId]['contacts'][] = [
-                'id' => $row['contact_id'],
-                'first_name' => $row['first_name'],
-                'last_name' => $row['last_name'],
-                'phone' => $row['contact_phone'],
-                'email' => $row['contact_email'],
-                'status' => $row['contact_status']
-            ];
-        }
-    
-        return $accounts; // Return the grouped accounts with their contacts
-    }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Insert a new target list
@@ -168,14 +106,14 @@ class TargetListModel {
 
     // Lock a target list for a specific user
     public function lockTargetList($targetListId, $userId) {
-        $sql = "UPDATE target_list_relation SET locked_by = ? WHERE target_list_id = ?";
+        $sql = "UPDATE target_list_account_relation SET locked_by = ? WHERE target_list_id = ?";
         $stmt = $this->db->query($sql, [$userId, $targetListId]);
         return $stmt->rowCount() > 0;
     }
 
     // Unlock a target list
     public function unlockTargetList($targetListId) {
-        $sql = "UPDATE target_list_relation SET locked_by = NULL WHERE target_list_id = ?";
+        $sql = "UPDATE target_list_account_relation SET locked_by = NULL WHERE target_list_id = ?";
         $stmt = $this->db->query($sql, [$targetListId]);
         return $stmt->rowCount() > 0;
     }
@@ -204,8 +142,96 @@ class TargetListModel {
 
     // Update contact outcome or status in a target list relation
     public function updateTargetListRelationStatus($targetListId, $accountId, $status) {
-        $sql = "UPDATE target_list_relation SET status = ? WHERE target_list_id = ? AND account_id = ?";
+        $sql = "UPDATE target_list_account_relation SET status = ? WHERE target_list_id = ? AND account_id = ?";
         $stmt = $this->db->query($sql, [$status, $targetListId, $accountId]);
         return $stmt->rowCount() > 0;
     }
+
+    // Fetch target lists with pagination
+public function getTargetListsByPage($limit, $offset) {
+    $sql = "SELECT tl.*, c.name AS campaign_name
+            FROM target_lists tl
+            LEFT JOIN campaigns c ON tl.campaign_id = c.id
+            LIMIT ? OFFSET ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param('ii', $limit, $offset);  // Bind limit and offset
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+// Add a method for query below to filter target lists based on the completion_status.
+// Fetch target lists by completion status
+public function getTargetListsByCompletionStatus($completionStatus) {
+    $sql = "SELECT * FROM target_lists WHERE completion_status = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param('i', $completionStatus);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+
+//Allow filtering target lists based on their creation or end date.
+// Fetch target lists by a date range
+public function getTargetListsByDateRange($startDate, $endDate) {
+    $sql = "SELECT * FROM target_lists WHERE created_at BETWEEN ? AND ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param('ss', $startDate, $endDate);  // 'ss' stands for two strings (dates)
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+// Count the total number of target lists
+public function countTargetLists() {
+    $sql = "SELECT COUNT(*) AS total FROM target_lists";
+    $result = $this->db->query($sql);
+    return $result->fetch_assoc()['total'];
+}
+
+// Count target lists by status
+public function countTargetListsByStatus($status) {
+    $sql = "SELECT COUNT(*) AS total FROM target_lists WHERE status = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param('s', $status);  // 's' stands for string (status)
+    $stmt->execute();
+    return $stmt->get_result()->fetch_assoc()['total'];
+}
+
+public function getTargetListsByStatus($status) {
+    // Ensure that the passed status is one of the allowed ENUM values
+    $allowedStatuses = ['pending', 'active', 'completed', 'archived', 'inactive'];
+    
+    // Check if the status is valid
+    if (!in_array($status, $allowedStatuses)) {
+        throw new Exception("Invalid status provided.");
+    }
+
+    $sql = "SELECT * FROM target_lists WHERE status = ?";
+    $stmt = $this->db->prepare($sql);
+    if (!$stmt) {
+        die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+    }
+    
+    // Bind the status to the query
+    $stmt->bind_param('s', $status);  // 's' stands for string
+    
+    // Execute the query
+    if (!$stmt->execute()) {
+        die('Execute failed: (' . $stmt->errno . ') ' . $stmt->error);
+    }
+    
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+
+public function getTargetListsByAssignedUser($userId) {
+    $sql = "SELECT * FROM target_lists WHERE assigned_to = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+
+
+
 }

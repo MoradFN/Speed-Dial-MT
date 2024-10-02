@@ -1,15 +1,19 @@
 <?php
 // index.php
-
-// Include the required files
-require_once __DIR__ . '/../config/config.php';  // Include your database connection
+require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../src/models/TargetListModel.php';
+require_once __DIR__ . '/../src/models/AccountModel.php';
+require_once __DIR__ . '/../src/models/ContactModel.php';
 require_once __DIR__ . '/../src/services/TargetListService.php';
+require_once __DIR__ . '/../src/models/TargetListAccountRelationModel.php';
 require_once __DIR__ . '/../src/controllers/TargetListController.php';
 
 // Instantiate the model and service
-$targetListModel = new TargetListModel($db);  // Assuming $db is the database connection defined in config.php
-$targetListService = new TargetListService($targetListModel);  // Pass the model to the service
+$targetListModel = new TargetListModel($db);
+$accountModel = new AccountModel($db);
+$contactModel = new ContactModel($db);
+$targetListAccountRelationModel = new TargetListAccountRelationModel($db);
+$targetListService = new TargetListService($targetListModel, $accountModel, $contactModel, $targetListAccountRelationModel);  // Pass the model to the service
 
 // Routing logic
 $route = isset($_GET['route']) ? $_GET['route'] : 'home'; // Default route is home
@@ -58,3 +62,4 @@ if ($method === 'GET') {
             break;
     }
 }
+
