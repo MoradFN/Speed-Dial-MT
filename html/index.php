@@ -35,9 +35,15 @@ if ($method === 'GET') {
             break;
 
         default:
-            include __DIR__ . '/../views/404.php';  // Load 404 page if no matching route is found
+            include __DIR__ . '/../src/views/404.php';  // Load 404 page if no matching route is found
+            break;
+
+            
+        case 'test':
+            include __DIR__ . '/../html/test.php';  // Load the test page
             break;
     }
+    
 } elseif ($method === 'POST') {
     // Handle POST requests (e.g., form submissions)
     switch ($route) {
@@ -48,7 +54,7 @@ if ($method === 'GET') {
             break;
 
         default:
-            include __DIR__ . '/../views/404.php';  // Load 404 page if no matching route is found
+            include __DIR__ . '/../src/views/404.php';  // Load 404 page if no matching route is found
             break;
     }
 }

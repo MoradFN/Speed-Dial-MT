@@ -9,6 +9,18 @@ $targetListModel = new TargetListModel($db);
 $targetListService = new TargetListService($targetListModel);
 // Test fetching all target lists
 
+
+
+
+
+
+
+
+
+
+
+
+
 ////////////////////////// MODEL TEST //////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 // $targetLists = $targetListModel->getAllTargetLists();
@@ -29,33 +41,33 @@ $targetListService = new TargetListService($targetListModel);
 ////////////////////////// SERVICE TEST ////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 
-try {
-    // Fetch all target lists
-    $targetLists = $targetListService->getAllTargetLists();
-    // Output the results in a readable format
-    echo "<h1>Target Lists</h1>";
-    echo "<pre>";
-    print_r($targetLists);
-    echo "</pre>";
-} catch (Exception $e) {
-    // Handle exceptions (e.g., target list not found)
-    echo "Error: " . $e->getMessage();
-}
+// try {
+//     // Fetch all target lists
+//     $targetLists = $targetListService->getAllTargetLists();
+//     // Output the results in a readable format
+//     echo "<h1>Target Lists</h1>";
+//     echo "<pre>";
+//     print_r($targetLists);
+//     echo "</pre>";
+// } catch (Exception $e) {
+//     // Handle exceptions (e.g., target list not found)
+//     echo "Error: " . $e->getMessage();
+// }
 
-try {
-    // Fetch a specific target list (e.g., target list with ID 1)
-    $targetListId = 1; // Use an existing target list ID for testing
-    $targetListWithAccountsAndContacts = $targetListService->getTargetListWithAccountsAndContacts($targetListId);
+// try {
+//     // Fetch a specific target list (e.g., target list with ID 1)
+//     $targetListId = 1; // Use an existing target list ID for testing
+//     $targetListWithAccountsAndContacts = $targetListService->getTargetListWithAccountsAndContacts($targetListId);
 
-    // Output the results in a readable format
-    echo "<h1>Target List Details</h1>";
-    echo "<pre>";
-    print_r($targetListWithAccountsAndContacts);
-    echo "</pre>";
+//     // Output the results in a readable format
+//     echo "<h1>Target List Details</h1>";
+//     echo "<pre>";
+//     print_r($targetListWithAccountsAndContacts);
+//     echo "</pre>";
 
-} catch (Exception $e) {
-    // Handle exceptions (e.g., target list not found)
-    echo "Error: " . $e->getMessage();
-}
+// } catch (Exception $e) {
+//     // Handle exceptions (e.g., target list not found)
+//     echo "Error: " . $e->getMessage();
+// }
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
