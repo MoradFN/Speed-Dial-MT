@@ -26,4 +26,10 @@ class TargetListAccountRelationModel {
 
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function getActiveTargetLists() {
+        $sql = "SELECT * FROM target_lists WHERE status = 'active'";
+        $result = $this->db->query($sql);
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 }
