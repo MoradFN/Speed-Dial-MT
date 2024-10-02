@@ -4,11 +4,13 @@ class TargetListService {
     private $targetListModel;
     private $accountModel;
     private $contactModel;
+    private $targetListAccountRelationModel;
 
-      public function __construct($targetListModel, $accountModel, $contactModel) {
+      public function __construct($targetListModel, $accountModel, $contactModel, $targetListAccountRelationModel) {
         $this->targetListModel = $targetListModel;
         $this->accountModel = $accountModel;
         $this->contactModel = $contactModel;
+        $this->targetListAccountRelationModel = $targetListAccountRelationModel;
     }
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////     DONE     //////////////////////////////////////////////////////////////////////////////
@@ -23,28 +25,36 @@ class TargetListService {
 
   
     // Fetch a specific target list and its associated accounts and contacts from TargetListModel
-    public function getTargetListWithAccountsAndContacts($targetListId) {
-        // Fetch the target list data
-        $targetList = $this->targetListModel->getTargetListById($targetListId);
-        if (!$targetList) {
-            throw new Exception("Target list not found.");
-        }
+   // Fetch a specific target list and its associated accounts and contacts from TargetListModel
+   public function getTargetListWithAccountsAndContacts($targetListId) {
+    // Fetch the target list data
+    $targetList = $this->targetListModel->getTargetListById($targetListId);
+    if (!$targetList) {
+        throw new Exception("Target list not found.");
+    }
 
-        // Fetch the accounts for the target list
-        $accounts = $this->accountModel->getAccountsByTargetList($targetListId);
+    // Step 1: Fetch account IDs from target_list_account_relation using the TargetListAccountRelationModel
+    $accountIdsResult = $this->targetListAccountRelationModel->getAccountIdsByTargetListId($targetListId);
+    $accountIds = array_column($accountIdsResult, 'account_id'); // Extract the IDs into a flat array
 
-        // Fetch contacts for each account and group them under the accounts
-        foreach ($accounts as &$account) {
-            $account['contacts'] = $this->contactModel->getContactsByAccountId($account['account_id']);
-        }
-
-        // Assign accounts and contacts to the target list
-        $targetList['accounts'] = $accounts;
-        // header('Content-Type: application/json');
-        // echo json_encode($targetList);
-        
+    if (empty($accountIds)) {
+        $targetList['accounts'] = [];  // No accounts found, return an empty list
         return $targetList;
     }
+
+    // Step 2: Fetch the account details from AccountModel using the fetched account IDs
+    $accounts = $this->accountModel->getAccountsByIds($accountIds);
+
+    // Step 3: Fetch contacts for each account and group them under the accounts
+    foreach ($accounts as &$account) {
+        $account['contacts'] = $this->contactModel->getContactsByAccountId($account['account_id']);
+    }
+
+    // Assign accounts and contacts to the target list
+    $targetList['accounts'] = $accounts;
+    
+    return $targetList;
+}
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -33,35 +33,37 @@ class AccountModel {
         return $result->fetch_assoc();
     }
 
-    // Insert a new account
-    public function createAccount($name, $email) {
-        $sql = "INSERT INTO accounts (name, email) VALUES (?, ?)";
-        $stmt = $this->db->prepare($sql);
-        if (!$stmt) {
-            die("Database prepare error: " . $this->db->error);
-        }
-        $stmt->bind_param("ss", $name, $email);  // "ss" means both parameters are strings
-        return $stmt->execute();
-    }
-
-
-    // Get accounts by target list ID
-    public function getAccountsByTargetList($targetListId) {
-        $sql = "SELECT a.id AS account_id, a.name AS account_name, a.address, a.city, a.state, a.postal_code, 
-                       a.country, a.phone AS account_phone, a.email AS account_email, a.website, a.industry
-                FROM target_list_account_relation tlar
-                INNER JOIN accounts a ON tlar.account_id = a.id
-                WHERE tlar.target_list_id = ?";
+    // Fetch accounts by a list of account IDs
+    public function getAccountsByIds($accountIds) {
+        $placeholders = implode(',', array_fill(0, count($accountIds), '?'));
+        $sql = "SELECT id AS account_id, name AS account_name, address, city, state, postal_code, 
+                       country, phone AS account_phone, email AS account_email, website, industry
+                FROM accounts
+                WHERE id IN ($placeholders)";
         
         $stmt = $this->db->prepare($sql);
         if (!$stmt) {
             die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
         }
-        $stmt->bind_param('i', $targetListId);
+        $types = str_repeat('i', count($accountIds));
+        $stmt->bind_param($types, ...$accountIds);
+
         if (!$stmt->execute()) {
             die('Execute failed: (' . $stmt->errno . ') ' . $stmt->error);
         }
+
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
+
+        // Insert a new account
+        public function createAccount($name, $email) {
+            $sql = "INSERT INTO accounts (name, email) VALUES (?, ?)";
+            $stmt = $this->db->prepare($sql);
+            if (!$stmt) {
+                die("Database prepare error: " . $this->db->error);
+            }
+            $stmt->bind_param("ss", $name, $email);  // "ss" means both parameters are strings
+            return $stmt->execute();
+        }
 
 }
