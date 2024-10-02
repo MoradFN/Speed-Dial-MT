@@ -49,9 +49,9 @@ class AccountModel {
     public function getAccountsByTargetList($targetListId) {
         $sql = "SELECT a.id AS account_id, a.name AS account_name, a.address, a.city, a.state, a.postal_code, 
                        a.country, a.phone AS account_phone, a.email AS account_email, a.website, a.industry
-                FROM target_list_relation tlr
-                INNER JOIN accounts a ON tlr.account_id = a.id
-                WHERE tlr.target_list_id = ?";
+                FROM target_list_account_relation tlar
+                INNER JOIN accounts a ON tlar.account_id = a.id
+                WHERE tlar.target_list_id = ?";
         
         $stmt = $this->db->prepare($sql);
         if (!$stmt) {

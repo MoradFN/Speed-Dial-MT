@@ -122,14 +122,14 @@ class TargetListModel {
 
     // Lock a target list for a specific user
     public function lockTargetList($targetListId, $userId) {
-        $sql = "UPDATE target_list_relation SET locked_by = ? WHERE target_list_id = ?";
+        $sql = "UPDATE target_list_account_relation SET locked_by = ? WHERE target_list_id = ?";
         $stmt = $this->db->query($sql, [$userId, $targetListId]);
         return $stmt->rowCount() > 0;
     }
 
     // Unlock a target list
     public function unlockTargetList($targetListId) {
-        $sql = "UPDATE target_list_relation SET locked_by = NULL WHERE target_list_id = ?";
+        $sql = "UPDATE target_list_account_relation SET locked_by = NULL WHERE target_list_id = ?";
         $stmt = $this->db->query($sql, [$targetListId]);
         return $stmt->rowCount() > 0;
     }
@@ -158,7 +158,7 @@ class TargetListModel {
 
     // Update contact outcome or status in a target list relation
     public function updateTargetListRelationStatus($targetListId, $accountId, $status) {
-        $sql = "UPDATE target_list_relation SET status = ? WHERE target_list_id = ? AND account_id = ?";
+        $sql = "UPDATE target_list_account_relation SET status = ? WHERE target_list_id = ? AND account_id = ?";
         $stmt = $this->db->query($sql, [$status, $targetListId, $accountId]);
         return $stmt->rowCount() > 0;
     }
