@@ -4,9 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Target List Details</title>
-    <link rel="stylesheet" href="style.css"> <!-- Optional CSS file -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+      <!-- //////////////////MODAL START//////////////////////// -->
+       <!-- Button to trigger the modal -->
+       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Open Modal
+    </button>
+
+    <!-- Modal structure -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            This is the modal content. You can load additional details here.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- //////////////////MODAL END//////////////////////// -->
     <h1>Target List: <?= htmlspecialchars($targetList['name']) ?></h1>
     <p>Description: <?= htmlspecialchars($targetList['description']) ?></p>
 
@@ -41,7 +70,15 @@
             </tbody>
         </table>
     <?php endif; ?>
-
-    <a href="targetlist.php">Back to all target lists</a> <!-- Link back to the main target list view -->
+    <a href="?route=target-lists">Back to all target lists</a>
 </body>
 </html>
+
+
+
+
+
+
+    
+ 
+

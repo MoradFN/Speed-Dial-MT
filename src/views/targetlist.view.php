@@ -32,7 +32,7 @@
                         <td><?= htmlspecialchars($targetList['status']) ?></td>
                         <td><?= htmlspecialchars($targetList['assigned_to'] ?? 'Unassigned') ?></td>
                         <td>
-                        <td><a href="targetlist.php?id=<?= $targetList['id'] ?>">View Details</a></td>
+                        <td><a href="?route=target-list-detail&id=<?= $targetList['id'] ?>">View Details</a></td>
                         </td>
                     </tr>
                 <?php endforeach; ?>

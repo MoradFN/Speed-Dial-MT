@@ -58,7 +58,7 @@ class TargetListController {
             $this->targetListService->createTargetList($name, $description, $campaignId, $assignedTo);
 
             // Redirect or return a success response
-            header('Location: /targetlist.php'); // Redirect to the list of target lists
+            header('Location: ?route=target-lists');  // Redirect after creation // ///////////////////////////// MTTODO - CHECK ROUTES
             // echo json_encode(['success' => true]); // For API
         } catch (Exception $e) {
             // Handle any exceptions that occur
