@@ -13,31 +13,57 @@ include __DIR__ . '/header.php';
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-      <!-- //////////////////MODAL START//////////////////////// -->
-       <!-- Button to trigger the modal -->
-       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Open Modal
-    </button>
+      <!-- //////////////////MODAL 1 START//////////////////////// -->
+<!-- Button to trigger the modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#interactionModal">
+    Open Speed Dialer
+</button>
 
-    <!-- Modal structure -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
+<!-- Speed Dialer Modal Structure -->
+<div class="modal fade" id="interactionModal" tabindex="-1" aria-labelledby="interactionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            This is the modal content. You can load additional details here.
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
+            <div class="modal-header">
+                <h5 class="modal-title" id="interactionModalLabel">Call Interaction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Account and Contact Info -->
+                <h3>Account: <span id="modalAccountName"></span></h3>
+                <h4>Contact: <span id="modalContactName"></span></h4>
+                <p>Phone: <span id="modalPhone"></span></p>
+
+                <!-- Call Logging Form -->
+                <form id="interactionForm">
+                    <div class="form-group">
+                        <label for="outcome">Call Outcome</label>
+                        <input type="text" class="form-control" id="outcome" placeholder="Outcome (e.g., successful, busy)">
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <textarea class="form-control" id="notes" rows="3" placeholder="Enter any notes"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="nextContact">Next Contact Date</label>
+                        <input type="datetime-local" class="form-control" id="nextContact">
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">Call Duration (seconds)</label>
+                        <input type="number" class="form-control" id="duration" placeholder="Enter call duration">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="logInteractionBtn">Log Interaction</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="nextTargetBtn">Next Target</button>
+            </div>
         </div>
-      </div>
     </div>
+</div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
