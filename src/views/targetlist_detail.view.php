@@ -1,3 +1,9 @@
+<?php
+// src/views/targetlist.view.php
+
+// Include the header navigation
+include __DIR__ . '/header.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
