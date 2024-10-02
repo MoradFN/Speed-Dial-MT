@@ -27,25 +27,14 @@ include __DIR__ . '/header.php';
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="interactionModalLabel">Call Interaction</h5>
+                <h5 class="modal-title" id="modalAccountName"></h5> <!-- Account Name will be shown here -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <!-- Account Info -->
-                <h3>Account Information</h3>
                 <div class="container">
-                    <!-- Row for Account Name and Industry -->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong>Account Name:</strong> <span id="modalAccountName"></span></p>
-                        </div>
-                        <div class="col-md-6">
-                            <p><strong>Industry:</strong> <span id="modalAccountIndustry"></span></p>
-                        </div>
-                    </div>
-
                     <!-- Row for Address and Website -->
                     <div class="row">
                         <div class="col-md-6">
@@ -68,7 +57,6 @@ include __DIR__ . '/header.php';
                 </div>
 
                 <!-- Contact Info -->
-                <h4>Contact Information</h4>
                 <div id="modalContacts"></div> <!-- This will be populated with multiple contacts' details -->
 
                 <!-- Call Logging Form -->
@@ -101,6 +89,8 @@ include __DIR__ . '/header.php';
         </div>
     </div>
 </div>
+
+
 
 
 

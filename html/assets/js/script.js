@@ -6,7 +6,6 @@ function updateModal(account) {
   const accountEmail = document.getElementById("modalAccountEmail");
   const accountPhone = document.getElementById("modalAccountPhone");
   const accountWebsite = document.getElementById("modalAccountWebsite");
-  const accountIndustry = document.getElementById("modalAccountIndustry");
   const contactsDiv = document.getElementById("modalContacts");
 
   // Update the modal with account details
@@ -15,7 +14,6 @@ function updateModal(account) {
   accountEmail.innerText = account.account_email || "N/A";
   accountPhone.innerText = account.account_phone || "N/A";
   accountWebsite.innerText = account.website || "N/A";
-  accountIndustry.innerText = account.industry || "N/A";
 
   // Clear previous contacts
   contactsDiv.innerHTML = "";
@@ -24,21 +22,23 @@ function updateModal(account) {
     // Loop through all contacts and display their details
     account.contacts.forEach((contact) => {
       const contactInfo = document.createElement("div");
-      contactInfo.classList.add("container", "border", "mb-3", "p-3");
+      contactInfo.classList.add("contact-info", "mb-3", "border", "p-3"); // Added Bootstrap border and padding classes
 
       contactInfo.innerHTML = `
                 <div class="row">
-                    <div class="col-md-6">
-                        <p><strong>${contact.first_name} ${
+                    <div class="col-md-12">
+                        <h5 style="display:inline;">${contact.first_name} ${
         contact.last_name
-      }</strong></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong>Job Title:</strong> ${
+      }</h5>
+                        <span style="font-size: 0.9em; color: #555;"> - ${
                           contact.job_title || "N/A"
-                        }</p>
+                        }</span>
+                        <span style="font-size: 0.9em; color: #555;"> - <strong>Status:</strong> ${
+                          contact.contact_status || "N/A"
+                        }</span>
                     </div>
                 </div>
+                <hr>
                 <div class="row">
                     <div class="col-md-4">
                         <p><strong>Email:</strong> ${
@@ -56,17 +56,12 @@ function updateModal(account) {
                         }</p>
                     </div>
                 </div>
+                <hr>
                 <div class="row">
-                    <div class="col-md-6">
-                        <p><strong>Status:</strong> ${
-                          contact.contact_status || "N/A"
-                        }</p>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <p><strong>Notes:</strong> ${contact.notes || "N/A"}</p>
                     </div>
                 </div>
-                <hr>
             `;
 
       contactsDiv.appendChild(contactInfo);
