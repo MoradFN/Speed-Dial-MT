@@ -9,7 +9,7 @@ function updateModal(account) {
   const contactsDiv = document.getElementById("modalContacts");
 
   // Update the modal with account details, showing account ID
-  accountName.innerText = `${account.account_name} (ID: ${account.id})`;
+  accountName.innerText = `${account.account_name} (ID: ${account.account_id})`;
   accountAddress.innerText = account.address || "N/A";
   accountEmail.innerText = account.account_email || "N/A";
   accountPhone.innerText = account.account_phone || "N/A";
@@ -34,7 +34,7 @@ function updateModal(account) {
             <a class="btn btn-link" data-toggle="collapse" href="#${contactId}" role="button" aria-expanded="false" aria-controls="${contactId}">
                 ${contact.first_name} ${contact.last_name} - ${
         contact.job_title || "N/A"
-      } (ID: ${contact.id}) (${contact.contact_status || "N/A"})
+      } (ID: ${contact.contact_id}) (${contact.contact_status || "N/A"})
             </a>
           </h5>
           <span style="float: right;">
@@ -61,9 +61,11 @@ function updateModal(account) {
           </div>
           <div class="collapse" id="${formId}">
               <form class="mt-3" method="POST" action="index.php?route=log-contact-interaction">
-                  <input type="hidden" name="contact_id" value="${contact.id}">
+                  <input type="hidden" name="contact_id" value="${
+                    contact.contact_id
+                  }">
                   <input type="hidden" name="account_id" value="${
-                    account.id
+                    account.account_id
                   }"> <!-- Pass account_id -->
                   <input type="hidden" name="user_id" value="1"> <!-- Example user ID -->
                   <input type="hidden" name="target_list_id" value="${
