@@ -116,36 +116,42 @@ include __DIR__ . '/header.php';
     <p>Description: <?= htmlspecialchars($targetList['description']) ?></p>
 
     <?php if (empty($targetList['accounts'])): ?>
-        <p>No accounts available in this target list.</p>
-    <?php else: ?>
-        <h2>Accounts and Contacts</h2>
-        <table border="1">
-            <thead>
+    <p>No accounts available in this target list.</p>
+<?php else: ?>
+    <h2>Accounts and Contacts</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Account Name</th>
+                <th>Contact Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Account ID</th> <!-- New column for Account ID -->
+                <th>Contact ID</th> <!-- New column for Contact ID -->
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($targetList['accounts'] as $account): ?>
                 <tr>
-                    <th>Account Name</th>
-                    <th>Contact Name</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Status</th>
+                    <td rowspan="<?= count($account['contacts']) + 1 ?>"><strong><?= htmlspecialchars($account['account_name']) ?></strong></td>
+                    <td rowspan="<?= count($account['contacts']) + 1 ?>"><strong><?= htmlspecialchars($account['account_id']) ?></strong></td> <!-- Display Account ID -->
                 </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($targetList['accounts'] as $account): ?>
+                <?php foreach ($account['contacts'] as $contact): ?>
                     <tr>
-                        <td rowspan="<?= count($account['contacts']) + 1 ?>"><strong><?= htmlspecialchars($account['account_name']) ?></strong></td>
+                        <td><?= htmlspecialchars($contact['first_name']) ?> <?= htmlspecialchars($contact['last_name']) ?></td>
+                        <td><?= htmlspecialchars($contact['contact_phone']) ?></td>
+                        <td><?= htmlspecialchars($contact['contact_email']) ?></td>
+                        <td><?= htmlspecialchars($contact['contact_status']) ?></td>
+                        <td></td> <!-- Empty column for Account ID spanning multiple contacts -->
+                        <td><?= htmlspecialchars($contact['contact_id']) ?></td> <!-- Display Contact ID -->
                     </tr>
-                    <?php foreach ($account['contacts'] as $contact): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($contact['first_name']) ?> <?= htmlspecialchars($contact['last_name']) ?></td>
-                            <td><?= htmlspecialchars($contact['contact_phone']) ?></td>
-                            <td><?= htmlspecialchars($contact['contact_email']) ?></td>
-                            <td><?= htmlspecialchars($contact['contact_status']) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
                 <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php endif; ?>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
+
     <a href="?route=target-lists">Back to all target lists</a>
     <script>
     // Pass the PHP account data to JavaScript

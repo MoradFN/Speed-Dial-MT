@@ -8,8 +8,8 @@ function updateModal(account) {
   const accountWebsite = document.getElementById("modalAccountWebsite");
   const contactsDiv = document.getElementById("modalContacts");
 
-  // Update the modal with account details
-  accountName.innerText = account.account_name;
+  // Update the modal with account details, showing account ID
+  accountName.innerText = `${account.account_name} (ID: ${account.id})`;
   accountAddress.innerText = account.address || "N/A";
   accountEmail.innerText = account.account_email || "N/A";
   accountPhone.innerText = account.account_phone || "N/A";
@@ -34,7 +34,7 @@ function updateModal(account) {
             <a class="btn btn-link" data-toggle="collapse" href="#${contactId}" role="button" aria-expanded="false" aria-controls="${contactId}">
                 ${contact.first_name} ${contact.last_name} - ${
         contact.job_title || "N/A"
-      } (${contact.contact_status || "N/A"})
+      } (ID: ${contact.id}) (${contact.contact_status || "N/A"})
             </a>
           </h5>
           <span style="float: right;">
@@ -57,47 +57,48 @@ function updateModal(account) {
               </div>
           </div>
           <div class="text-center">
-              <button class="btn btn-link" data-toggle="collapse" data-target="#${formId}" aria-expanded="false" aria-controls="${formId}">
-                  Log Call Outcome
-              </button>
+              <button class="btn btn-link" data-toggle="collapse" data-target="#${formId}" aria-expanded="false" aria-controls="${formId}">Log Call Outcome</button>
           </div>
-<div class="collapse" id="${formId}">
-    <form class="mt-3" method="POST" action="index.php?route=log-contact-interaction">
-        <input type="hidden" name="contact_id" value="${contact.id}">
-        <input type="hidden" name="user_id" value="1"> <!-- Example user ID, replace with dynamic value if needed -->
-        <input type="hidden" name="target_list_id" value="${
-          account.target_list_id || ""
-        }"> <!-- Optional target list -->
+          <div class="collapse" id="${formId}">
+              <form class="mt-3" method="POST" action="index.php?route=log-contact-interaction">
+                  <input type="hidden" name="contact_id" value="${contact.id}">
+                  <input type="hidden" name="account_id" value="${
+                    account.id
+                  }"> <!-- Pass account_id -->
+                  <input type="hidden" name="user_id" value="1"> <!-- Example user ID -->
+                  <input type="hidden" name="target_list_id" value="${
+                    account.target_list_id || ""
+                  }"> <!-- Optional target list -->
 
-        <!-- Outcome Dropdown -->
-        <div class="form-group">
-            <label for="outcomeContact${index}">Call Outcome</label>
-            <select class="form-control" id="outcomeContact${index}" name="outcome">
-                <option value="successful">Successful</option>
-                <option value="busy">Busy</option>
-                <option value="no_answer">No Answer</option>
-                <option value="interested">Interested</option>
-                <option value="not_interested">Not Interested</option>
-            </select>
-        </div>
+                  <!-- Outcome Dropdown -->
+                  <div class="form-group">
+                      <label for="outcomeContact${index}">Call Outcome</label>
+                      <select class="form-control" id="outcomeContact${index}" name="outcome">
+                          <option value="successful">Successful</option>
+                          <option value="busy">Busy</option>
+                          <option value="no_answer">No Answer</option>
+                          <option value="interested">Interested</option>
+                          <option value="not_interested">Not Interested</option>
+                      </select>
+                  </div>
 
-        <!-- Notes -->
-        <div class="form-group">
-            <label for="notesContact${index}">Notes</label>
-            <textarea class="form-control" id="notesContact${index}" name="notes" rows="3" placeholder="Enter any notes"></textarea>
-        </div>
+                  <!-- Notes -->
+                  <div class="form-group">
+                      <label for="notesContact${index}">Notes</label>
+                      <textarea class="form-control" id="notesContact${index}" name="notes" rows="3" placeholder="Enter any notes"></textarea>
+                  </div>
 
-        <!-- Next Contact Date -->
-        <div class="form-group">
-            <label for="nextContact${index}">Next Contact Date</label>
-            <input type="datetime-local" class="form-control" id="nextContact${index}" name="next_contact_date">
-        </div>
+                  <!-- Next Contact Date -->
+                  <div class="form-group">
+                      <label for="nextContact${index}">Next Contact Date</label>
+                      <input type="datetime-local" class="form-control" id="nextContact${index}" name="next_contact_date">
+                  </div>
 
-        <!-- Log Interaction Button -->
-        <button type="submit" class="btn btn-primary">Log Interaction</button>
-    </form>
-</div>
-
+                  <!-- Log Interaction Button -->
+                  <button type="submit" class="btn btn-primary">Log Interaction</button>
+              </form>
+          </div>
+      </div>
     `;
 
       contactsDiv.appendChild(contactInfo);
