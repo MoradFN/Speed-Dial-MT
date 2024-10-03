@@ -10,6 +10,7 @@ include __DIR__ . '/header.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Target List Details</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     
 
@@ -23,7 +24,7 @@ include __DIR__ . '/header.php';
 </button>
 
 <!-- Modal Structure -->
-<div class="modal fade" id="interactionModal" tabindex="-1" aria-labelledby="interactionModalLabel" aria-hidden="true">
+<div class="modal fade custom-modal" id="interactionModal" tabindex="-1" aria-labelledby="interactionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -60,9 +61,11 @@ include __DIR__ . '/header.php';
                 <div id="modalContacts"></div> <!-- This will be populated with multiple contacts' details -->
 
                 <!-- Call Logging Form (Collapsible) -->
-                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
-                    Show/Hide Call Logging Form
-                </button>
+                <div class="text-center">
+    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+        Show/Hide Call Logging Form
+    </button>
+</div>
                 <div id="collapseForm" class="collapse">
                     <form id="interactionForm">
                         <!-- Outcome and Notes -->

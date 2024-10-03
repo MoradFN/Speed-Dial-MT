@@ -1,7 +1,28 @@
-.modal-xl {
-  max-width: 95%; /* Set the modal to take up 95% of the screen width */
+body {
 }
 
-.modal-body {
-  overflow-x: hidden; /* Ensure there’s no horizontal scrolling */
+h1 {
+  color: red;
+  font-size: 32px;
+}
+/* Set maximum height for the modal dialog */
+.custom-modal .modal-dialog {
+  max-width: 90% !important; /* Ensure the width is applied */
+  max-height: 90vh; /* Set maximum height to 90% of the viewport height */
+  display: flex; /* This helps ensure the content can scroll if needed */
+  align-items: center; /* Vertically center the modal if it's not full height */
+}
+
+/* Make the modal content scrollable if it overflows */
+.custom-modal .modal-content {
+  background-color: lightblue !important;
+  height: auto;
+  max-height: 100%; /* Ensure the content doesn't exceed the modal dialog's height */
+  overflow-y: auto; /* Add vertical scroll if content overflows */
+}
+
+.custom-modal .modal-body {
+  background-color: rgb(221, 242, 249) !important;
+  height: 60vh; /* Set a fixed height for the body (adjust based on the header/footer size) */
+  overflow-y: auto; /* Enable scrolling for the content inside the modal body */
 }
