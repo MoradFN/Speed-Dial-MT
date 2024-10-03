@@ -8,6 +8,10 @@ function updateModal(account) {
   const accountWebsite = document.getElementById("modalAccountWebsite");
   const contactsDiv = document.getElementById("modalContacts");
 
+  // Display target_list_id visibly
+  const targetListIdElement = document.getElementById("modalTargetListId");
+  targetListIdElement.innerText = `Target List ID: ${targetListId}`; // Display target_list_id in the modal
+
   // Update the modal with account details, showing account ID
   accountName.innerText = `${account.account_name} (ID: ${account.account_id})`;
   accountAddress.innerText = account.address || "N/A";

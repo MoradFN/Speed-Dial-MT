@@ -31,6 +31,7 @@ include __DIR__ . '/header.php';
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalAccountName"></h5> <!-- Account Name will be shown here -->
+                <p id="modalTargetListId"></p> <!-- Target List ID will be shown here -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -60,9 +61,10 @@ include __DIR__ . '/header.php';
                 </div>
 
                 <!-- Contact Info (Collapsible) -->
-                <div id="modalContacts"></div> <!-- This will be populated with multiple contacts' details -->
-
-                <!-- Call Logging Form (Collapsible) -->
+                <div id="modalContacts"></div>
+                
+                <!-- This will be populated with multiple contacts' details -->
+                                <!-- Call Logging Form (Collapsible) -->
                 <!-- <div class="text-center">
     <button class="btn btn-link" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
         Show/Hide Call Logging Form
@@ -99,6 +101,7 @@ include __DIR__ . '/header.php';
         </div>
     </div>
 </div>
+
 
 
 
