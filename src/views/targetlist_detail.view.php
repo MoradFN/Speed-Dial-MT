@@ -154,8 +154,8 @@ include __DIR__ . '/header.php';
 
     <a href="?route=target-lists">Back to all target lists</a>
     <script>
-    // Pass the PHP account data to JavaScript
-    const accounts = <?= json_encode($targetList['accounts']) ?>;
+    const targetListId = <?= json_encode($targetList['id']) ?>; // Skicka me targetListId till js
+    const accounts = <?= json_encode($targetList['accounts']) ?>; // Get the accounts list from the backend
 </script>
 <script src="/assets/js/script.js"></script>
 </body>

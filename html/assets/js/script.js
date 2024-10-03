@@ -68,9 +68,7 @@ function updateModal(account) {
                     account.account_id
                   }"> <!-- Pass account_id -->
                   <input type="hidden" name="user_id" value="1"> <!-- Example user ID -->
-                  <input type="hidden" name="target_list_id" value="${
-                    account.target_list_id || ""
-                  }"> <!-- Optional target list -->
+                  <input type="hidden" name="target_list_id" value="${targetListId}"> <!-- Pass target_list_id -->
 
                   <!-- Outcome Dropdown -->
                   <div class="form-group">
