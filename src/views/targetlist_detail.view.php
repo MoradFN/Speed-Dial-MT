@@ -63,6 +63,8 @@ include __DIR__ . '/header.php';
                 <!-- Contact Info (Collapsible) -->
                 <div id="modalContacts"></div>
                 
+
+                
                 <!-- This will be populated with multiple contacts' details -->
                                 <!-- Call Logging Form (Collapsible) -->
                 <!-- <div class="text-center">
