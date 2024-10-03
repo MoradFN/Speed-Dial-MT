@@ -51,4 +51,29 @@ class InteractionHistoryController {
         // Return the combined history as JSON
         echo json_encode($history);
     }
+
+
+ // Fetch interaction history for a specific account
+ public function getAccountHistory($accountId) {
+    $accountHistory = $this->interactionHistoryService->getAccountHistory($accountId);
+    
+    if ($accountHistory) {
+        echo json_encode($accountHistory);
+    } else {
+        echo json_encode(['message' => 'No interaction history found for this account']);
+    }
+}
+
+
+    // Fetch interaction history for a specific contact
+public function getContactHistory($contactId) {
+    $contactHistory = $this->interactionHistoryService->getContactHistory($contactId);
+    
+    if ($contactHistory) {
+        echo json_encode($contactHistory);
+    } else {
+        echo json_encode(['message' => 'No interaction history found for this contact']);
+    }
+}
+    
 }

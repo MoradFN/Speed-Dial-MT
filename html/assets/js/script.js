@@ -61,28 +61,43 @@ function updateModal(account) {
                   Log Call Outcome
               </button>
           </div>
-          <div class="collapse" id="${formId}">
-              <form class="mt-3">
-                  <div class="form-group">
-                      <label for="outcomeContact${index}">Call Outcome</label>
-                      <input type="text" class="form-control" id="outcomeContact${index}" placeholder="Outcome (e.g., successful, busy)">
-                  </div>
-                  <div class="form-group">
-                      <label for="notesContact${index}">Notes</label>
-                      <textarea class="form-control" id="notesContact${index}" rows="3" placeholder="Enter any notes"></textarea>
-                  </div>
-                  <div class="form-group">
-                      <label for="nextContact${index}">Next Contact Date</label>
-                      <input type="datetime-local" class="form-control" id="nextContact${index}">
-                  </div>
-                  <div class="form-group">
-                      <label for="durationContact${index}">Call Duration (seconds)</label>
-                      <input type="number" class="form-control" id="durationContact${index}" placeholder="Enter call duration">
-                  </div>
-                  <button type="button" class="btn btn-primary">Log Interaction</button>
-              </form>
-          </div>
-      </div>
+<div class="collapse" id="${formId}">
+    <form class="mt-3" method="POST" action="index.php?route=log-contact-interaction">
+        <input type="hidden" name="contact_id" value="${contact.id}">
+        <input type="hidden" name="user_id" value="1"> <!-- Example user ID, replace with dynamic value if needed -->
+        <input type="hidden" name="target_list_id" value="${
+          account.target_list_id || ""
+        }"> <!-- Optional target list -->
+
+        <!-- Outcome Dropdown -->
+        <div class="form-group">
+            <label for="outcomeContact${index}">Call Outcome</label>
+            <select class="form-control" id="outcomeContact${index}" name="outcome">
+                <option value="successful">Successful</option>
+                <option value="busy">Busy</option>
+                <option value="no_answer">No Answer</option>
+                <option value="interested">Interested</option>
+                <option value="not_interested">Not Interested</option>
+            </select>
+        </div>
+
+        <!-- Notes -->
+        <div class="form-group">
+            <label for="notesContact${index}">Notes</label>
+            <textarea class="form-control" id="notesContact${index}" name="notes" rows="3" placeholder="Enter any notes"></textarea>
+        </div>
+
+        <!-- Next Contact Date -->
+        <div class="form-group">
+            <label for="nextContact${index}">Next Contact Date</label>
+            <input type="datetime-local" class="form-control" id="nextContact${index}" name="next_contact_date">
+        </div>
+
+        <!-- Log Interaction Button -->
+        <button type="submit" class="btn btn-primary">Log Interaction</button>
+    </form>
+</div>
+
     `;
 
       contactsDiv.appendChild(contactInfo);

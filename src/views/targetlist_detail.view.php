@@ -63,14 +63,14 @@ include __DIR__ . '/header.php';
                 <div id="modalContacts"></div> <!-- This will be populated with multiple contacts' details -->
 
                 <!-- Call Logging Form (Collapsible) -->
-                <div class="text-center">
+                <!-- <div class="text-center">
     <button class="btn btn-link" data-toggle="collapse" data-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
         Show/Hide Call Logging Form
     </button>
-</div>
-                <div id="collapseForm" class="collapse">
+</div> -->
+                <!-- <div id="collapseForm" class="collapse">
                     <form id="interactionForm">
-                        <!-- Outcome and Notes -->
+
                         <div class="form-group">
                             <label for="outcome">Call Outcome</label>
                             <input type="text" class="form-control" id="outcome" placeholder="Outcome (e.g., successful, busy)">
@@ -89,7 +89,7 @@ include __DIR__ . '/header.php';
                         </div>
                         <button type="button" class="btn btn-primary" id="logInteractionBtn">Log Interaction</button>
                     </form>
-                </div>
+                </div> -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
