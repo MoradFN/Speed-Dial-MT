@@ -28,62 +28,62 @@ function updateModal(account) {
 
       // Create the collapsible structure for each contact and call logging form inside the details
       contactInfo.innerHTML = `
-        <h5>
+      <div class="row">
+        <div class="col-md-12">
+          <h5 style="display: inline-block;">
             <a class="btn btn-link" data-toggle="collapse" href="#${contactId}" role="button" aria-expanded="false" aria-controls="${contactId}">
                 ${contact.first_name} ${contact.last_name} - ${
         contact.job_title || "N/A"
       } (${contact.contact_status || "N/A"})
             </a>
-        </h5>
-        <div class="collapse" id="${contactId}">
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Email:</strong> ${
-                      contact.contact_email || "N/A"
-                    }</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Phone:</strong> ${
-                      contact.contact_phone || "N/A"
-                    }</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Mobile:</strong> ${
-                      contact.mobile_phone || "N/A"
-                    }</p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Notes:</strong> ${contact.notes || "N/A"}</p>
-                </div>
-            </div>
-            <div class="text-center">
-                <button class="btn btn-link" data-toggle="collapse" data-target="#${formId}" aria-expanded="false" aria-controls="${formId}">
-                    Log Call Outcome
-                </button>
-            </div>
-            <div class="collapse" id="${formId}">
-                <form class="mt-3">
-                    <div class="form-group">
-                        <label for="outcomeContact${index}">Call Outcome</label>
-                        <input type="text" class="form-control" id="outcomeContact${index}" placeholder="Outcome (e.g., successful, busy)">
-                    </div>
-                    <div class="form-group">
-                        <label for="notesContact${index}">Notes</label>
-                        <textarea class="form-control" id="notesContact${index}" rows="3" placeholder="Enter any notes"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="nextContact${index}">Next Contact Date</label>
-                        <input type="datetime-local" class="form-control" id="nextContact${index}">
-                    </div>
-                    <div class="form-group">
-                        <label for="durationContact${index}">Call Duration (seconds)</label>
-                        <input type="number" class="form-control" id="durationContact${index}" placeholder="Enter call duration">
-                    </div>
-                    <button type="button" class="btn btn-primary">Log Interaction</button>
-                </form>
-            </div>
+          </h5>
+          <span style="float: right;">
+            <strong>Email:</strong> ${contact.contact_email || "N/A"} |
+            <strong>Phone:</strong> <a href="tel:${
+              contact.contact_phone || ""
+            }"><i class="fas fa-phone"></i> ${
+        contact.contact_phone || "N/A"
+      }</a> |
+            <strong>Mobile:</strong> <a href="tel:${
+              contact.mobile_phone || ""
+            }"><i class="fas fa-phone"></i> ${contact.mobile_phone || "N/A"}</a>
+          </span>
         </div>
-      `;
+      </div>
+      <div class="collapse" id="${contactId}">
+          <div class="row">
+              <div class="col-md-12">
+                  <p><strong>Notes:</strong> ${contact.notes || "N/A"}</p>
+              </div>
+          </div>
+          <div class="text-center">
+              <button class="btn btn-link" data-toggle="collapse" data-target="#${formId}" aria-expanded="false" aria-controls="${formId}">
+                  Log Call Outcome
+              </button>
+          </div>
+          <div class="collapse" id="${formId}">
+              <form class="mt-3">
+                  <div class="form-group">
+                      <label for="outcomeContact${index}">Call Outcome</label>
+                      <input type="text" class="form-control" id="outcomeContact${index}" placeholder="Outcome (e.g., successful, busy)">
+                  </div>
+                  <div class="form-group">
+                      <label for="notesContact${index}">Notes</label>
+                      <textarea class="form-control" id="notesContact${index}" rows="3" placeholder="Enter any notes"></textarea>
+                  </div>
+                  <div class="form-group">
+                      <label for="nextContact${index}">Next Contact Date</label>
+                      <input type="datetime-local" class="form-control" id="nextContact${index}">
+                  </div>
+                  <div class="form-group">
+                      <label for="durationContact${index}">Call Duration (seconds)</label>
+                      <input type="number" class="form-control" id="durationContact${index}" placeholder="Enter call duration">
+                  </div>
+                  <button type="button" class="btn btn-primary">Log Interaction</button>
+              </form>
+          </div>
+      </div>
+    `;
 
       contactsDiv.appendChild(contactInfo);
     });

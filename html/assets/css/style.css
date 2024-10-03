@@ -7,7 +7,7 @@ h1 {
 }
 /* Set maximum height for the modal dialog */
 .custom-modal .modal-dialog {
-  max-width: 90% !important; /* Ensure the width is applied */
+  max-width: 1640px !important; /* Ensure the width is applied */
   max-height: 90vh; /* Set maximum height to 90% of the viewport height */
   display: flex; /* This helps ensure the content can scroll if needed */
   align-items: center; /* Vertically center the modal if it's not full height */
