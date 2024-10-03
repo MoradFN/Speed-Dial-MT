@@ -15,7 +15,7 @@ class InteractionHistoryController {
         $nextContactDate = $_POST['next_contact_date'];
         $notes = $_POST['notes'];
         $outcome = $_POST['outcome'];
-        $contactMethod = $_POST['contact_method'];
+        $contactMethod = $_POST['contact_method'] ?? null;
 
         $this->interactionHistoryService->logContactInteraction(
             $contactId, $userId, $targetListId, $nextContactDate, $notes, $outcome, $contactMethod
@@ -34,7 +34,7 @@ class InteractionHistoryController {
         $nextContactDate = $_POST['next_contact_date'];
         $notes = $_POST['notes'];
         $outcome = $_POST['outcome'];
-        $contactMethod = $_POST['contact_method'];
+        $contactMethod = $_POST['contact_method'] ?? null;
 
         $this->interactionHistoryService->logAccountInteraction(
             $accountId, $contactId, $userId, $targetListId, $nextContactDate, $notes, $outcome, $contactMethod
