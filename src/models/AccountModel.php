@@ -7,7 +7,17 @@ class AccountModel {
     public function __construct($db) {
         $this->db = $db; 
     }
-
+   //used
+   public function getAccountIdByContact($contactId) {
+    $sql = "SELECT account_id FROM contacts WHERE id = ?";
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param('i', $contactId);
+    $stmt->execute();
+    $result = $stmt->get_result()->fetch_assoc();
+    
+    return $result['account_id'] ?? null;
+}    
+//
     // Fetch all accounts from the database
     public function getAllAccounts() {
         $sql = "SELECT * FROM accounts"; 
@@ -33,6 +43,7 @@ class AccountModel {
         return $result->fetch_assoc();
     }
 
+ 
     // Fetch accounts by a list of account IDs
     public function getAccountsByIds($accountIds) {
         $placeholders = implode(',', array_fill(0, count($accountIds), '?'));

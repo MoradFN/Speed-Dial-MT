@@ -45,12 +45,12 @@ function updateModal(account) {
             <strong>Email:</strong> ${contact.contact_email || "N/A"} |
             <strong>Phone:</strong> <a href="tel:${
               contact.contact_phone || ""
-            }"><i class="fas fa-phone"></i> ${
-        contact.contact_phone || "N/A"
-      }</a> |
+            }">
+            <i class="fas fa-phone"></i> ${contact.contact_phone || "N/A"}</a> |
             <strong>Mobile:</strong> <a href="tel:${
               contact.mobile_phone || ""
-            }"><i class="fas fa-phone"></i> ${contact.mobile_phone || "N/A"}</a>
+            }">
+            <i class="fas fa-phone"></i> ${contact.mobile_phone || "N/A"}</a>
           </span>
         </div>
       </div>
@@ -73,7 +73,7 @@ function updateModal(account) {
                   }"> <!-- Pass account_id -->
                   <input type="hidden" name="user_id" value="1"> <!-- Example user ID -->
                   <input type="hidden" name="target_list_id" value="${targetListId}"> <!-- Pass target_list_id -->
-
+    
                   <!-- Outcome Dropdown -->
                   <div class="form-group">
                       <label for="outcomeContact${index}">Call Outcome</label>
@@ -85,19 +85,31 @@ function updateModal(account) {
                           <option value="not_interested">Not Interested</option>
                       </select>
                   </div>
-
+    
+                  <!-- Contact Method Dropdown -->
+                  <div class="form-group">
+                      <label for="contactMethodContact${index}">Contact Method</label>
+                      <select class="form-control" id="contactMethodContact${index}" name="contact_method">
+                          <option value="call">Call</option>
+                          <option value="email">Email</option>
+                          <option value="in_person">In Person</option>
+                          <option value="sms">SMS</option>
+                          <option value="other">Other</option>
+                      </select>
+                  </div>
+    
                   <!-- Notes -->
                   <div class="form-group">
                       <label for="notesContact${index}">Notes</label>
                       <textarea class="form-control" id="notesContact${index}" name="notes" rows="3" placeholder="Enter any notes"></textarea>
                   </div>
-
+    
                   <!-- Next Contact Date -->
                   <div class="form-group">
                       <label for="nextContact${index}">Next Contact Date</label>
                       <input type="datetime-local" class="form-control" id="nextContact${index}" name="next_contact_date">
                   </div>
-
+    
                   <!-- Log Interaction Button -->
                   <button type="submit" class="btn btn-primary">Log Interaction</button>
               </form>

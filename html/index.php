@@ -21,7 +21,7 @@ $accountInteractionHistoryModel = new AccountInteractionHistoryModel($db);
 $contactInteractionHistoryModel = new ContactInteractionHistoryModel($db);
 
 // Instantiate the unified interaction service -- De är i samma service?
-$interactionHistoryService = new InteractionHistoryService($accountInteractionHistoryModel, $contactInteractionHistoryModel);
+$interactionHistoryService = new InteractionHistoryService($accountInteractionHistoryModel, $contactInteractionHistoryModel, $accountModel);
 $targetListService = new TargetListService($targetListModel, $accountModel, $contactModel, $targetListAccountRelationModel);  // Pass the model to the service
 
 
