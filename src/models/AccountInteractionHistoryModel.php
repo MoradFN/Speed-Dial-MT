@@ -9,7 +9,7 @@ class AccountInteractionHistoryModel {
 
     // Get interaction history by account ID
     public function getInteractionHistoryByAccountId($accountId) {
-        $sql = "SELECT * FROM account_interaction_history WHERE account_id = ?";
+        $sql = "SELECT * FROM history_account_interaction WHERE account_id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param('i', $accountId);
         $stmt->execute();
@@ -27,7 +27,7 @@ class AccountInteractionHistoryModel {
 
     // // Update next contact date based on a contact ID
     // public function updateNextContactDateByContact($contactId, $nextContactDate) {
-    //     $sql = "UPDATE account_interaction_history
+    //     $sql = "UPDATE history_account_interaction
     //             SET next_contact_date = ?
     //             WHERE account_id = (SELECT account_id FROM contacts WHERE id = ?)";
     //     $stmt = $this->db->prepare($sql);
@@ -37,7 +37,7 @@ class AccountInteractionHistoryModel {
 
     // Insert a new interaction for an account
     public function insertInteraction($accountId, $userId, $targetListId, $nextContactDate, $notes, $outcome, $contactMethod) {
-        $sql = "INSERT INTO account_interaction_history (account_id, user_id, target_list_id, contacted_at, next_contact_date, notes, outcome, contact_method)
+        $sql = "INSERT INTO history_account_interaction (account_id, user_id, target_list_id, contacted_at, next_contact_date, notes, outcome, contact_method)
                 VALUES (?, ?, ?, NOW(), ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
         $stmt->bind_param('iiissss', $accountId, $userId, $targetListId, $nextContactDate, $notes, $outcome, $contactMethod);
