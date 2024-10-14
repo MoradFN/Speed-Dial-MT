@@ -1,15 +1,19 @@
 <?php
 // index.php
 require_once __DIR__ . '/../config/config.php';
+
 require_once __DIR__ . '/../src/models/TargetListModel.php';
 require_once __DIR__ . '/../src/models/AccountModel.php';
 require_once __DIR__ . '/../src/models/ContactModel.php';
-require_once __DIR__ . '/../src/services/TargetListService.php';
+require_once __DIR__ . '/../src/models/AccountContactRelationModel.php';
 require_once __DIR__ . '/../src/models/TargetListAccountRelationModel.php';
-require_once __DIR__ . '/../src/controllers/TargetListController.php';
 require_once __DIR__ . '/../src/models/AccountInteractionHistoryModel.php';
 require_once __DIR__ . '/../src/models/ContactInteractionHistoryModel.php';
+
+require_once __DIR__ . '/../src/services/TargetListService.php';
 require_once __DIR__ . '/../src/services/InteractionHistoryService.php';
+
+require_once __DIR__ . '/../src/controllers/TargetListController.php';
 require_once __DIR__ . '/../src/controllers/InteractionHistoryController.php';
 
 // Instantiate the model and service
@@ -19,9 +23,10 @@ $contactModel = new ContactModel($db);
 $targetListAccountRelationModel = new TargetListAccountRelationModel($db);
 $accountInteractionHistoryModel = new AccountInteractionHistoryModel($db);
 $contactInteractionHistoryModel = new ContactInteractionHistoryModel($db);
+$accountContactRelationModel = new AccountContactRelationModel($db);
 
 // Instantiate the unified interaction service -- De är i samma service?
-$interactionHistoryService = new InteractionHistoryService($accountInteractionHistoryModel, $contactInteractionHistoryModel, $accountModel);
+$interactionHistoryService = new InteractionHistoryService($accountInteractionHistoryModel, $contactInteractionHistoryModel,$accountContactRelationModel, $accountModel);
 $targetListService = new TargetListService($targetListModel, $accountModel, $contactModel, $targetListAccountRelationModel);  // Pass the model to the service
 
 

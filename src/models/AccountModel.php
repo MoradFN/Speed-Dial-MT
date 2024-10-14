@@ -8,15 +8,24 @@ class AccountModel {
         $this->db = $db; 
     }
    //used
-   public function getAccountIdByContact($contactId) {
-    $sql = "SELECT account_id FROM contacts WHERE id = ?";
-    $stmt = $this->db->prepare($sql);
-    $stmt->bind_param('i', $contactId);
-    $stmt->execute();
-    $result = $stmt->get_result()->fetch_assoc();
-    
-    return $result['account_id'] ?? null;
-}    
+    // public function getAccountIdByContactId($contactId) {
+    //     $sql = "SELECT account_id FROM account_contact_relation WHERE contact_id = ?";
+    //     $stmt = $this->db->prepare($sql);
+
+    //     if (!$stmt) {
+    //         die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+    //     }
+
+    //     $stmt->bind_param('i', $contactId);
+        
+    //     if (!$stmt->execute()) {
+    //         die('Execute failed: (' . $stmt->errno . ') ' . $stmt->error);
+    //     }
+
+    //     $result = $stmt->get_result()->fetch_assoc();
+
+    //     return $result['account_id'] ?? null;
+    // }
 //
     // Fetch all accounts from the database
     public function getAllAccounts() {

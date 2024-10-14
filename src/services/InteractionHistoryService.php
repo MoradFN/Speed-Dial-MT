@@ -3,18 +3,18 @@
 class InteractionHistoryService {
     private $accountInteractionModel;
     private $contactInteractionModel;
-    private $accountModel;
+    private $accountContactRelationModel;
 
-    public function __construct($accountInteractionModel, $contactInteractionModel, $accountModel) {
+    public function __construct($accountInteractionModel, $contactInteractionModel, $accountContactRelationModel) {
         $this->accountInteractionModel = $accountInteractionModel;
         $this->contactInteractionModel = $contactInteractionModel;
-        $this->accountModel = $accountModel; // This is the missing dependency
+        $this->accountContactRelationModel = $accountContactRelationModel; // This is the missing dependency
     }
 
     // Log contact interaction
     public function logContactInteraction($contactId, $userId, $targetListId, $nextContactDate, $notes, $outcome, $contactMethod) {
         // Get the account ID based on the contact ID
-        $accountId = $this->accountModel->getAccountIdByContact($contactId);
+        $accountId = $this->accountContactRelationModel->getAccountIdByContactId($contactId);
 
         if ($accountId === null) {
             throw new Exception("Account not found for the given contact.");
