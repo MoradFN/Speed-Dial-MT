@@ -1,19 +1,34 @@
 <?php
 // index.php
 require_once __DIR__ . '/../config/config.php';
+
 require_once __DIR__ . '/../src/models/TargetListModel.php';
 require_once __DIR__ . '/../src/models/AccountModel.php';
 require_once __DIR__ . '/../src/models/ContactModel.php';
-require_once __DIR__ . '/../src/services/TargetListService.php';
+require_once __DIR__ . '/../src/models/AccountContactRelationModel.php';
 require_once __DIR__ . '/../src/models/TargetListAccountRelationModel.php';
+require_once __DIR__ . '/../src/models/AccountInteractionHistoryModel.php';
+require_once __DIR__ . '/../src/models/ContactInteractionHistoryModel.php';
+
+require_once __DIR__ . '/../src/services/TargetListService.php';
+require_once __DIR__ . '/../src/services/InteractionHistoryService.php';
+
 require_once __DIR__ . '/../src/controllers/TargetListController.php';
+require_once __DIR__ . '/../src/controllers/InteractionHistoryController.php';
 
 // Instantiate the model and service
 $targetListModel = new TargetListModel($db);
 $accountModel = new AccountModel($db);
 $contactModel = new ContactModel($db);
 $targetListAccountRelationModel = new TargetListAccountRelationModel($db);
+$accountInteractionHistoryModel = new AccountInteractionHistoryModel($db);
+$contactInteractionHistoryModel = new ContactInteractionHistoryModel($db);
+$accountContactRelationModel = new AccountContactRelationModel($db);
+
+// Instantiate the unified interaction service -- De är i samma service?
+$interactionHistoryService = new InteractionHistoryService($accountInteractionHistoryModel, $contactInteractionHistoryModel,$accountContactRelationModel, $accountModel);
 $targetListService = new TargetListService($targetListModel, $accountModel, $contactModel, $targetListAccountRelationModel);  // Pass the model to the service
+
 
 // Routing logic
 $route = isset($_GET['route']) ? $_GET['route'] : 'home'; // Default route is home
@@ -37,15 +52,21 @@ if ($method === 'GET') {
             $controller = new TargetListController($targetListService);  // Pass the service to the controller
             $controller->showTargetList($id);
             break;
+        case 'interaction-history':
+            // Fetch interaction history for a specific account
+            $accountId = isset($_GET['account_id']) ? $_GET['account_id'] : null;
+            $interactionController = new InteractionHistoryController($interactionHistoryService);
+            $interactionController->getAccountAndContactHistory($accountId);
+            break;    
+
+        case 'test':
+            include __DIR__ . '/../html/test.php';  // Load the test page
+            break;            
 
         default:
             include __DIR__ . '/../src/views/404.php';  // Load 404 page if no matching route is found
             break;
 
-            
-        case 'test':
-            include __DIR__ . '/../html/test.php';  // Load the test page
-            break;
     }
     
 } elseif ($method === 'POST') {
@@ -55,6 +76,16 @@ if ($method === 'GET') {
             // Initialize the controller and handle form submission
             $controller = new TargetListController($targetListService);  // Pass the service to the controller
             $controller->createTargetList($_POST);
+            break;
+            
+        case 'log-contact-interaction':
+            $interactionController = new InteractionHistoryController($interactionHistoryService);
+            $interactionController->logContactInteraction();
+            break;
+
+        case 'log-account-interaction':
+            $interactionController = new InteractionHistoryController($interactionHistoryService);
+            $interactionController->logAccountInteraction();
             break;
 
         default:

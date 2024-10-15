@@ -127,14 +127,14 @@ class TargetListModel {
 
     // Fetch interaction history for a specific account
     public function getInteractionHistoryForAccount($accountId) {
-        $sql = "SELECT * FROM account_interaction_history WHERE account_id = ? ORDER BY contacted_at DESC";
+        $sql = "SELECT * FROM history_account_interaction WHERE account_id = ? ORDER BY contacted_at DESC";
         $stmt = $this->db->query($sql, [$accountId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Add a new interaction to the interaction history
     public function addAccountInteractionHistory($accountId, $userId, $notes, $contactedAt, $nextContactDate = null) {
-        $sql = "INSERT INTO account_interaction_history (account_id, user_id, notes, contacted_at, next_contact_date)
+        $sql = "INSERT INTO history_account_interaction (account_id, user_id, notes, contacted_at, next_contact_date)
                 VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->db->query($sql, [$accountId, $userId, $notes, $contactedAt, $nextContactDate]);
         return $stmt->rowCount() > 0;

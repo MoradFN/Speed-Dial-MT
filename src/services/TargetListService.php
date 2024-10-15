@@ -25,7 +25,6 @@ class TargetListService {
 
   
     // Fetch a specific target list and its associated accounts and contacts from TargetListModel
-   // Fetch a specific target list and its associated accounts and contacts from TargetListModel
    public function getTargetListWithAccountsAndContacts($targetListId) {
     // Fetch the target list data
     $targetList = $this->targetListModel->getTargetListById($targetListId);

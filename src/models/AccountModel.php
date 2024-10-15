@@ -7,7 +7,26 @@ class AccountModel {
     public function __construct($db) {
         $this->db = $db; 
     }
+   //used
+    // public function getAccountIdByContactId($contactId) {
+    //     $sql = "SELECT account_id FROM account_contact_relation WHERE contact_id = ?";
+    //     $stmt = $this->db->prepare($sql);
 
+    //     if (!$stmt) {
+    //         die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+    //     }
+
+    //     $stmt->bind_param('i', $contactId);
+        
+    //     if (!$stmt->execute()) {
+    //         die('Execute failed: (' . $stmt->errno . ') ' . $stmt->error);
+    //     }
+
+    //     $result = $stmt->get_result()->fetch_assoc();
+
+    //     return $result['account_id'] ?? null;
+    // }
+//
     // Fetch all accounts from the database
     public function getAllAccounts() {
         $sql = "SELECT * FROM accounts"; 
@@ -33,6 +52,7 @@ class AccountModel {
         return $result->fetch_assoc();
     }
 
+ 
     // Fetch accounts by a list of account IDs
     public function getAccountsByIds($accountIds) {
         $placeholders = implode(',', array_fill(0, count($accountIds), '?'));
