@@ -1,7 +1,7 @@
 <?php
 // index.php
 require_once __DIR__ . '/../config/config.php';
-
+//MODELS
 require_once __DIR__ . '/../src/models/TargetListModel.php';
 require_once __DIR__ . '/../src/models/AccountModel.php';
 require_once __DIR__ . '/../src/models/ContactModel.php';
@@ -9,12 +9,10 @@ require_once __DIR__ . '/../src/models/AccountContactRelationModel.php';
 require_once __DIR__ . '/../src/models/TargetListAccountRelationModel.php';
 require_once __DIR__ . '/../src/models/HistoryAccountInteractionModel.php';
 require_once __DIR__ . '/../src/models/HistoryContactInteractionModel.php';
-
-
-
+//SERVICES
 require_once __DIR__ . '/../src/services/TargetListService.php';
 require_once __DIR__ . '/../src/services/InteractionHistoryService.php';
-
+//CONTROLLERS
 require_once __DIR__ . '/../src/controllers/TargetListController.php';
 require_once __DIR__ . '/../src/controllers/InteractionHistoryController.php';
 
