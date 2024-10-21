@@ -1,6 +1,6 @@
 <?php
-// /src/models/AccountInteractionHistoryModel.php
-class AccountInteractionHistoryModel {
+// /src/models/HistoryAccountInteractionModel.php
+class HistoryAccountInteractionModel {
     private $db;
 
     public function __construct($db) {

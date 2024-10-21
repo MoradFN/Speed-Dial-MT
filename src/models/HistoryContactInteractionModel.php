@@ -1,6 +1,6 @@
 <?php
-// /src/models/ContactInteractionHistoryModel.php
-class ContactInteractionHistoryModel {
+// /src/models/HistoryContactInteractionModel.php
+class HistoryContactInteractionModel {
     private $db;
 
     public function __construct($db) {
@@ -19,7 +19,6 @@ class ContactInteractionHistoryModel {
         $stmt->bind_param('iiissss', $contactId, $userId, $targetListId, $nextContactDate, $notes, $outcome, $contactMethod);
         return $stmt->execute();
     }
-
     // Fetch interaction history for a contact
     public function getInteractionHistoryByContactId($contactId) {
         $sql = "SELECT * FROM history_contact_interaction WHERE contact_id = ?";
