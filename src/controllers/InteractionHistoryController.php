@@ -44,36 +44,36 @@ class InteractionHistoryController {
         echo json_encode(['success' => true]);
     }
 
-    // Fetch account interaction history along with related contacts' interaction history
-    public function getAccountAndContactHistory($accountId) {
-        $history = $this->interactionHistoryService->getAccountAndContactHistory($accountId);
+//     // Fetch account interaction history along with related contacts' interaction history
+//     public function getAccountAndContactHistory($accountId) {
+//         $history = $this->interactionHistoryService->getAccountAndContactHistory($accountId);
 
-        // Return the combined history as JSON
-        echo json_encode($history);
-    }
+//         // Return the combined history as JSON
+//         echo json_encode($history);
+//     }
 
 
- // Fetch interaction history for a specific account
- public function getAccountHistory($accountId) {
-    $accountHistory = $this->interactionHistoryService->getAccountHistory($accountId);
+//  // Fetch interaction history for a specific account
+//  public function getAccountHistory($accountId) {
+//     $accountHistory = $this->interactionHistoryService->getAccountHistory($accountId);
     
-    if ($accountHistory) {
-        echo json_encode($accountHistory);
-    } else {
-        echo json_encode(['message' => 'No interaction history found for this account']);
-    }
-}
+//     if ($accountHistory) {
+//         echo json_encode($accountHistory);
+//     } else {
+//         echo json_encode(['message' => 'No interaction history found for this account']);
+//     }
+// }
 
 
-    // Fetch interaction history for a specific contact
-public function getContactHistory($contactId) {
-    $contactHistory = $this->interactionHistoryService->getContactHistory($contactId);
+//     // Fetch interaction history for a specific contact
+// public function getContactHistory($contactId) {
+//     $contactHistory = $this->interactionHistoryService->getContactHistory($contactId);
     
-    if ($contactHistory) {
-        echo json_encode($contactHistory);
-    } else {
-        echo json_encode(['message' => 'No interaction history found for this contact']);
-    }
-}
+//     if ($contactHistory) {
+//         echo json_encode($contactHistory);
+//     } else {
+//         echo json_encode(['message' => 'No interaction history found for this contact']);
+//     }
+// }
     
 }
