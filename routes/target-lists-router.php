@@ -1,13 +1,4 @@
 <!-- NOT IN USE, Create a more modular aproach later. -->
-<!-- NOT IN USE, Create a more modular aproach later. -->
- <!-- NOT IN USE, Create a more modular aproach later. -->
-  <!-- NOT IN USE, Create a more modular aproach later. -->
-   <!-- NOT IN USE, Create a more modular aproach later. -->
-    <!-- NOT IN USE, Create a more modular aproach later. -->
-     <!-- NOT IN USE, Create a more modular aproach later. -->
-      <!-- NOT IN USE, Create a more modular aproach later. -->
-       <!-- NOT IN USE, Create a more modular aproach later. -->
-        <!-- NOT IN USE, Create a more modular aproach later. -->
          
 <?php
 // routes/target-lists.php
