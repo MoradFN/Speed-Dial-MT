@@ -38,20 +38,20 @@ class HistoryContactInteractionModel {
         return $stmt->execute();
     }
     
-    // Fetch interaction history for a contact
-    public function getInteractionHistoryByContactId($contactId) {
-        $sql = "SELECT * FROM history_contact_interaction WHERE contact_id = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bind_param('i', $contactId);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    }
+    // // Fetch interaction history for a contact
+    // public function getInteractionHistoryByContactId($contactId) {
+    //     $sql = "SELECT * FROM history_contact_interaction WHERE contact_id = ?";
+    //     $stmt = $this->db->prepare($sql);
+    //     $stmt->bind_param('i', $contactId);
+    //     $stmt->execute();
+    //     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    // }
 
-    // Update interaction (for example, log next contact date)
-    public function updateNextContactDate($interactionId, $nextContactDate) {
-        $sql = "UPDATE history_contact_interaction SET next_contact_date = ? WHERE id = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bind_param('si', $nextContactDate, $interactionId);
-        return $stmt->execute();
-    }
+    // // Update interaction (for example, log next contact date)
+    // public function updateNextContactDate($interactionId, $nextContactDate) {
+    //     $sql = "UPDATE history_contact_interaction SET next_contact_date = ? WHERE id = ?";
+    //     $stmt = $this->db->prepare($sql);
+    //     $stmt->bind_param('si', $nextContactDate, $interactionId);
+    //     return $stmt->execute();
+    // }
 }
