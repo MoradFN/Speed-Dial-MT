@@ -35,28 +35,28 @@ class AccountContactService {
         return $account;
     }
 
-    // Fetch and process a single account
-    public function getAccountById($id) {
-        $account = $this->accountModel->getAccountById($id);
+    // // Fetch and process a single account
+    // public function getAccountById($id) {
+    //     $account = $this->accountModel->getAccountById($id);
         
-        // Example business logic: Check if the account is VIP
-        if ($account['name'] === 'VIP Customer') {
-            $account['vip_status'] = true;  // Business logic example
-        }
+    //     // Example business logic: Check if the account is VIP
+    //     if ($account['name'] === 'VIP Customer') {
+    //         $account['vip_status'] = true;  // Business logic example
+    //     }
 
-        return $account;
-    }
+    //     return $account;
+    // }
 
 
 
-    // Create a new account with some validation logic
-    public function createAccount($name, $email) {
-        // Example: Validate input
-        if (empty($name) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception("Invalid input");
-        }
+    // // Create a new account with some validation logic
+    // public function createAccount($name, $email) {
+    //     // Example: Validate input
+    //     if (empty($name) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    //         throw new Exception("Invalid input");
+    //     }
 
-        // Call the model to insert the account
-        return $this->accountModel->createAccount($name, $email);
-    }
+    //     // Call the model to insert the account
+    //     return $this->accountModel->createAccount($name, $email);
+    // }
 }
