@@ -36,13 +36,31 @@ class HistoryAccountInteractionModel {
     // }
 
     // Insert a new interaction for an account
-    public function insertInteraction($accountId, $userId, $targetListId, $nextContactDate, $notes, $outcome, $contactMethod) {
+    public function insertInteraction($accountId, $userId, $targetListId, $nextContactDate, $notes = null, $outcome = null, $contactMethod = null) { 
         $sql = "INSERT INTO history_account_interaction (account_id, user_id, target_list_id, contacted_at, next_contact_date, notes, outcome, contact_method)
                 VALUES (?, ?, ?, NOW(), ?, ?, ?, ?)";
+        
+        // Ensure variables for bind_param (cannot pass null directly)
+        $nextContactDate = $nextContactDate ?? null;
+        $notes = $notes ?? null;
+        $outcome = $outcome ?? null;
+        $contactMethod = $contactMethod ?? null;
+    
         $stmt = $this->db->prepare($sql);
-        $stmt->bind_param('iiissss', $accountId, $userId, $targetListId, $nextContactDate, $notes, $outcome, $contactMethod);
+        $stmt->bind_param(
+            'iiissss', 
+            $accountId, 
+            $userId, 
+            $targetListId, 
+            $nextContactDate, 
+            $notes, 
+            $outcome, 
+            $contactMethod
+        );
         $stmt->execute();
     }
+    
+    
     
     
 }

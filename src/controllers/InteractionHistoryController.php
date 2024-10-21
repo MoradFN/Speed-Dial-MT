@@ -12,7 +12,7 @@ class InteractionHistoryController {
         $contactId = $_POST['contact_id'];
         $userId = $_POST['user_id'];
         $targetListId = $_POST['target_list_id'] ?? null;
-        $nextContactDate = $_POST['next_contact_date'];
+        $nextContactDate = !empty($_POST['next_contact_date']) ? $_POST['next_contact_date'] : null;
         $notes = $_POST['notes'];
         $outcome = $_POST['outcome'];
         $contactMethod = $_POST['contact_method'] ?? null;
@@ -31,7 +31,7 @@ class InteractionHistoryController {
         $contactId = $_POST['contact_id'] ?? null;
         $userId = $_POST['user_id'];
         $targetListId = $_POST['target_list_id'] ?? null;
-        $nextContactDate = $_POST['next_contact_date'];
+        $nextContactDate = !empty($_POST['next_contact_date']) ? $_POST['next_contact_date'] : null;
         $notes = $_POST['notes'];
         $outcome = $_POST['outcome'];
         $contactMethod = $_POST['contact_method'] ?? null;
