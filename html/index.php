@@ -11,6 +11,7 @@ require_once __DIR__ . '/../src/models/HistoryAccountInteractionModel.php';
 require_once __DIR__ . '/../src/models/HistoryContactInteractionModel.php';
 
 
+
 require_once __DIR__ . '/../src/services/TargetListService.php';
 require_once __DIR__ . '/../src/services/InteractionHistoryService.php';
 
@@ -28,7 +29,7 @@ $accountContactRelationModel = new AccountContactRelationModel($db);
 
 // Instantiate the unified interaction service -- De är i samma service?
 $interactionHistoryService = new InteractionHistoryService($historyAccountInteractionModel, $historyContactInteractionModel,$accountContactRelationModel, $accountModel);
-$targetListService = new TargetListService($targetListModel, $accountModel, $contactModel, $targetListAccountRelationModel);  // Pass the model to the service
+$targetListService = new TargetListService($targetListModel, $accountModel, $contactModel, $targetListAccountRelationModel, $accountContactRelationModel);
 
 
 // Routing logic

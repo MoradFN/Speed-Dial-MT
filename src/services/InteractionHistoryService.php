@@ -36,10 +36,7 @@ class InteractionHistoryService {
             $accountId,
             $userId,
             $targetListId,
-            $nextContactDate,
-            $notes,
-            $outcome,
-            $contactMethod
+            $nextContactDate
         );
     }
 

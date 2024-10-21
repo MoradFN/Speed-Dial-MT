@@ -5,12 +5,14 @@ class TargetListService {
     private $accountModel;
     private $contactModel;
     private $targetListAccountRelationModel;
+    private $accountContactRelationModel;
 
-      public function __construct($targetListModel, $accountModel, $contactModel, $targetListAccountRelationModel) {
+      public function __construct($targetListModel, $accountModel, $contactModel, $targetListAccountRelationModel, $accountContactRelationModel) {
         $this->targetListModel = $targetListModel;
         $this->accountModel = $accountModel;
         $this->contactModel = $contactModel;
         $this->targetListAccountRelationModel = $targetListAccountRelationModel;
+        $this->accountContactRelationModel = $accountContactRelationModel;
     }
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////     DONE     //////////////////////////////////////////////////////////////////////////////
@@ -44,9 +46,14 @@ class TargetListService {
     // Step 2: Fetch the account details from AccountModel using the fetched account IDs
     $accounts = $this->accountModel->getAccountsByIds($accountIds);
 
-    // Step 3: Fetch contacts for each account and group them under the accounts
+    // Step 3: Fetch contacts using AccountContactRelationModel and group them under each account
     foreach ($accounts as &$account) {
-        $account['contacts'] = $this->contactModel->getContactsByAccountId($account['account_id']);
+        // Fetch contact_ids from account_contact_relation table
+        $contactIdsResult = $this->accountContactRelationModel->getContactIdsByAccountId($account['account_id']);
+        $contactIds = array_column($contactIdsResult, 'contact_id'); 
+
+        // Fetch contacts from ContactModel using the fetched contact IDs
+        $account['contacts'] = $this->contactModel->getContactsByIds($contactIds);  // Assuming you have this method
     }
 
     // Assign accounts and contacts to the target list
