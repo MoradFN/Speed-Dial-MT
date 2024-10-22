@@ -45,15 +45,16 @@ if (!$stmt) {
     
 }
 
-
-    // // Fetch interaction history for a contact
-    // public function getInteractionHistoryByContactId($contactId) {
-    //     $sql = "SELECT * FROM history_contact_interaction WHERE contact_id = ?";
-    //     $stmt = $this->db->prepare($sql);
-    //     $stmt->bind_param('i', $contactId);
-    //     $stmt->execute();
-    //     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    // }
+    // Fetch a specific contact interaction by its ID
+    public function getInteractionById($interactionId) {
+        $sql = "SELECT * FROM history_contact_interaction WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param('i', $interactionId);
+        $stmt->execute();
+        
+        return $stmt->get_result()->fetch_assoc(); // Fetch a single row as an associative array
+    }
+    
 
     // // Update interaction (for example, log next contact date)
     // public function updateNextContactDate($interactionId, $nextContactDate) {
