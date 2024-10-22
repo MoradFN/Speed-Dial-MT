@@ -7,6 +7,20 @@ class InteractionHistoryController {
         $this->interactionHistoryService = $interactionHistoryService;
     }
 
+
+    ///HISTORY
+    // Method to display the account and contact interaction history
+    public function getAccountAndContactHistory($accountId) {
+        // Fetch the interaction history for the account
+        $interactionHistory = $this->interactionHistoryService->getAccountAndContactHistory($accountId);
+        var_dump('Account ID in Controller:', $accountId); // Add this line for debugging
+    
+        // Pass data to the view
+        include __DIR__ . '/../views/interaction_history.view.php';
+    }
+    
+///
+
     // Log contact interaction
     public function logContactInteraction() {
         $contactId = $_POST['contact_id'];
@@ -43,19 +57,7 @@ class InteractionHistoryController {
     }
     
 
-// Fetch account interaction history along with related contacts' interaction history
-public function getAccountAndContactHistory($accountId) {
-    try {
-        // Fetch interaction history from the service
-        $history = $this->interactionHistoryService->getAccountAndContactHistory($accountId);
 
-        // Pass the data to the view
-        include __DIR__ . '/../views/interaction_history.view.php';
-    } catch (Exception $e) {
-        // Error handling (e.g., logging or displaying an error message)
-        $this->handleError($e->getMessage());
-    }
-}
 
 
 //  // Fetch interaction history for a specific account

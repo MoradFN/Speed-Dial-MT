@@ -34,23 +34,29 @@ class HistoryAccountInteractionModel {
             $stmt->execute();
         }
 
-    // // Get interaction history by account ID
-    // public function getInteractionHistoryByAccountId($accountId) {
-    //     $sql = "SELECT * FROM history_account_interaction WHERE account_id = ?";
-    //     $stmt = $this->db->prepare($sql);
-    //     $stmt->bind_param('i', $accountId);
-    //     $stmt->execute();
-    //     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    // }
+        /////HISTORY
 
-    // // Get related contacts by account ID
-    // public function getRelatedContactsByAccountId($accountId) {
-    //     $sql = "SELECT * FROM contacts WHERE account_id = ?";
-    //     $stmt = $this->db->prepare($sql);
-    //     $stmt->bind_param('i', $accountId);
-    //     $stmt->execute();
-    //     return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    // }
+// Fetch all interactions by account ID
+public function getInteractionsByAccountId($accountId) {
+    // Debugging the account ID before executing the query
+    var_dump('Account ID in getInteractionsByAccountId inside HistoryAccountInteractionModel:', $accountId);
+
+    $sql = "SELECT * FROM history_account_interaction WHERE account_id = ?";
+    $stmt = $this->db->prepare($sql);
+    if (!$stmt) {
+        die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+    }
+
+    $stmt->bind_param('i', $accountId); // 'i' stands for integer binding
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
+
+    // Debugging the result of the query
+    var_dump('Query Result:', $result->fetch_all(MYSQLI_ASSOC));
+
+    return $result->fetch_all(MYSQLI_ASSOC); // Return all rows as an associative array
+}
 
 
 

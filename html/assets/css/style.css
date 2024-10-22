@@ -5,6 +5,10 @@ h1 {
   color: red;
   font-size: 32px;
 }
+h2,
+h3 {
+  color: #333;
+}
 /* Set maximum height for the modal dialog */
 .custom-modal .modal-dialog {
   max-width: 1640px !important; /* Ensure the width is applied */
@@ -25,4 +29,19 @@ h1 {
   background-color: rgb(221, 242, 249) !important;
   height: 60vh; /* Set a fixed height for the body (adjust based on the header/footer size) */
   overflow-y: auto; /* Enable scrolling for the content inside the modal body */
+}
+
+/* Add this to your CSS file */
+.account-interaction {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+.contact-interaction {
+  border: 1px dashed #999;
+  padding: 8px;
+  margin-top: 10px;
+  background-color: #e9e9e9;
 }
