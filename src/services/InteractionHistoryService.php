@@ -14,13 +14,17 @@ class InteractionHistoryService {
   ////HISTORY
 
 // Fetch account interaction history along with related contact interactions
-public function getAccountAndContactHistory($accountId) {
+public function getAccountAndContactHistory($accountId = null) {
     // Debugging the account ID in the service
     var_dump('Account ID in Service:', $accountId);
 
     // Fetch account interaction history
-    $accountHistory = $this->accountInteractionModel->getInteractionsByAccountId($accountId);
-
+    if($accountId) {
+        $accountHistory = $this->accountInteractionModel->getInteractionsByAccountId($accountId);
+    }else{
+        $accountHistory = $this->accountInteractionModel->getInteractionsByAccount();
+    }
+   
     // Debug the result after fetching from the model
     var_dump('$accountHistory:', $accountHistory);
 
@@ -44,9 +48,6 @@ public function getAccountAndContactHistory($accountId) {
         // Add to the result
         $result['account_history'][] = $accountInteraction;
     }
-
-    // Debug the final result before returning it
-    var_dump('$result:', $result);
 
     return $result;
 }

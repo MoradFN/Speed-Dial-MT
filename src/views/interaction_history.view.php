@@ -15,10 +15,12 @@
     <?php if (!empty($interactionHistory['account_history'])): ?>
         <h2>Account Interactions</h2>
         <table>
-            <thead>
+            <thead >
                 <tr>
                     <th>Date</th>
                     <th>Outcome</th>
+                    <th>Customer Name</th>
+                    <th>Account Name</th>
                     <th>Notes</th>
                     <th>Next Contact Date</th>
                     <th>Related Contact Interaction</th>
@@ -29,6 +31,7 @@
                     <tr>
                         <td><?= htmlspecialchars($accountInteraction['contacted_at']) ?></td>
                         <td><?= htmlspecialchars($accountInteraction['outcome']) ?></td>
+                        <td><?= htmlspecialchars($accountInteraction['first_name']) ?> <?= htmlspecialchars($accountInteraction['last_name']) ?></td>
                         <td><?= htmlspecialchars($accountInteraction['notes']) ?></td>
                         <td><?= htmlspecialchars($accountInteraction['next_contact_date']) ?></td>
                         <td>
