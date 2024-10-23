@@ -2,14 +2,12 @@
 // /src/models/HistoryAccountInteractionModel.php
 class HistoryAccountInteractionModel {
     private $db;
-    private $contactInteractionModel;
+
 
     public function __construct($db) {
         $this->db = $db;
     }
-    public function setContactInteractionModel($contactInteractionModel) {
-        $this->contactInteractionModel = $contactInteractionModel;
-    }
+
 
         // Insert a new interaction for an account
         public function insertInteraction($accountId, $userId, $targetListId, $relatedContactInteractionId = null, $outcome = null, $notes = null, $contactMethod = null, $nextContactDate = null) { 
@@ -40,7 +38,7 @@ class HistoryAccountInteractionModel {
 
 
 
-////////////////////////////////WORK IN PROGRESS//////////////////////////////////////////////////
+////////////////////////////////WORK IN PROGRESS(WORKING)/////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
         // Fetch all interactions for all accounts med join från accounts för name.
@@ -58,26 +56,6 @@ public function getAllAccountInteractions() {
 
     return $result->fetch_all(MYSQLI_ASSOC);
 }
-
-////////COMBINERAD FRÅN HISTORY CONTACT INTERACTION MODEL///////////////
-
-public function getAllAccountInteractionsWithContacts() {
-    // Step 1: Fetch all account interactions with account name
-    $accountInteractions = $this->getAllAccountInteractions();
-
-    // Step 2: Loop through each account interaction and fetch related contact interaction
-    foreach ($accountInteractions as &$accountInteraction) {
-        if (!empty($accountInteraction['related_contact_interaction_id'])) {
-            $relatedContactInteraction = $this->contactInteractionModel->getContactInteractionById($accountInteraction['related_contact_interaction_id']);
-            $accountInteraction['related_contact_interaction'] = $relatedContactInteraction;
-        } else {
-            $accountInteraction['related_contact_interaction'] = null;
-        }
-    }
-
-    return $accountInteractions;
-}
-
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
