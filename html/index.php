@@ -61,7 +61,7 @@ if ($method === 'GET') {
                     $controller->showAllInteractionHistory();
                 }
                 break;
-            
+        
             
         case 'test':
             include __DIR__ . '/../html/test.php';  // Load the test page
