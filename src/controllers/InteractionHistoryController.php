@@ -9,17 +9,26 @@ class InteractionHistoryController {
 
 
     ///HISTORY
-    // Method to display the account and contact interaction history
-    public function getAccountAndContactHistory($accountId) {
-        // Fetch the interaction history for the account
-        $interactionHistory = $this->interactionHistoryService->getAccountAndContactHistory($accountId);
-        var_dump('Account ID in Controller:', $accountId); // Add this line for debugging
+/////WORK IN PROGRESS(WORKING EXEPT GET DETAILED.) /////
+
+public function showAllInteractionHistory() {
+    // Display all interactions
+    $accountInteractions = $this->interactionHistoryService->getAllAccountInteractionsWithContacts();
     
-        // Pass data to the view
-        include __DIR__ . '/../views/interaction_history.view.php';
-    }
+    include __DIR__ . '/../views/interaction_history.view.php'; // View to show the full list
+}
+//MTTODO : show interaction history detail
+public function showInteractionHistoryDetail($accountId) {
+    // Display detailed view for a specific account's interactions
+    $interactionHistory = $this->interactionHistoryService->getAccountAndContactHistory($accountId);
+    include __DIR__ . '/../views/interaction_history_detail.view.php'; // View for detailed interaction
+}
+
+//////////////
+
+
     
-///
+///HISTORY above
 
     // Log contact interaction
     public function logContactInteraction() {

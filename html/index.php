@@ -53,16 +53,16 @@ if ($method === 'GET') {
             $controller->showTargetList($id);
             break;
         case 'interaction-history':
-            // Fetch interaction history for a specific account
-            $accountId = isset($_GET['account_id']) ? $_GET['account_id'] : null;
-
-            // Debug to ensure account ID is set
-            var_dump('Account ID in Route:', $accountId);
-
-            $interactionController = new InteractionHistoryController($interactionHistoryService);
-            $interactionController->getAccountAndContactHistory($accountId);
-            break;
-
+            if (isset($_GET['account_id']) && $_GET['account_id'] !== '') {
+                $controller = new InteractionHistoryController($interactionHistoryService);
+                $controller->showInteractionHistoryDetail($_GET['account_id']);
+                } else {
+                    $controller = new InteractionHistoryController($interactionHistoryService);
+                    $controller->showAllInteractionHistory();
+                }
+                break;
+        
+            
         case 'test':
             include __DIR__ . '/../html/test.php';  // Load the test page
             break;            

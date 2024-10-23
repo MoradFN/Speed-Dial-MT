@@ -3,9 +3,11 @@
 class HistoryAccountInteractionModel {
     private $db;
 
+
     public function __construct($db) {
         $this->db = $db;
     }
+
 
         // Insert a new interaction for an account
         public function insertInteraction($accountId, $userId, $targetListId, $relatedContactInteractionId = null, $outcome = null, $notes = null, $contactMethod = null, $nextContactDate = null) { 
@@ -34,31 +36,123 @@ class HistoryAccountInteractionModel {
             $stmt->execute();
         }
 
-        /////HISTORY
 
-// Fetch all interactions by account ID
-public function getInteractionsByAccountId($accountId) {
-    // Debugging the account ID before executing the query
-    var_dump('Account ID in getInteractionsByAccountId inside HistoryAccountInteractionModel:', $accountId);
 
-    $sql = "SELECT * FROM history_account_interaction WHERE account_id = ?";
+////////////////////////////////WORK IN PROGRESS(WORKING)/////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // Fetch all interactions for all accounts med join från accounts för name.
+public function getAllAccountInteractions() {
+    $sql = "SELECT hai.*, a.name AS account_name 
+            FROM history_account_interaction hai 
+            JOIN accounts a ON hai.account_id = a.id";
     $stmt = $this->db->prepare($sql);
     if (!$stmt) {
         die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
     }
 
-    $stmt->bind_param('i', $accountId); // 'i' stands for integer binding
     $stmt->execute();
-    
     $result = $stmt->get_result();
 
-    // Debugging the result of the query
-    var_dump('Query Result:', $result->fetch_all(MYSQLI_ASSOC));
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
-    return $result->fetch_all(MYSQLI_ASSOC); // Return all rows as an associative array
+
+// Fetch a specific interaction by ID (if needed)
+public function getAccountInteractionById($accountInteractionId) {
+    $sql = "SELECT * FROM history_account_interaction WHERE id = ?";
+    $stmt = $this->db->prepare($sql);
+    if (!$stmt) {
+        die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+    }
+
+    $stmt->bind_param('i', $accountInteractionId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    return $result->fetch_assoc(); // Return a single row as an associative array
 }
 
 
+
+
+// public function getAllAccountInteractionsWithContacts() {
+//     $sql = "SELECT * FROM history_account_interaction";
+//     $stmt = $this->db->prepare($sql);
+//     if (!$stmt) {
+//         die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+//     }
+
+//     $stmt->execute();
+//     $result = $stmt->get_result();
+
+//     $accountInteractions = $result->fetch_all(MYSQLI_ASSOC);
+
+//     // For each account interaction, fetch the related contact interaction
+//     foreach ($accountInteractions as &$accountInteraction) {
+//         if (!empty($accountInteraction['related_contact_interaction_id'])) {
+//             // Assuming $this->contactModel is already defined in your class
+//             $relatedContactInteraction = $this->contactModel->getInteractionById($accountInteraction['related_contact_interaction_id']);
+//             $accountInteraction['related_contact_interaction'] = $relatedContactInteraction;
+//         }
+//     }
+
+//     return $accountInteractions;
+// }
+
+
+
+//// KULIS HISTORY UNDER
+
+// // Fetch all interactions by account ID
+// public function getInteractionsByAccountId($accountId) {
+//     // Debugging the account ID before executing the query
+
+//     $sql = "SELECT * FROM history_account_interaction WHERE account_id = ?";
+//     $stmt = $this->db->prepare($sql);
+//     if (!$stmt) {
+//         die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+//     }
+
+//     $stmt->bind_param('i', $accountId); // 'i' stands for integer binding
+//     $stmt->execute();
+    
+//     $result = $stmt->get_result();
+
+//     return $result->fetch_all(MYSQLI_ASSOC); // Return all rows as an associative array
+// }
+// public function getInteractionsByAccount() {
+//     // Debugging the account ID before executing the query
+
+
+//     $sql = "SELECT hai.*, c.first_name, c.last_name, a.name,
+//     hci.id AS hci_id,	
+//     hci.contact_id AS hci_contact_id,	
+//     hci.user_id AS hci_user_id,	
+//     hci.target_list_id AS hci_target_list_id,	
+//     hci.outcome AS hci_outcome,	
+//     hci.notes AS hci_notes,	
+//     hci.contact_method AS hci_contact_method,	
+//     hci.next_contact_date AS hci_next_contact_date,	
+//     hci.contacted_at AS hci_contacted_at,	
+//     hci.interaction_duration AS hci_interaction_duration,	
+//     hci.created_at AS hci_created_at,	
+//     hci.updated_at AS hci_updated_at  FROM history_account_interaction as hai
+//         INNER JOIN history_contact_interaction AS hci  ON hci.id = hai.related_contact_interaction_id
+//         INNER JOIN accounts as a ON a.id = hai.account_id
+//         INNER JOIN contacts as c ON c.id = hci.contact_id;";
+//     $stmt = $this->db->prepare($sql);
+//     if (!$stmt) {
+//         die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+//     }
+//     $stmt->execute();
+//     $result = $stmt->get_result();
+
+//     return $result->fetch_all(MYSQLI_ASSOC); // Return all rows as an associative array
+// }
+//// KULIS HISTORY ABOVE
 
     // // Update next contact date based on a contact ID
     // public function updateNextContactDateByContact($contactId, $nextContactDate) {
