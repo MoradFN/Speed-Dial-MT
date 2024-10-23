@@ -45,15 +45,28 @@ if (!$stmt) {
     
 }
 
-    // Fetch a specific contact interaction by its ID
-    public function getInteractionById($interactionId) {
-        $sql = "SELECT * FROM history_contact_interaction WHERE id = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bind_param('i', $interactionId);
-        $stmt->execute();
-        
-        return $stmt->get_result()->fetch_assoc(); // Fetch a single row as an associative array
+////////////////////////////////WORK IN PROGRESS//////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+ // Fetch a specific contact interaction by ID med JOIN från contacts table för firstname och lastname.
+public function getContactInteractionById($interactionId) {
+    $sql = "SELECT hci.*, c.first_name, c.last_name 
+            FROM history_contact_interaction hci 
+            JOIN contacts c ON hci.contact_id = c.id 
+            WHERE hci.id = ?";
+    $stmt = $this->db->prepare($sql);
+    if (!$stmt) {
+        die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
     }
+
+    $stmt->bind_param('i', $interactionId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    return $result->fetch_assoc();
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
     
 
     // // Update interaction (for example, log next contact date)

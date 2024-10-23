@@ -1,15 +1,29 @@
 <?php
 // Include the header navigation
 include __DIR__ . '/../src/views/header.php';
-// html/test_targetlist.php
+// html/test.php
 require_once __DIR__ . '/../config/config.php'; // Load database configuration
-require_once __DIR__ . '/../src/models/TargetListModel.php'; // Load TargetListModel
-require_once __DIR__ . '/../src/services/TargetListService.php'; // Load TargetListService
 
-// Instantiate the TargetList model, passing the $db connection from config.php
-$targetListModel = new TargetListModel($db);
-$targetListService = new TargetListService($targetListModel);
-// Test fetching all target lists
+//MODELS TESTING
+// require_once __DIR__ . '/../src/models/TargetListModel.php'; // Load TargetListModel
+require_once __DIR__ . '/../src/models/HistoryAccountInteractionModel.php'; // Load HistoryAccountInteractionModel
+require_once __DIR__ . '/../src/models/HistoryContactInteractionModel.php'; // Load HistoryContactInteractionModel
+
+//SERVICES TESTING
+// require_once __DIR__ . '/../src/services/TargetListService.php'; // Load TargetListService
+
+// TARGETLIST TESTING
+// $targetListModel = new TargetListModel($db);
+// $targetListService = new TargetListService($targetListModel);
+
+//INTERACTION HISTORY TESTING
+// Instantiate the models
+$accountInteractionModel = new HistoryAccountInteractionModel($db);
+$contactInteractionModel = new HistoryContactInteractionModel($db);
+// Fetch all interactions
+// Simulating fetching all account interactions with related contact interactions
+$accountInteractionModel->setContactInteractionModel($historyContactInteractionModel);
+$accountInteractions = $accountInteractionModel->getAllAccountInteractionsWithContacts();
 
 
 
@@ -25,18 +39,18 @@ $targetListService = new TargetListService($targetListModel);
 
 ////////////////////////// MODEL TEST //////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
-// $targetLists = $targetListModel->getAllTargetLists();
-// echo "<pre>";
-// // print_r($targetLists); // This will print the list of target lists in a readable format
-// echo "</pre>";
 
-// //test getting relations from target list relations table with account and related contacts.(With data structure.)
-// // Hämtar alla accounts och contacts och binder ihop kontakt till varje account med hjälp av target_relation_table
-// $targetListId = 1; // Assume this ID exists
-// $accountsAndContacts = $targetListModel->getAccountsAndContactsByTargetList($targetListId);
-// echo "<pre>";
-// print_r($accountsAndContacts); // This will print the accounts and contacts in the list
-// echo "</pre>";
+// Output the results
+echo "<pre>";
+print_r($accountInteractions);
+echo "</pre>";
+
+
+
+
+?>
+
+<?php
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
 

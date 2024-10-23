@@ -1,13 +1,13 @@
 <?php
 
 class InteractionHistoryService {
-    private $accountInteractionModel;
-    private $contactInteractionModel;
+    private $historyAccountInteractionModel;
+    private $historyContactInteractionModel;
     private $accountContactRelationModel;
 
-    public function __construct($accountInteractionModel, $contactInteractionModel, $accountContactRelationModel) {
-        $this->accountInteractionModel = $accountInteractionModel;
-        $this->contactInteractionModel = $contactInteractionModel;
+    public function __construct($historyAccountInteractionModel, $historyContactInteractionModel, $accountContactRelationModel) {
+        $this->historyAccountInteractionModel = $historyAccountInteractionModel;
+        $this->historyContactInteractionModel = $historyContactInteractionModel;
         $this->accountContactRelationModel = $accountContactRelationModel; // This is the missing dependency
     }
 
@@ -20,9 +20,9 @@ public function getAccountAndContactHistory($accountId = null) {
 
     // Fetch account interaction history
     if($accountId) {
-        $accountHistory = $this->accountInteractionModel->getInteractionsByAccountId($accountId);
+        $accountHistory = $this->historyAccountInteractionModel->getInteractionsByAccountId($accountId);
     }else{
-        $accountHistory = $this->accountInteractionModel->getInteractionsByAccount();
+        $accountHistory = $this->historyAccountInteractionModel->getInteractionsByAccount();
     }
    
     // Debug the result after fetching from the model
@@ -39,7 +39,7 @@ public function getAccountAndContactHistory($accountId = null) {
 
         // Fetch related contact interaction if the ID exists
         if ($relatedContactInteractionId) {
-            $relatedContactInteraction = $this->contactInteractionModel->getInteractionById($relatedContactInteractionId);
+            $relatedContactInteraction = $this->historyContactInteractionModel->getInteractionById($relatedContactInteractionId);
             $accountInteraction['related_contact_interaction'] = $relatedContactInteraction;
         } else {
             $accountInteraction['related_contact_interaction'] = null;
@@ -67,7 +67,7 @@ public function logContactInteraction($contactId, $userId, $targetListId, $nextC
     }
 
     // Insert the interaction for the contact and capture the inserted ID
-    $contactInteractionId = $this->contactInteractionModel->insertInteraction(
+    $contactInteractionId = $this->historyContactInteractionModel->insertInteraction(
         $contactId,
         $userId,
         $targetListId,
@@ -83,7 +83,7 @@ public function logContactInteraction($contactId, $userId, $targetListId, $nextC
     }
 
     // Insert the interaction for the account, passing the related contact interaction ID
-    $this->accountInteractionModel->insertInteraction(
+    $this->historyAccountInteractionModel->insertInteraction(
         $accountId,
         $userId,
         $targetListId,
@@ -101,10 +101,10 @@ public function logContactInteraction($contactId, $userId, $targetListId, $nextC
     // // Fetch account interaction history along with related contacts' interaction history
     // public function getAccountAndContactHistory($accountId) {
     //     // Fetch account interaction history
-    //     $accountHistory = $this->accountInteractionModel->getInteractionHistoryByAccountId($accountId);
+    //     $accountHistory = $this->historyAccountInteractionModel->getInteractionHistoryByAccountId($accountId);
 
     //     // Fetch all related contacts for the account
-    //     $contacts = $this->accountInteractionModel->getRelatedContactsByAccountId($accountId);
+    //     $contacts = $this->historyAccountInteractionModel->getRelatedContactsByAccountId($accountId);
 
     //     // Initialize result array
     //     $result = [
@@ -115,7 +115,7 @@ public function logContactInteraction($contactId, $userId, $targetListId, $nextC
     //     // Loop through each contact and fetch their interaction history
     //     foreach ($contacts as $contact) {
     //         $contactId = $contact['id'];
-    //         $contactHistory = $this->contactInteractionModel->getInteractionHistoryByContactId($contactId);
+    //         $contactHistory = $this->historyContactInteractionModel->getInteractionHistoryByContactId($contactId);
     //         $result['contacts_history'][] = [
     //             'contact' => $contact,
     //             'history' => $contactHistory
@@ -127,12 +127,12 @@ public function logContactInteraction($contactId, $userId, $targetListId, $nextC
 
     // Fetch interaction history for a contact
     public function getContactHistory($contactId) {
-        return $this->contactInteractionModel->getInteractionHistoryByContactId($contactId);
+        return $this->historyContactInteractionModel->getInteractionHistoryByContactId($contactId);
     }
 
     // Fetch interaction history for an account
     public function getAccountHistory($accountId) {
-        return $this->accountInteractionModel->getInteractionHistoryByAccountId($accountId);
+        return $this->historyAccountInteractionModel->getInteractionHistoryByAccountId($accountId);
     }
 
 
