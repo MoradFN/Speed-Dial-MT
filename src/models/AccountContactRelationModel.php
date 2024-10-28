@@ -8,7 +8,7 @@ class AccountContactRelationModel {
         $this->db = $db;
     }
 
-    // Fetach all account_ids for a given contact from the relation table [Passed to ContactModel]
+    // Fetach all account_ids for a given contact from the relation table [Passed to ContactModel? not any more]MTTODO- Check
     public function getAccountIdByContactId($contactId) {
         $sql = "SELECT account_id FROM account_contact_relation WHERE contact_id = ?";
         $stmt = $this->db->prepare($sql);
