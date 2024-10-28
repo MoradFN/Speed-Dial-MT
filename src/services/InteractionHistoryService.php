@@ -39,44 +39,7 @@ class InteractionHistoryService {
 
 
 
-// Fetch account interaction history along with related contact interactions
-public function getAccountAndContactHistory($accountId = null) {
-    // Debugging the account ID in the service
-    var_dump('Account ID in Service:', $accountId);
 
-    // Fetch account interaction history
-    if($accountId) {
-        $accountHistory = $this->historyAccountInteractionModel->getInteractionsByAccountId($accountId);
-    }else{
-        $accountHistory = $this->historyAccountInteractionModel->getInteractionsByAccount();
-    }
-   
-    // Debug the result after fetching from the model
-    var_dump('$accountHistory:', $accountHistory);
-
-    // Initialize result array
-    $result = [
-        'account_history' => []
-    ];
-
-    // Loop through each account interaction and fetch the related contact interaction history
-    foreach ($accountHistory as $accountInteraction) {
-        $relatedContactInteractionId = $accountInteraction['related_contact_interaction_id'];
-
-        // Fetch related contact interaction if the ID exists
-        if ($relatedContactInteractionId) {
-            $relatedContactInteraction = $this->historyContactInteractionModel->getInteractionById($relatedContactInteractionId);
-            $accountInteraction['related_contact_interaction'] = $relatedContactInteraction;
-        } else {
-            $accountInteraction['related_contact_interaction'] = null;
-        }
-
-        // Add to the result
-        $result['account_history'][] = $accountInteraction;
-    }
-
-    return $result;
-}
 
 
 
@@ -121,7 +84,44 @@ public function logContactInteraction($contactId, $userId, $targetListId, $nextC
     );
 }
     
+// Fetch account interaction history along with related contact interactions KULIS?
+// public function getAccountAndContactHistory($accountId = null) {
+//     // Debugging the account ID in the service
+//     var_dump('Account ID in Service:', $accountId);
 
+//     // Fetch account interaction history
+//     if($accountId) {
+//         $accountHistory = $this->historyAccountInteractionModel->getInteractionsByAccountId($accountId);
+//     }else{
+//         $accountHistory = $this->historyAccountInteractionModel->getInteractionsByAccount();
+//     }
+   
+//     // Debug the result after fetching from the model
+//     var_dump('$accountHistory:', $accountHistory);
+
+//     // Initialize result array
+//     $result = [
+//         'account_history' => []
+//     ];
+
+//     // Loop through each account interaction and fetch the related contact interaction history
+//     foreach ($accountHistory as $accountInteraction) {
+//         $relatedContactInteractionId = $accountInteraction['related_contact_interaction_id'];
+
+//         // Fetch related contact interaction if the ID exists
+//         if ($relatedContactInteractionId) {
+//             $relatedContactInteraction = $this->historyContactInteractionModel->getInteractionById($relatedContactInteractionId);
+//             $accountInteraction['related_contact_interaction'] = $relatedContactInteraction;
+//         } else {
+//             $accountInteraction['related_contact_interaction'] = null;
+//         }
+
+//         // Add to the result
+//         $result['account_history'][] = $accountInteraction;
+//     }
+
+//     return $result;
+// }
 
 
     // // Fetch account interaction history along with related contacts' interaction history
