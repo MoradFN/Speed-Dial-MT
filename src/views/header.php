@@ -9,3 +9,12 @@
         <li><a href="?route=test">Test</a></li>
     </ul>
 </nav>
+
+<?php
+echo '<pre>';
+var_dump($_GET);
+var_dump($_POST);
+var_dump($_SESSION);
+debug_print_backtrace();
+echo '</pre>';
+
