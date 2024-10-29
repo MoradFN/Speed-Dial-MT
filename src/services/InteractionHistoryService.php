@@ -18,26 +18,47 @@ class InteractionHistoryService {
   ////////////////////////////////////////////////////////////////////////////////////////////
 
  // Fetch all account interactions along with related contact interactions från hsitory account & histry contact model.
- public function getAllAccountInteractionsWithContacts() {
-    // Step 1: Fetch all account interactions with account name from the model
-    $accountInteractions = $this->historyAccountInteractionModel->getAllAccountInteractions();
+//          /// TEMPORARILY COMMENTED OUT. <-----------------------------------------------------
+//  public function getAllAccountInteractionsWithContacts() {
+//     // Step 1: Fetch all account interactions with account name from the model
+//     $accountInteractions = $this->historyAccountInteractionModel->getAllAccountInteractions();
 
-    // Step 2: Loop through each account interaction and fetch related contact interaction
-    foreach ($accountInteractions as &$accountInteraction) {
-        if (!empty($accountInteraction['related_contact_interaction_id'])) {
-            $relatedContactInteraction = $this->historyContactInteractionModel->getContactInteractionById($accountInteraction['related_contact_interaction_id']);
-            $accountInteraction['related_contact_interaction'] = $relatedContactInteraction;
-        } else {
-            $accountInteraction['related_contact_interaction'] = null;
-        }
-    }
+//     // Step 2: Loop through each account interaction and fetch related contact interaction
+//     foreach ($accountInteractions as &$accountInteraction) {
+//         if (!empty($accountInteraction['related_contact_interaction_id'])) {
+//             $relatedContactInteraction = $this->historyContactInteractionModel->getContactInteractionById($accountInteraction['related_contact_interaction_id']);
+//             $accountInteraction['related_contact_interaction'] = $relatedContactInteraction;
+//         } else {
+//             $accountInteraction['related_contact_interaction'] = null;
+//         }
+//     }
 
-    return $accountInteractions;
-}
+//     return $accountInteractions;
+// }
 ////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// ENHANCED HISTORY
+
 public function getAllInteractions($orderBy = 'contacted_at', $direction = 'DESC') {
-    return $this->historyAccountInteractionModel->getAllAccountInteractionsWithDetails($orderBy, $direction);
+    // Step 1: Fetch all account interactions with details using the account interaction model
+    $historyInteractions = $this->historyAccountInteractionModel->getAllAccountInteractionsWithDetails($orderBy, $direction);
+
+    // Collect all related contact interaction IDs
+    $interactionIds = array_filter(array_column($historyInteractions, 'related_contact_interaction_id'));
+
+    // Ensure that $interactionIds is not empty before calling the model
+    $relatedContactInteractions = [];
+    if (!empty($interactionIds)) {
+        // Step 2: Fetch related contact interactions in bulk using the new model method
+        $relatedContactInteractions = $this->historyContactInteractionModel->getRelatedContactsByInteractionIds($interactionIds);
+    }
+
+    // Step 3: Attach related contact details to each account interaction
+    foreach ($historyInteractions as &$historyInteraction) {
+        $relatedId = $historyInteraction['related_contact_interaction_id'];
+        $historyInteraction['related_contact_interaction'] = $relatedContactInteractions[$relatedId] ?? null;
+    }
+
+    return $historyInteractions;
 }
 
 

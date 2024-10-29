@@ -42,26 +42,30 @@ class HistoryAccountInteractionModel {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
         // Fetch all interactions for all accounts med join från accounts för name.
-public function getAllAccountInteractions() {
-    $sql = "SELECT hai.*, a.name AS account_name 
-            FROM history_account_interaction hai 
-            JOIN accounts a ON hai.account_id = a.id";
-    $stmt = $this->db->prepare($sql);
-    if (!$stmt) {
-        die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
-    }
+        /// TEMPORARILY COMMENTED OUT. <-----------------------------------------------------
 
-    $stmt->execute();
-    $result = $stmt->get_result();
+// public function getAllAccountInteractions() {
+//     $sql = "SELECT hai.*, a.name AS account_name 
+//             FROM history_account_interaction hai 
+//             JOIN accounts a ON hai.account_id = a.id";
+//     $stmt = $this->db->prepare($sql);
+//     if (!$stmt) {
+//         die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+//     }
 
-    return $result->fetch_all(MYSQLI_ASSOC);
-}
+//     $stmt->execute();
+//     $result = $stmt->get_result();
+
+//     return $result->fetch_all(MYSQLI_ASSOC);
+// }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////WORK IN PROGRESS ENHANCED HISTORY
 // Fetch all interactions with account, contact, target list, and campaign details
+// HistoryAccountInteractionModel.php
+
 public function getAllAccountInteractionsWithDetails($orderBy = 'hai.contacted_at', $direction = 'DESC') {
     $validOrderColumns = [
-        'account_name', 'contact_name', 'target_list_name', 'campaign_name',
+        'account_name', 'target_list_name', 'campaign_name',
         'hai.contacted_at', 'hai.next_contact_date', 'hai.updated_at', 'hai.outcome'
     ];
 
@@ -73,7 +77,6 @@ public function getAllAccountInteractionsWithDetails($orderBy = 'hai.contacted_a
 
     $sql = "SELECT hai.*, 
                    a.name AS account_name, 
-                   CONCAT(c.first_name, ' ', c.last_name) AS contact_name, 
                    t.name AS target_list_name, 
                    cmp.name AS campaign_name
             FROM history_account_interaction hai
@@ -81,8 +84,6 @@ public function getAllAccountInteractionsWithDetails($orderBy = 'hai.contacted_a
             LEFT JOIN target_lists t ON hai.target_list_id = t.id
             LEFT JOIN target_list_account_relation tlr ON tlr.account_id = hai.account_id AND tlr.target_list_id = t.id
             LEFT JOIN campaigns cmp ON t.campaign_id = cmp.id
-            LEFT JOIN history_contact_interaction hci ON hci.id = hai.related_contact_interaction_id
-            LEFT JOIN contacts c ON hci.contact_id = c.id
             ORDER BY $orderBy $direction";
 
     $stmt = $this->db->prepare($sql);
@@ -95,6 +96,7 @@ public function getAllAccountInteractionsWithDetails($orderBy = 'hai.contacted_a
 
     return $result->fetch_all(MYSQLI_ASSOC);
 }
+
 
 
 

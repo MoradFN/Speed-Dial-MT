@@ -7,6 +7,7 @@ require_once __DIR__ . '/../config/config.php'; // Load database configuration
 //MODELS TESTING
 require_once __DIR__ . '/../src/models/HistoryAccountInteractionModel.php'; // Load HistoryAccountInteractionModel
 require_once __DIR__ . '/../src/models/HistoryContactInteractionModel.php'; // Load HistoryContactInteractionModel
+require_once __DIR__ . '/../src/models/AccountContactRelationModel.php'; 
 
 //SERVICES TESTING
 require_once __DIR__ . '/../src/services/InteractionHistoryService.php';
