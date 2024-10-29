@@ -8,56 +8,40 @@ require_once __DIR__ . '/../config/config.php'; // Load database configuration
 require_once __DIR__ . '/../src/models/HistoryAccountInteractionModel.php'; // Load HistoryAccountInteractionModel
 require_once __DIR__ . '/../src/models/HistoryContactInteractionModel.php'; // Load HistoryContactInteractionModel
 
-
 //SERVICES TESTING
-
 require_once __DIR__ . '/../src/services/InteractionHistoryService.php';
-
-// TARGETLIST TESTING
-// $targetListModel = new TargetListModel($db);
-// $targetListService = new TargetListService($targetListModel);
 
 // Instantiate models
 $historyAccountInteractionModel = new HistoryAccountInteractionModel($db);
 $historyContactInteractionModel = new HistoryContactInteractionModel($db);
+$accountContactRelationModel = new AccountContactRelationModel($db);
 
 // Instantiate the service
 $interactionHistoryService = new InteractionHistoryService(
     $historyAccountInteractionModel, 
     $historyContactInteractionModel, 
-    $accountContactRelationModel // Make sure this is instantiated and passed
+    $accountContactRelationModel
 );
 
 
-// Fetch all interactions
-// Simulating fetching all account interactions with related contact interactions
-// $historyAccountInteractionModel->setContactInteractionModel($historyContactInteractionModel);
-// $accountInteractions = $historyAccountInteractionModel->getAllAccountInteractionsWithContacts();
+// List of sorting fields to test
+$fieldsToTest = [
+    'account_name', 'contact_name', 'target_list_name', 'campaign_name',
+    'hai.contacted_at', 'hai.next_contact_date', 'hai.updated_at', 'hai.outcome'
+];
 
 
-// Fetch and display the account and contact interactions
-$accountInteractionsWithContacts = $interactionHistoryService->getAllAccountInteractionsWithContacts();
+// Loop through each field and test sorting by 'ASC' and 'DESC'
+foreach ($fieldsToTest as $field) {
+    foreach (['ASC', 'DESC'] as $direction) {
+        echo "<h2>Testing Sorting by: $field $direction</h2>";
 
+        // Fetch sorted interactions using the service
+        $accountInteractionsSorted = $interactionHistoryService->getAllInteractions($field, $direction);
 
-
-
-
-////////////////////////// TEST //////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-
-// Output the result
-echo "<pre>";
-print_r($accountInteractionsWithContacts);
-echo "</pre>";
-
-?>
-
-<?php
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-
-////////////////////////// SERVICE TEST ////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
+        // Output the result in a readable format
+        echo "<pre>";
+        print_r($accountInteractionsSorted);
+        echo "</pre>";
+    }
+}

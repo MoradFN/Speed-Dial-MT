@@ -27,6 +27,18 @@ public function showInteractionHistoryDetail($accountId) {
 //////////////
 
 
+//////ENHANCED HISTORY///////////////////////
+public function showAllInteractionHistorySorted() {
+    $orderBy = isset($_GET['orderBy']) ? $_GET['orderBy'] : 'contacted_at';
+    $direction = isset($_GET['direction']) ? $_GET['direction'] : 'DESC';
+
+    // Fetch sorted interactions
+    $accountInteractions = $this->interactionHistoryService->getAllInteractions($orderBy, $direction);
+
+    // Pass the data to the view
+    include __DIR__ . '/../views/test.php';
+}
+
     
 ///HISTORY above
 
