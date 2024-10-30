@@ -124,10 +124,10 @@ var_dump($route)
             <th><a href="?route=test&orderBy=account_name&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Account Name</a></th>
             <th><a href="?route=test&orderBy=contact_name&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Contact Name</a></th>
             <th><a href="?route=test&orderBy=contact_interaction_outcome&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Contact Outcome</th>
+            <th>Contact Phone</th>
             <th>Contact Notes</th>
-            <th>Contact Method</th>
             <th><a href="?route=test&orderBy=contact_contacted_at&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Contacted At</a></th>
-            <th>Next Contact Date</th>
+            <th><a href="?route=test&orderBy=contact_next_contact_date&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Next Contact Date</th>
             <th>Interaction Duration</th>
         </tr>
     </thead>
@@ -145,8 +145,8 @@ var_dump($route)
                 <td><?= htmlspecialchars($interaction['account_name']) ?></td>
                 <td><?= htmlspecialchars($interaction['contact_name']) ?></td>
                 <td><?= htmlspecialchars($interaction['contact_interaction_outcome']) ?></td>
+                <td><?= htmlspecialchars($interaction['contact_phone']) ?></td>
                 <td><?= htmlspecialchars($interaction['contact_notes']) ?></td>
-                <td><?= htmlspecialchars($interaction['contact_method']) ?></td>
                 <td><?= htmlspecialchars($interaction['contact_contacted_at']) ?></td>
                 <td><?= htmlspecialchars($interaction['contact_next_contact_date']) ?></td>
                 <td><?= htmlspecialchars($interaction['contact_interaction_duration']) ?></td>

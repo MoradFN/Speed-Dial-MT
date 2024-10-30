@@ -151,6 +151,7 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
                    cmp.end_date AS campaign_end_date,
                    cmp.status AS campaign_status,
                    hci.outcome AS contact_interaction_outcome,
+                   c.phone AS contact_phone,
                    hci.notes AS contact_notes,
                    hci.contacted_at AS contact_contacted_at,
                    hci.next_contact_date AS contact_next_contact_date,
