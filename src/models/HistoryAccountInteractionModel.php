@@ -67,7 +67,7 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
     // Define valid order columns (for both account and contact fields)
     $validOrderColumns = [
         'user_name', 'campaign_name', 'campaign_status', 'campaign_start_date', 'campaign_end_date', 'campaign_description', 
-        'target_list_name', 'target_list_description', 'account_name', 'contact_first_name', 'contact_last_name', 
+        'target_list_name', 'target_list_description', 'account_name', 'contact_name', 
         'contact_interaction_outcome', 'contact_phone', 'contact_notes', 'contact_contacted_at', 'contact_next_contact_date'
     ];
 
@@ -98,7 +98,7 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
         'target_list_description' => ['t.description LIKE ?', 's'],
 
         'account_name' => ['a.name LIKE ?', 's'],
-        
+
         'contact_name' => ["CONCAT(c.first_name, ' ', c.last_name) LIKE ?", 's'],
         'contact_interaction_outcome' => ['hci.outcome = ?', 's'],
         'contact_phone' => ['c.phone LIKE ?', 's'],
