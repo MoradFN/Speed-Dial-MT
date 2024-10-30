@@ -26,23 +26,11 @@ $interactionHistoryService = new InteractionHistoryService(
 
 
 // List of sorting fields to test
-$fieldsToTest = [
-    'account_name', 'contact_name', 'target_list_name', 'campaign_name',
-    'hai.contacted_at', 'hai.next_contact_date', 'hai.updated_at', 'hai.outcome'
-];
 
-
-// Loop through each field and test sorting by 'ASC' and 'DESC'
-foreach ($fieldsToTest as $field) {
-    foreach (['ASC', 'DESC'] as $direction) {
-        echo "<h2>Testing Sorting by: $field $direction</h2>";
 
         // Fetch sorted interactions using the service
-        $accountInteractionsSorted = $interactionHistoryService->getAllInteractions($field, $direction);
+$allDetailedInteractions = $historyAccountInteractionModel->getDetailedInteractionHistory([], 'contacted_at', 'DESC');
 
-        // Output the result in a readable format
-        echo "<pre>";
-        print_r($accountInteractionsSorted);
-        echo "</pre>";
-    }
-}
+echo "<pre>";
+print_r($allDetailedInteractions);
+echo "</pre>";

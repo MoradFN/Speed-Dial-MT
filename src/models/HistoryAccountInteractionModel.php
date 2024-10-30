@@ -63,27 +63,87 @@ class HistoryAccountInteractionModel {
 // Fetch all interactions with account, contact, target list, and campaign details
 // HistoryAccountInteractionModel.php
 
-public function getAllAccountInteractionsWithDetails($orderBy = 'hai.contacted_at', $direction = 'DESC') {
+public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact_contacted_at', $direction = 'DESC') {
+    // Define valid order columns (for both account and contact fields)
     $validOrderColumns = [
-        'account_name', 'target_list_name', 'campaign_name',
-        'hai.contacted_at', 'hai.next_contact_date', 'hai.updated_at', 'hai.outcome'
+        'campaign_name', 'target_list_name', 'user_name', 'account_name',
+        'contact_first_name', 'contact_last_name', 'contact_contacted_at', 
+        'contact_next_contact_date', 'hai.updated_at', 'hai.outcome'
     ];
 
+    // Validate orderBy column
     if (!in_array($orderBy, $validOrderColumns)) {
-        $orderBy = 'hai.contacted_at'; // Default column
+        $orderBy = 'contact_contacted_at'; // Default column, using contact interaction
     }
 
+    // Ensure direction is either ASC or DESC
     $direction = strtoupper($direction) === 'ASC' ? 'ASC' : 'DESC';
 
+    // Prepare the SQL query with dynamic WHERE conditions
+    $whereClauses = [];
+    $params = [];
+    $types = '';
+
+    // Add filters to WHERE clauses (e.g., filtering by account name or campaign)
+    if (isset($filters['campaign_name'])) {
+        $whereClauses[] = 'cmp.name LIKE ?';
+        $params[] = '%' . $filters['campaign_name'] . '%';
+        $types .= 's';
+    }
+    if (isset($filters['account_name'])) {
+        $whereClauses[] = 'a.name LIKE ?';
+        $params[] = '%' . $filters['account_name'] . '%';
+        $types .= 's';
+    }
+    if (isset($filters['contact_name'])) {
+        $whereClauses[] = "CONCAT(c.first_name, ' ', c.last_name) LIKE ?";
+        $params[] = '%' . $filters['contact_name'] . '%';
+        $types .= 's';
+    }
+
+    // Date Range Filter (optional 'from' and 'to' dates)
+    if (isset($filters['date_field']) && in_array($filters['date_field'], ['contact_contacted_at', 'contact_next_contact_date'])) {
+        if (!empty($filters['date_from'])) {
+            $whereClauses[] = $filters['date_field'] . ' >= ?';
+            $params[] = $filters['date_from'];
+            $types .= 's';
+        }
+        if (!empty($filters['date_to'])) {
+            $whereClauses[] = $filters['date_field'] . ' <= ?';
+            $params[] = $filters['date_to'];
+            $types .= 's';
+        }
+    }
+
+    // Build the WHERE SQL string
+    $whereSql = !empty($whereClauses) ? 'WHERE ' . implode(' AND ', $whereClauses) : '';
+
+    // Prepare the final SQL query with filters and ordering
     $sql = "SELECT hai.*, 
                    a.name AS account_name, 
+                   CONCAT(c.first_name, ' ', c.last_name) AS contact_name, 
                    t.name AS target_list_name, 
-                   cmp.name AS campaign_name
+                   t.description AS target_list_description, 
+                   u.username AS user_name,
+                   cmp.name AS campaign_name,
+                   cmp.description AS campaign_description,
+                   cmp.start_date AS campaign_start_date,
+                   cmp.end_date AS campaign_end_date,
+                   cmp.status AS campaign_status,
+                   hci.outcome AS contact_outcome,
+                   hci.notes AS contact_notes,
+                   hci.contacted_at AS contact_contacted_at,
+                   hci.next_contact_date AS contact_next_contact_date,
+                   hci.interaction_duration AS contact_interaction_duration
             FROM history_account_interaction hai
             JOIN accounts a ON hai.account_id = a.id
+            JOIN users u ON hai.user_id = u.id
             LEFT JOIN target_lists t ON hai.target_list_id = t.id
             LEFT JOIN target_list_account_relation tlr ON tlr.account_id = hai.account_id AND tlr.target_list_id = t.id
             LEFT JOIN campaigns cmp ON t.campaign_id = cmp.id
+            LEFT JOIN history_contact_interaction hci ON hci.id = hai.related_contact_interaction_id
+            LEFT JOIN contacts c ON hci.contact_id = c.id
+            $whereSql
             ORDER BY $orderBy $direction";
 
     $stmt = $this->db->prepare($sql);
@@ -91,11 +151,18 @@ public function getAllAccountInteractionsWithDetails($orderBy = 'hai.contacted_a
         die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
     }
 
+    // Bind parameters dynamically based on filters
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+
     $stmt->execute();
     $result = $stmt->get_result();
 
     return $result->fetch_all(MYSQLI_ASSOC);
 }
+
+
 
 
 
