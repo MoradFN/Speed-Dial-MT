@@ -87,14 +87,18 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
     // Add filters to WHERE clauses (e.g., filtering by account name, campaign, user, etc.)
     $filtersMap = [
         'user_name' => ['u.username LIKE ?', 's'],
+
         'campaign_name' => ['cmp.name LIKE ?', 's'],
         'campaign_status' => ['cmp.status = ?', 's'],
         'campaign_start_date' => ['cmp.start_date = ?', 's'],
         'campaign_end_date' => ['cmp.end_date = ?', 's'],
         'campaign_description' => ['cmp.description LIKE ?', 's'],
+
         'target_list_name' => ['t.name LIKE ?', 's'],
         'target_list_description' => ['t.description LIKE ?', 's'],
+
         'account_name' => ['a.name LIKE ?', 's'],
+        
         'contact_name' => ["CONCAT(c.first_name, ' ', c.last_name) LIKE ?", 's'],
         'contact_interaction_outcome' => ['hci.outcome = ?', 's'],
         'contact_phone' => ['c.phone LIKE ?', 's'],
