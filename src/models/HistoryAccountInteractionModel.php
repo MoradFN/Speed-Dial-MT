@@ -66,9 +66,9 @@ class HistoryAccountInteractionModel {
 public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact_contacted_at', $direction = 'DESC') {
     // Define valid order columns (for both account and contact fields)
     $validOrderColumns = [
-        'campaign_name', 'target_list_name', 'user_name', 'account_name',
-        'contact_first_name', 'contact_last_name', 'contact_contacted_at', 
-        'contact_next_contact_date', 'hai.updated_at', 'hai.outcome'
+        'user_name', 'campaign_name', 'campaign_status', 'campaign_start_date', 'campaign_end_date', 'campaign_description', 
+        'target_list_name', 'target_list_description', 'account_name', 'contact_first_name', 'contact_last_name', 
+        'contact_interaction_outcome', 'contact_phone', 'contact_notes', 'contact_contacted_at', 'contact_next_contact_date'
     ];
 
     // Validate orderBy column
@@ -84,22 +84,37 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
     $params = [];
     $types = '';
 
-    // Add filters to WHERE clauses (e.g., filtering by account name or campaign)
-    if (isset($filters['campaign_name'])) {
-        $whereClauses[] = 'cmp.name LIKE ?';
-        $params[] = '%' . $filters['campaign_name'] . '%';
-        $types .= 's';
+    // Add filters to WHERE clauses (e.g., filtering by account name, campaign, user, etc.)
+    $filtersMap = [
+        'user_name' => ['u.username LIKE ?', 's'],
+        'campaign_name' => ['cmp.name LIKE ?', 's'],
+        'campaign_status' => ['cmp.status = ?', 's'],
+        'campaign_start_date' => ['cmp.start_date = ?', 's'],
+        'campaign_end_date' => ['cmp.end_date = ?', 's'],
+        'campaign_description' => ['cmp.description LIKE ?', 's'],
+        'target_list_name' => ['t.name LIKE ?', 's'],
+        'target_list_description' => ['t.description LIKE ?', 's'],
+        'account_name' => ['a.name LIKE ?', 's'],
+        'contact_name' => ["CONCAT(c.first_name, ' ', c.last_name) LIKE ?", 's'],
+        'contact_interaction_outcome' => ['hci.outcome = ?', 's'],
+        'contact_phone' => ['c.phone LIKE ?', 's'],
+        'contact_notes' => ['hci.notes LIKE ?', 's'],
+        'contact_contacted_at' => ['hci.contacted_at = ?', 's'],
+        'contact_next_contact_date' => ['hci.next_contact_date = ?', 's'],
+        'contact_interaction_duration' => ['hci.interaction_duration = ?', 's']
+    ];
+
+    // Add filters from the filters map to the WHERE clauses
+    foreach ($filtersMap as $key => [$clause, $type]) {
+        if (isset($filters[$key])) {
+            $whereClauses[] = $clause;
+            $params[] = $key === 'user_name' || $key === 'campaign_name' || $key === 'contact_name' ? '%' . $filters[$key] . '%' : $filters[$key];
+            $types .= $type;
+        }
     }
-    if (isset($filters['account_name'])) {
-        $whereClauses[] = 'a.name LIKE ?';
-        $params[] = '%' . $filters['account_name'] . '%';
-        $types .= 's';
-    }
-    if (isset($filters['contact_name'])) {
-        $whereClauses[] = "CONCAT(c.first_name, ' ', c.last_name) LIKE ?";
-        $params[] = '%' . $filters['contact_name'] . '%';
-        $types .= 's';
-    }
+
+
+
 
     // Date Range Filter (optional 'from' and 'to' dates)
     if (isset($filters['date_field']) && in_array($filters['date_field'], ['contact_contacted_at', 'contact_next_contact_date'])) {
@@ -117,6 +132,7 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
 
     // Build the WHERE SQL string
     $whereSql = !empty($whereClauses) ? 'WHERE ' . implode(' AND ', $whereClauses) : '';
+    
 
     // Prepare the final SQL query with filters and ordering
     $sql = "SELECT hai.*, 
@@ -145,6 +161,7 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
             LEFT JOIN contacts c ON hci.contact_id = c.id
             $whereSql
             ORDER BY $orderBy $direction";
+
 
     $stmt = $this->db->prepare($sql);
     if (!$stmt) {

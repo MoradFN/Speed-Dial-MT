@@ -14,7 +14,7 @@
 echo '<pre>';
 var_dump($_GET);
 var_dump($_POST);
-var_dump($_SESSION);
-debug_print_backtrace();
+// var_dump($_SESSION);
+// debug_print_backtrace();
 echo '</pre>';
 
