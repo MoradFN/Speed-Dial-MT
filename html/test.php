@@ -30,10 +30,9 @@ $filters = [
     'user_name' => $_GET['user_name'] ?? null,
 
     'campaign_name' => $_GET['campaign_name'] ?? null,
-    'campaign_description' => $_GET['campaign_description'] ?? null,
-    'campaign_status' => $_GET['campaign_status'] ?? null,
     'campaign_start_date' => $_GET['campaign_start_date'] ?? null,
     'campaign_end_date' => $_GET['campaign_end_date'] ?? null,
+    'campaign_status' => $_GET['campaign_status'] ?? null,
     
 
     'target_list_name' => $_GET['target_list_name'] ?? null,
@@ -73,9 +72,7 @@ var_dump($route)
     <label for="campaign_name">Campaign Name:</label>
     <input type="text" name="campaign_name" id="campaign_name" value="<?= htmlspecialchars($_GET['campaign_name'] ?? '') ?>"><br>
 
-    <label for="campaign_description">Campaign Description:</label>
 
-    <input method='"get"'>
     <label for="campaign_status">Campaign Status:</label>
     <input type="text" name="campaign_status" id="campaign_status" value="<?= htmlspecialchars($_GET['campaign_status'] ?? '') ?>"><br>
 
@@ -117,14 +114,14 @@ var_dump($route)
 
             <th><a href="?route=test&orderBy=campaign_end_date&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Campaign End Date</a></th>
 
-            <th>Campaign Status</th>
+            <th><a href="?route=test&orderBy=campaign_status&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Campaign Status</th>
             <th><a href="?route=test&orderBy=target_list_name&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Target List Name</a></th>
             <th>Target List Description</th>
             
             <th><a href="?route=test&orderBy=account_name&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Account Name</a></th>
             <th><a href="?route=test&orderBy=contact_name&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Contact Name</a></th>
             <th><a href="?route=test&orderBy=contact_interaction_outcome&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Contact Outcome</th>
-            <th>Contact Phone</th>
+            <th><a href="?route=test&orderBy=contact_phone&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>"> Contact Phone</th>
             <th>Contact Notes</th>
             <th><a href="?route=test&orderBy=contact_contacted_at&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Contacted At</a></th>
             <th><a href="?route=test&orderBy=contact_next_contact_date&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Next Contact Date</th>

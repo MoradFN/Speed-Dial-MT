@@ -108,15 +108,14 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
         'contact_interaction_duration' => ['hci.interaction_duration = ?', 's']
     ];
 
-    // Add filters from the filters map to the WHERE clauses
+    // Add filters from the filters map to the WHERE clauses // Sök funktion, lägg till ''wildcard'' för att söka med ''LIKE' ist för hela namnet.
     foreach ($filtersMap as $key => [$clause, $type]) {
-        if (isset($filters[$key])) {
+        if (isset($filters[$key]) && $filters[$key] !== null && $filters[$key] !== '') { // Tillåter 0.
             $whereClauses[] = $clause;
-            $params[] = $key === 'user_name' || $key === 'campaign_name' || $key === 'contact_name' ? '%' . $filters[$key] . '%' : $filters[$key];
+            $params[] = $key === 'user_name' || $key === 'campaign_name' || $key === 'target_list_name' || $key === 'account_name' || $key === 'contact_name' || $key === 'contact_phone' || $key === 'contact_notes' ? '%' . $filters[$key] . '%' : $filters[$key];
             $types .= $type;
         }
     }
-
 
 
 
