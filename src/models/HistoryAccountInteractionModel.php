@@ -121,14 +121,19 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
 
     // Date Range Filter (optional 'from' and 'to' dates)
     if (isset($filters['date_field']) && in_array($filters['date_field'], ['contact_contacted_at', 'contact_next_contact_date'])) {
+        // Define the correct alias field
+        $dateField = $filters['date_field'] === 'contact_contacted_at' ? 'hci.contacted_at' : 'hci.next_contact_date';
+    
         if (!empty($filters['date_from'])) {
-            $whereClauses[] = $filters['date_field'] . ' >= ?';
+            $whereClauses[] = $dateField . ' >= ?';
             $params[] = $filters['date_from'];
             $types .= 's';
         }
         if (!empty($filters['date_to'])) {
-            $whereClauses[] = $filters['date_field'] . ' <= ?';
-            $params[] = $filters['date_to'];
+            // Set the end date time to 23:59:59 to include the entire end date
+            $endDateTime = $filters['date_to'] . ' 23:59:59'; //MTTODO - Detta är för att få med det sista sdatumet man sökt till. ex: om man söker till '2024-10-30' excluderas den ej. // common aproach egentliger att add 1 day?
+            $whereClauses[] = $dateField . ' <= ?';
+            $params[] = $endDateTime;
             $types .= 's';
         }
     }

@@ -56,6 +56,23 @@ $filters = [
     'date_to' => $_GET['date_to'] ?? null,
 ];
 
+$campaignStatusOptions = [
+    'Active' => 'Active',
+    'Completed' => 'Completed',
+    'Pending' => 'Pending',
+    'Paused' => 'Paused',
+    'Upcoming' => 'Upcoming',
+    'Inactive' => 'Inactive'
+];
+
+$contactInteractionOutcomeOptions = [
+    'Interested' => 'Interested',
+    'No Answer' => 'No Answer',
+    'Busy' => 'Busy',
+    'Successful' => 'Successful',
+    'Unsuccessful' => 'Unsuccessful',
+    'Not Interested' => 'Not Interested'
+];
 
 // Order and direction
 $orderBy = $_GET['orderBy'] ?? 'contact_contacted_at';
@@ -73,8 +90,16 @@ var_dump($route)
     <input type="text" name="campaign_name" id="campaign_name" value="<?= htmlspecialchars($_GET['campaign_name'] ?? '') ?>"><br>
 
 
+    <!-- Campaign Status Dropdown -->
     <label for="campaign_status">Campaign Status:</label>
-    <input type="text" name="campaign_status" id="campaign_status" value="<?= htmlspecialchars($_GET['campaign_status'] ?? '') ?>"><br>
+    <select name="campaign_status" id="campaign_status">
+        <option value="">Select a status</option> <!-- Default option -->
+        <?php foreach ($campaignStatusOptions as $value => $label) : ?>
+            <option value="<?= htmlspecialchars($value) ?>" <?= (isset($_GET['campaign_status']) && $_GET['campaign_status'] === $value) ? 'selected' : '' ?>>
+                <?= htmlspecialchars($label) ?>
+            </option>
+        <?php endforeach; ?>
+    </select><br>
 
 
     <label for="account_name">Account Name:</label>
@@ -83,8 +108,16 @@ var_dump($route)
     <label for="contact_name">Contact Name:</label>
     <input type="text" name="contact_name" id="contact_name" value="<?= htmlspecialchars($_GET['contact_name'] ?? '') ?>"><br>
 
+    <!-- Contact Interaction Outcome Dropdown -->
     <label for="contact_interaction_outcome">Contact Interaction Outcome:</label>
-    <input type="text" name="contact_interaction_outcome" id="contact_interaction_outcome" value="<?= htmlspecialchars($_GET['contact_interaction_outcome'] ?? '') ?>"><br>
+    <select name="contact_interaction_outcome" id="contact_interaction_outcome">
+        <option value="">Select an outcome</option> <!-- Default option -->
+        <?php foreach ($contactInteractionOutcomeOptions as $value => $label) : ?>
+            <option value="<?= htmlspecialchars($value) ?>" <?= (isset($_GET['contact_interaction_outcome']) && $_GET['contact_interaction_outcome'] === $value) ? 'selected' : '' ?>>
+                <?= htmlspecialchars($label) ?>
+            </option>
+        <?php endforeach; ?>
+    </select><br>
     
 
     <label for="date_field">Date Field:</label>
@@ -100,6 +133,7 @@ var_dump($route)
     <input type="date" name="date_to" id="date_to" value="<?= htmlspecialchars($_GET['date_to'] ?? '') ?>"><br>
 
     <button type="submit">Filter</button>
+    <a href="?route=test" class="clear-filters">Clear Filters</a> 
 </form>
 
 <!-- Display the filtered results -->
