@@ -146,8 +146,26 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
     // Build the WHERE SQL string
     $whereSql = !empty($whereClauses) ? 'WHERE ' . implode(' AND ', $whereClauses) : '';
     
-    // Calculate offset based on page and limit
-    $offset = ($page - 1) * $limit;
+        // Total Count Query for pagination
+        $countSql = "SELECT COUNT(*) as total
+        FROM history_account_interaction hai
+        JOIN accounts a ON hai.account_id = a.id
+        JOIN users u ON hai.user_id = u.id
+        LEFT JOIN target_lists t ON hai.target_list_id = t.id
+        LEFT JOIN campaigns cmp ON t.campaign_id = cmp.id
+        LEFT JOIN history_contact_interaction hci ON hci.id = hai.related_contact_interaction_id
+        LEFT JOIN contacts c ON hci.contact_id = c.id
+        $whereSql";
+
+        $countStmt = $this->db->prepare($countSql);
+        if (!empty($params)) {
+            $countStmt->bind_param($types, ...$params);
+        }
+        $countStmt->execute();
+        $totalRecords = $countStmt->get_result()->fetch_assoc()['total'];
+
+        // Calculate offset
+        $offset = ($page - 1) * $limit;
 
     // Prepare the final SQL query with filters and ordering
     $sql = "SELECT hai.*, 
@@ -197,7 +215,13 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
     $stmt->execute();
     $result = $stmt->get_result();
 
-    return $result->fetch_all(MYSQLI_ASSOC);
+       return [
+        'data' => $result->fetch_all(MYSQLI_ASSOC),
+        'total_records' => $totalRecords,
+        'page' => $page,
+        'limit' => $limit,
+        'total_pages' => ceil($totalRecords / $limit)
+    ];
 }
 
 

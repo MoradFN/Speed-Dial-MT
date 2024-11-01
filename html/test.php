@@ -82,7 +82,10 @@ $orderBy = $_GET['orderBy'] ?? 'contact_contacted_at';
 $direction = $_GET['direction'] ?? 'DESC';
 
 // Call the method to get filtered results
-$interactionHistory = $historyAccountInteractionModel->getDetailedInteractionHistory($filters, $orderBy, $direction, $page, $limit); //MTTODO - PAGINATION
+$response = $interactionHistory = $historyAccountInteractionModel->getDetailedInteractionHistory($filters, $orderBy, $direction, $page, $limit); //MTTODO - PAGINATION
+$interactionHistory = $response['data'];
+$totalPages = $response['total_pages'];
+$totalRecords = $response['total_records'];
 var_dump($route);
 
 // Pagination links (Example: Next and Previous) //MTTODO - PAGINATION
