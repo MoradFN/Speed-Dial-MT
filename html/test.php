@@ -89,7 +89,7 @@ $totalRecords = $response['total_records'];
 var_dump($route);
 
 // Pagination links (Example: Next and Previous) //MTTODO - PAGINATION
-$nextPage = $page + 1;
+$nextPage = $page < $totalPages ? $page + 1 : $totalPages;
 $prevPage = $page > 1 ? $page - 1 : 1;
 
 // Retain filter and sorting parameters in pagination URLs
