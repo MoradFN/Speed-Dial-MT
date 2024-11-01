@@ -63,7 +63,7 @@ class HistoryAccountInteractionModel {
 // Fetch all interactions with account, contact, target list, and campaign details
 // HistoryAccountInteractionModel.php
 
-public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact_contacted_at', $direction = 'DESC') {
+public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact_contacted_at', $direction = 'DESC', $page = 1, $limit = 10) { //MTTODO - if page is not set, default to 1, if limit is not set, default to 10 when querying for pagination. Othetwise fetches all.
     // Define valid order columns (for both account and contact fields)
     $validOrderColumns = [
         'user_name', 'campaign_name', 'campaign_status', 'campaign_start_date', 'campaign_end_date', 'campaign_description', 
@@ -146,6 +146,8 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
     // Build the WHERE SQL string
     $whereSql = !empty($whereClauses) ? 'WHERE ' . implode(' AND ', $whereClauses) : '';
     
+    // Calculate offset based on page and limit
+    $offset = ($page - 1) * $limit;
 
     // Prepare the final SQL query with filters and ordering
     $sql = "SELECT hai.*, 
@@ -174,8 +176,13 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
             LEFT JOIN history_contact_interaction hci ON hci.id = hai.related_contact_interaction_id
             LEFT JOIN contacts c ON hci.contact_id = c.id
             $whereSql
-            ORDER BY $orderByClause"; // original: $orderBy $direction, butt för att hantera null sist vid asc OCH desc.
+            ORDER BY $orderByClause  -- original: $orderBy $direction, butt för att hantera null sist vid asc OCH desc.
+            LIMIT ? OFFSET ?";
 
+    // Bind limit and offset
+    $params[] = $limit;
+    $params[] = $offset;
+    $types .= 'ii';
 
     $stmt = $this->db->prepare($sql);
     if (!$stmt) {

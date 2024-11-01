@@ -24,6 +24,9 @@ $interactionHistoryService = new InteractionHistoryService(
     $accountContactRelationModel
 );
 
+// Capture page and limit, defaulting to 1 and 10 if not provided
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; //MTTODO - PAGINATION
+$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
 
 // Capture filter inputs from GET parameters
 $filters = [
@@ -79,9 +82,22 @@ $orderBy = $_GET['orderBy'] ?? 'contact_contacted_at';
 $direction = $_GET['direction'] ?? 'DESC';
 
 // Call the method to get filtered results
-$interactionHistory = $historyAccountInteractionModel->getDetailedInteractionHistory($filters, $orderBy, $direction);
-var_dump($route)
+$interactionHistory = $historyAccountInteractionModel->getDetailedInteractionHistory($filters, $orderBy, $direction, $page, $limit); //MTTODO - PAGINATION
+var_dump($route);
+
+// Pagination links (Example: Next and Previous) //MTTODO - PAGINATION
+$nextPage = $page + 1;
+$prevPage = $page > 1 ? $page - 1 : 1;
+
+// Retain filter and sorting parameters in pagination URLs
+$queryParams = http_build_query(array_merge($_GET, ['page' => $nextPage])); //MTTODO - PAGINATION
+$nextPageUrl = "?$queryParams";
+
+$queryParams = http_build_query(array_merge($_GET, ['page' => $prevPage]));
+$prevPageUrl = "?$queryParams";
 ?>
+
+
 
 <!-- Display the form and results -->
 <form method="get">
@@ -192,3 +208,9 @@ var_dump($route)
         <?php endforeach; ?>
     </tbody>
 </table>
+<!-- //MTTODO - PAGINATION -->
+<div class="pagination">
+    <a href="<?= $prevPageUrl ?>">Previous</a> 
+    <a href="<?= $nextPageUrl ?>">Next</a>
+</div>
+
