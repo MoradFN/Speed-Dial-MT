@@ -184,10 +184,10 @@ var_dump($route)
                 <td><?= htmlspecialchars($interaction['contact_name']) ?></td>
                 <td><?= htmlspecialchars($interaction['contact_interaction_outcome']) ?></td>
                 <td><?= htmlspecialchars($interaction['contact_phone']) ?></td>
-                <td><?= htmlspecialchars($interaction['contact_notes']) ?></td>
+                <td><?= htmlspecialchars($interaction['contact_notes'] ?? '') ?></td>
                 <td><?= htmlspecialchars($interaction['contact_contacted_at']) ?></td>
-                <td><?= htmlspecialchars($interaction['contact_next_contact_date']) ?></td>
-                <td><?= htmlspecialchars($interaction['contact_interaction_duration']) ?></td>
+                <td><?= htmlspecialchars($interaction['contact_next_contact_date'] ?? '') ?></td>
+                <td><?= htmlspecialchars($interaction['contact_interaction_duration'] ?? '') ?></td>
             </tr>
         <?php endforeach; ?>
     </tbody>

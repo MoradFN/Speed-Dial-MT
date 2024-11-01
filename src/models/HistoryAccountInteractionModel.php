@@ -79,6 +79,11 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
     // Ensure direction is either ASC or DESC
     $direction = strtoupper($direction) === 'ASC' ? 'ASC' : 'DESC';
 
+    // Handle null ordering for `contact_next_contact_date`
+    $orderByClause = $orderBy === 'contact_next_contact_date'
+        ? "CASE WHEN hci.next_contact_date IS NULL THEN 1 ELSE 0 END, hci.next_contact_date $direction"
+        : "$orderBy $direction";
+
     // Prepare the SQL query with dynamic WHERE conditions
     $whereClauses = [];
     $params = [];
@@ -169,7 +174,7 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
             LEFT JOIN history_contact_interaction hci ON hci.id = hai.related_contact_interaction_id
             LEFT JOIN contacts c ON hci.contact_id = c.id
             $whereSql
-            ORDER BY $orderBy $direction";
+            ORDER BY $orderByClause"; // original: $orderBy $direction, butt för att hantera null sist vid asc OCH desc.
 
 
     $stmt = $this->db->prepare($sql);
