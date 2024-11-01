@@ -102,6 +102,7 @@ var_dump($route)
     </select><br>
 
 
+
     <label for="account_name">Account Name:</label>
     <input type="text" name="account_name" id="account_name" value="<?= htmlspecialchars($_GET['account_name'] ?? '') ?>"><br>
 
@@ -118,6 +119,9 @@ var_dump($route)
             </option>
         <?php endforeach; ?>
     </select><br>
+
+    <label for="contact_phone">Contact Phone:</label>
+    <input type="text" name="contact_phone" id="contact_phone" value="<?= htmlspecialchars($_GET['contact_phone'] ?? '') ?>"><br>
     
 
     <label for="date_field">Date Field:</label>
@@ -125,6 +129,9 @@ var_dump($route)
         <option value="contact_contacted_at" <?= isset($_GET['date_field']) && $_GET['date_field'] === 'contact_contacted_at' ? 'selected' : '' ?>>Contacted At</option>
         <option value="contact_next_contact_date" <?= isset($_GET['date_field']) && $_GET['date_field'] === 'contact_next_contact_date' ? 'selected' : '' ?>>Next Contact Date</option>
     </select><br>
+
+    <label for="target_list_name">Target List Name:</label>
+    <input type="text" name="target_list_name" id="target_list_name" value="<?= htmlspecialchars($_GET['target_list_name'] ?? '') ?>"><br>
 
     <label for="date_from">From Date:</label>
     <input type="date" name="date_from" id="date_from" value="<?= htmlspecialchars($_GET['date_from'] ?? '') ?>"><br>
