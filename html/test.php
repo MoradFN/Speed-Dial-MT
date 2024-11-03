@@ -166,25 +166,29 @@ $prevPageUrl = "?$queryParams";
 <table border="1">
     <thead>
         <tr>
-            <th>User Name</th>
-            <th><a href="?route=test&orderBy=campaign_name&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Campaign Name</a></th>
+        <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'user_name', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">User Name?</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_name', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Campaign Name</a></th>
             <th>Campaign Description</th>
 
-            <th><a href="?route=test&orderBy=campaign_start_date&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Campaign Start Date</a></th>
+            
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_start_date', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Campaign Start Date</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_end_date', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Campaign End Date</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_status', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Campaign Status</a></th>
 
-            <th><a href="?route=test&orderBy=campaign_end_date&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Campaign End Date</a></th>
 
-            <th><a href="?route=test&orderBy=campaign_status&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Campaign Status</th>
-            <th><a href="?route=test&orderBy=target_list_name&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Target List Name</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'target_list_name', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Target List Name</a></th>
             <th>Target List Description</th>
             
-            <th><a href="?route=test&orderBy=account_name&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Account Name</a></th>
-            <th><a href="?route=test&orderBy=contact_name&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Contact Name</a></th>
-            <th><a href="?route=test&orderBy=contact_interaction_outcome&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Contact Outcome</th>
-            <th><a href="?route=test&orderBy=contact_phone&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>"> Contact Phone</th>
+
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'account_name', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Account Name</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_name', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Contact Name</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_interaction_outcome', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Contact Outcome</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_phone', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Contact Phone</a></th>
             <th>Contact Notes</th>
-            <th><a href="?route=test&orderBy=contact_contacted_at&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Contacted At</a></th>
-            <th><a href="?route=test&orderBy=contact_next_contact_date&direction=<?= ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC' ?>">Next Contact Date</th>
+
+
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_contacted_at', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Contacted At</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_next_contact_date', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Next Contact Date</a></th>
             <th>Interaction Duration</th>
         </tr>
     </thead>
