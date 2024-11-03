@@ -24,6 +24,9 @@ $interactionHistoryService = new InteractionHistoryService(
     $accountContactRelationModel
 );
 
+// Capture page and limit, defaulting to 1 and 10 if not provided
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; //MTTODO - PAGINATION
+$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
 
 // Capture filter inputs from GET parameters
 $filters = [
@@ -79,9 +82,25 @@ $orderBy = $_GET['orderBy'] ?? 'contact_contacted_at';
 $direction = $_GET['direction'] ?? 'DESC';
 
 // Call the method to get filtered results
-$interactionHistory = $historyAccountInteractionModel->getDetailedInteractionHistory($filters, $orderBy, $direction);
-var_dump($route)
+$response = $interactionHistory = $historyAccountInteractionModel->getDetailedInteractionHistory($filters, $orderBy, $direction, $page, $limit); //MTTODO - PAGINATION
+$interactionHistory = $response['data'];
+$totalPages = $response['total_pages'];
+$totalRecords = $response['total_records'];
+var_dump($route);
+
+// Pagination links (Example: Next and Previous) //MTTODO - PAGINATION
+$nextPage = $page < $totalPages ? $page + 1 : $totalPages;
+$prevPage = $page > 1 ? $page - 1 : 1;
+
+// Retain filter and sorting parameters in pagination URLs
+$queryParams = http_build_query(array_merge($_GET, ['page' => $nextPage])); //MTTODO - PAGINATION
+$nextPageUrl = "?$queryParams";
+
+$queryParams = http_build_query(array_merge($_GET, ['page' => $prevPage]));
+$prevPageUrl = "?$queryParams";
 ?>
+
+
 
 <!-- Display the form and results -->
 <form method="get">
@@ -102,6 +121,7 @@ var_dump($route)
     </select><br>
 
 
+
     <label for="account_name">Account Name:</label>
     <input type="text" name="account_name" id="account_name" value="<?= htmlspecialchars($_GET['account_name'] ?? '') ?>"><br>
 
@@ -118,6 +138,9 @@ var_dump($route)
             </option>
         <?php endforeach; ?>
     </select><br>
+
+    <label for="contact_phone">Contact Phone:</label>
+    <input type="text" name="contact_phone" id="contact_phone" value="<?= htmlspecialchars($_GET['contact_phone'] ?? '') ?>"><br>
     
 
     <label for="date_field">Date Field:</label>
@@ -125,6 +148,9 @@ var_dump($route)
         <option value="contact_contacted_at" <?= isset($_GET['date_field']) && $_GET['date_field'] === 'contact_contacted_at' ? 'selected' : '' ?>>Contacted At</option>
         <option value="contact_next_contact_date" <?= isset($_GET['date_field']) && $_GET['date_field'] === 'contact_next_contact_date' ? 'selected' : '' ?>>Next Contact Date</option>
     </select><br>
+
+    <label for="target_list_name">Target List Name:</label>
+    <input type="text" name="target_list_name" id="target_list_name" value="<?= htmlspecialchars($_GET['target_list_name'] ?? '') ?>"><br>
 
     <label for="date_from">From Date:</label>
     <input type="date" name="date_from" id="date_from" value="<?= htmlspecialchars($_GET['date_from'] ?? '') ?>"><br>
@@ -177,11 +203,17 @@ var_dump($route)
                 <td><?= htmlspecialchars($interaction['contact_name']) ?></td>
                 <td><?= htmlspecialchars($interaction['contact_interaction_outcome']) ?></td>
                 <td><?= htmlspecialchars($interaction['contact_phone']) ?></td>
-                <td><?= htmlspecialchars($interaction['contact_notes']) ?></td>
+                <td><?= htmlspecialchars($interaction['contact_notes'] ?? '') ?></td>
                 <td><?= htmlspecialchars($interaction['contact_contacted_at']) ?></td>
-                <td><?= htmlspecialchars($interaction['contact_next_contact_date']) ?></td>
-                <td><?= htmlspecialchars($interaction['contact_interaction_duration']) ?></td>
+                <td><?= htmlspecialchars($interaction['contact_next_contact_date'] ?? '') ?></td>
+                <td><?= htmlspecialchars($interaction['contact_interaction_duration'] ?? '') ?></td>
             </tr>
         <?php endforeach; ?>
     </tbody>
 </table>
+<!-- //MTTODO - PAGINATION -->
+<div class="pagination">
+    <a href="<?= $prevPageUrl ?>">Previous</a> 
+    <a href="<?= $nextPageUrl ?>">Next</a>
+</div>
+

@@ -63,7 +63,7 @@ class HistoryAccountInteractionModel {
 // Fetch all interactions with account, contact, target list, and campaign details
 // HistoryAccountInteractionModel.php
 
-public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact_contacted_at', $direction = 'DESC') {
+public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact_contacted_at', $direction = 'DESC', $page = 1, $limit = 10) { //MTTODO - if page is not set, default to 1, if limit is not set, default to 10 when querying for pagination. Othetwise fetches all.
     // Define valid order columns (for both account and contact fields)
     $validOrderColumns = [
         'user_name', 'campaign_name', 'campaign_status', 'campaign_start_date', 'campaign_end_date', 'campaign_description', 
@@ -78,6 +78,11 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
 
     // Ensure direction is either ASC or DESC
     $direction = strtoupper($direction) === 'ASC' ? 'ASC' : 'DESC';
+
+    // Handle null ordering for `contact_next_contact_date`
+    $orderByClause = $orderBy === 'contact_next_contact_date'
+        ? "CASE WHEN hci.next_contact_date IS NULL THEN 1 ELSE 0 END, hci.next_contact_date $direction"
+        : "$orderBy $direction";
 
     // Prepare the SQL query with dynamic WHERE conditions
     $whereClauses = [];
@@ -141,6 +146,26 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
     // Build the WHERE SQL string
     $whereSql = !empty($whereClauses) ? 'WHERE ' . implode(' AND ', $whereClauses) : '';
     
+        // Total Count Query for pagination
+        $countSql = "SELECT COUNT(*) as total
+        FROM history_account_interaction hai
+        JOIN accounts a ON hai.account_id = a.id
+        JOIN users u ON hai.user_id = u.id
+        LEFT JOIN target_lists t ON hai.target_list_id = t.id
+        LEFT JOIN campaigns cmp ON t.campaign_id = cmp.id
+        LEFT JOIN history_contact_interaction hci ON hci.id = hai.related_contact_interaction_id
+        LEFT JOIN contacts c ON hci.contact_id = c.id
+        $whereSql";
+
+        $countStmt = $this->db->prepare($countSql);
+        if (!empty($params)) {
+            $countStmt->bind_param($types, ...$params);
+        }
+        $countStmt->execute();
+        $totalRecords = $countStmt->get_result()->fetch_assoc()['total'];
+
+        // Calculate offset
+        $offset = ($page - 1) * $limit;
 
     // Prepare the final SQL query with filters and ordering
     $sql = "SELECT hai.*, 
@@ -169,8 +194,13 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
             LEFT JOIN history_contact_interaction hci ON hci.id = hai.related_contact_interaction_id
             LEFT JOIN contacts c ON hci.contact_id = c.id
             $whereSql
-            ORDER BY $orderBy $direction";
+            ORDER BY $orderByClause  -- original: $orderBy $direction, butt för att hantera null sist vid asc OCH desc.
+            LIMIT ? OFFSET ?";
 
+    // Bind limit and offset
+    $params[] = $limit;
+    $params[] = $offset;
+    $types .= 'ii';
 
     $stmt = $this->db->prepare($sql);
     if (!$stmt) {
@@ -185,7 +215,13 @@ public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact
     $stmt->execute();
     $result = $stmt->get_result();
 
-    return $result->fetch_all(MYSQLI_ASSOC);
+       return [
+        'data' => $result->fetch_all(MYSQLI_ASSOC),
+        'total_records' => $totalRecords,
+        'page' => $page,
+        'limit' => $limit,
+        'total_pages' => ceil($totalRecords / $limit)
+    ];
 }
 
 
