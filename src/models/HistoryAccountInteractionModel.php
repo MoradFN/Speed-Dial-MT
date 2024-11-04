@@ -62,22 +62,9 @@ public function getAllAccountInteractions() {
 ////////////////////WORK IN PROGRESS ENHANCED HISTORY
 // Fetch all interactions with account, contact, target list, and campaign details
 
-///NEW FLAT MODEL FOR INTERACTION HISTORY
-public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact_contacted_at', $direction = 'DESC', $page = 1, $limit = 10) { //MTTODO - if page is not set, default to 1, if limit is not set, default to 10 when querying for pagination. Othetwise fetches all.
-    // Define valid order columns (for both account and contact fields)
-    $validOrderColumns = [
-        'user_name', 'campaign_name', 'campaign_status', 'campaign_start_date', 'campaign_end_date', 'campaign_description', 
-        'target_list_name', 'target_list_description', 'account_name', 'contact_name', 
-        'contact_interaction_outcome', 'contact_phone', 'contact_notes', 'contact_contacted_at', 'contact_next_contact_date'
-    ];
+///NEW FLAT MODEL FOR INTERACTION HISTORY , STANDARD -LANDING
 
-    // Validate orderBy column
-    if (!in_array($orderBy, $validOrderColumns)) {
-        $orderBy = 'contact_contacted_at'; // Default column, using contact interaction
-    }
-
-    // Ensure direction is either ASC or DESC
-    $direction = strtoupper($direction) === 'ASC' ? 'ASC' : 'DESC';
+public function getDetailedInteractionHistory($filters, $orderBy, $direction, $page, $limit) { //MTTODO - if page is not set, default to 1, if limit is not set, default to 10 when querying for pagination. Othetwise fetches all. FLYTTAD TILL SERVICES.
 
     // Handle null ordering for `contact_next_contact_date`
     $orderByClause = $orderBy === 'contact_next_contact_date'
