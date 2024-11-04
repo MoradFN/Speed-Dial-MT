@@ -46,7 +46,7 @@ if (!$stmt) {
 }
 
 ////////////////////////////////WORK IN PROGRESS(WORKING)/////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////USED IN ENHANCED HISTORY////////////////////////////////////
 
  // Fetch a specific contact interaction by ID med JOIN från contacts table för firstname och lastname.
 public function getContactInteractionById($interactionId) {
@@ -66,6 +66,43 @@ public function getContactInteractionById($interactionId) {
     return $result->fetch_assoc();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
+
+// new enhanced.
+
+public function getRelatedContactsByInteractionIds(array $interactionIds) {
+    if (empty($interactionIds)) {
+        return [];
+    }
+
+    $placeholders = implode(',', array_fill(0, count($interactionIds), '?'));
+    $types = str_repeat('i', count($interactionIds));
+
+    $sql = "SELECT hci.id, hci.contact_id, hci.outcome, hci.notes, 
+                   hci.contact_method, hci.next_contact_date, 
+                   CONCAT(c.first_name, ' ', c.last_name) AS contact_name
+            FROM history_contact_interaction hci
+            JOIN contacts c ON hci.contact_id = c.id
+            WHERE hci.id IN ($placeholders)";
+
+    $stmt = $this->db->prepare($sql);
+    if (!$stmt) {
+        die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+    }
+
+    $stmt->bind_param($types, ...$interactionIds);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Return an associative array keyed by interaction ID for easy mapping
+    $contactDetails = [];
+    while ($row = $result->fetch_assoc()) {
+        $contactDetails[$row['id']] = $row;
+    }
+
+    return $contactDetails;
+}
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
     
 

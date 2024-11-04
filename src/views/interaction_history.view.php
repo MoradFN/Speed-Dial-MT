@@ -37,7 +37,12 @@ include __DIR__ . '/header.php';
                         <td><?= htmlspecialchars($interaction['outcome']) ?></td>
                         <td><?= htmlspecialchars($interaction['notes']) ?></td>
                         <td><?= htmlspecialchars($interaction['contact_method']) ?></td>
-                        <td><?= htmlspecialchars($interaction['next_contact_date']) ?></td>
+                         <td>
+                            <?php 
+                            $nextContactDate = $interaction['next_contact_date'] ?? '';
+                            echo htmlspecialchars($nextContactDate);
+                            ?>
+                        </td>
                         <td><?= htmlspecialchars($interaction['contacted_at']) ?></td>
                     </tr>
                 <?php endforeach; ?>

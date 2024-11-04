@@ -8,7 +8,8 @@ class AccountContactRelationModel {
         $this->db = $db;
     }
 
-    // Fetach all account_ids for a given contact from the relation table [Passed to ContactModel]
+///////////////////////used in logging in  interactionhistoryservice
+    // Fetach all account_ids for a given contact from the relation table [Passed to ContactModel? not any more]MTTODO- Check
     public function getAccountIdByContactId($contactId) {
         $sql = "SELECT account_id FROM account_contact_relation WHERE contact_id = ?";
         $stmt = $this->db->prepare($sql);
@@ -21,8 +22,8 @@ class AccountContactRelationModel {
         $result = $stmt->get_result()->fetch_assoc();
         return $result['account_id'] ?? null;
     }
-
-
+///////////////////////
+///////////////////// displayar alla kontakter i ett konto i target list detail, targetlist 1, 2 osv
     // Fetch all contact_ids for a given account from the relation table
     public function getContactIdsByAccountId($accountId) {
         $sql = "SELECT contact_id FROM account_contact_relation WHERE account_id = ?";
@@ -35,40 +36,41 @@ class AccountContactRelationModel {
 
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
+///////////////////////
 
-    // Insert a new account-contact relation
-    public function insertAccountContactRelation($accountId, $contactId) {
-        $sql = "INSERT INTO account_contact_relation (account_id, contact_id) VALUES (?, ?)";
-        $stmt = $this->db->prepare($sql);
+    // // Insert a new account-contact relation
+    // public function insertAccountContactRelation($accountId, $contactId) {
+    //     $sql = "INSERT INTO account_contact_relation (account_id, contact_id) VALUES (?, ?)";
+    //     $stmt = $this->db->prepare($sql);
 
-        if (!$stmt) {
-            die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
-        }
+    //     if (!$stmt) {
+    //         die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+    //     }
 
-        $stmt->bind_param('ii', $accountId, $contactId);
+    //     $stmt->bind_param('ii', $accountId, $contactId);
         
-        if (!$stmt->execute()) {
-            die('Execute failed: (' . $stmt->errno . ') ' . $stmt->error);
-        }
+    //     if (!$stmt->execute()) {
+    //         die('Execute failed: (' . $stmt->errno . ') ' . $stmt->error);
+    //     }
 
-        return $stmt->affected_rows > 0;
-    }
+    //     return $stmt->affected_rows > 0;
+    // }
 
-    // Delete a relation between an account and a contact
-    public function deleteAccountContactRelation($accountId, $contactId) {
-        $sql = "DELETE FROM account_contact_relation WHERE account_id = ? AND contact_id = ?";
-        $stmt = $this->db->prepare($sql);
+    // // Delete a relation between an account and a contact
+    // public function deleteAccountContactRelation($accountId, $contactId) {
+    //     $sql = "DELETE FROM account_contact_relation WHERE account_id = ? AND contact_id = ?";
+    //     $stmt = $this->db->prepare($sql);
 
-        if (!$stmt) {
-            die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
-        }
+    //     if (!$stmt) {
+    //         die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+    //     }
 
-        $stmt->bind_param('ii', $accountId, $contactId);
+    //     $stmt->bind_param('ii', $accountId, $contactId);
         
-        if (!$stmt->execute()) {
-            die('Execute failed: (' . $stmt->errno . ') ' . $stmt->error);
-        }
+    //     if (!$stmt->execute()) {
+    //         die('Execute failed: (' . $stmt->errno . ') ' . $stmt->error);
+    //     }
 
-        return $stmt->affected_rows > 0;
-    }
+    //     return $stmt->affected_rows > 0;
+    // }
 }
