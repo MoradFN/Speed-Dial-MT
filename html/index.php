@@ -56,7 +56,6 @@ if ($method === 'GET') {
             case 'interaction-history':
                 $controller = new InteractionHistoryController($interactionHistoryService);
                 $viewData = $controller->showInteractionHistory(
-                    $_GET['filters'] ?? [], 
                     $_GET['orderBy'] ?? 'contact_contacted_at', 
                     $_GET['direction'] ?? 'DESC', 
                     $_GET['page'] ?? 1, 
@@ -64,6 +63,7 @@ if ($method === 'GET') {
                 );
                 include __DIR__ . '/../src/views/interaction_history.view.php';
                 break;
+            
         case 'interaction-history-account':
             if (isset($_GET['account_id']) && $_GET['account_id'] !== '') {
                 $controller = new InteractionHistoryController($interactionHistoryService);
