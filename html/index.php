@@ -52,6 +52,18 @@ if ($method === 'GET') {
             $controller = new TargetListController($targetListService);  // Pass the service to the controller
             $controller->showTargetList($id);
             break;
+
+            case 'interaction-history':
+                $controller = new InteractionHistoryController($interactionHistoryService);
+                $viewData = $controller->showInteractionHistory(
+                    $_GET['filters'] ?? [], 
+                    $_GET['orderBy'] ?? 'contact_contacted_at', 
+                    $_GET['direction'] ?? 'DESC', 
+                    $_GET['page'] ?? 1, 
+                    $_GET['limit'] ?? 10
+                );
+                include __DIR__ . '/../src/views/interaction_history.view.php';
+                break;
         case 'interaction-history-account':
             if (isset($_GET['account_id']) && $_GET['account_id'] !== '') {
                 $controller = new InteractionHistoryController($interactionHistoryService);
