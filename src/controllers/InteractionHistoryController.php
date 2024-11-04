@@ -54,12 +54,14 @@ $limit = (int)($_GET['limit'] ?? 10); //MTTODO / CHECK STANDARD PAGINATION
 
     // Check if it's an API request
     if ($this->isApiRequest()) {
+        header('Content-Type: application/json');
         echo json_encode($viewData); // return as JSON for API calls
     } else {
         include __DIR__ . '/../views/interaction_history.view.php'; // render HTML for standard calls
     }
 }
 
+// Helper function to check if the request is for an API
 private function isApiRequest() {
     return isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false;
 }
