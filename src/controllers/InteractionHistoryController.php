@@ -15,7 +15,7 @@ public function showAllInteractionHistory() {
     // Display all interactions
     $accountInteractions = $this->interactionHistoryService->getAllAccountInteractionsWithContacts();
     
-    include __DIR__ . '/../views/interaction_history.view.php'; // View to show the full list
+    include __DIR__ . '/../views/interaction_history_account.view.php'; // View to show the full list
 }
 //MTTODO : show interaction history detail
 public function showInteractionHistoryDetail($accountId) {

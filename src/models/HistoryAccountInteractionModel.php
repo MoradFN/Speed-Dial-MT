@@ -44,20 +44,20 @@ class HistoryAccountInteractionModel {
         // Fetch all interactions for all accounts med join från accounts för name.
         /// TEMPORARILY COMMENTED OUT. <-----------------------------------------------------
 
-// public function getAllAccountInteractions() {
-//     $sql = "SELECT hai.*, a.name AS account_name 
-//             FROM history_account_interaction hai 
-//             JOIN accounts a ON hai.account_id = a.id";
-//     $stmt = $this->db->prepare($sql);
-//     if (!$stmt) {
-//         die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
-//     }
+public function getAllAccountInteractions() {
+    $sql = "SELECT hai.*, a.name AS account_name 
+            FROM history_account_interaction hai 
+            JOIN accounts a ON hai.account_id = a.id";
+    $stmt = $this->db->prepare($sql);
+    if (!$stmt) {
+        die('Prepare failed: (' . $this->db->errno . ') ' . $this->db->error);
+    }
 
-//     $stmt->execute();
-//     $result = $stmt->get_result();
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-//     return $result->fetch_all(MYSQLI_ASSOC);
-// }
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////WORK IN PROGRESS ENHANCED HISTORY
 // Fetch all interactions with account, contact, target list, and campaign details

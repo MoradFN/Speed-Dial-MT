@@ -19,22 +19,22 @@ class InteractionHistoryService {
 
  // Fetch all account interactions along with related contact interactions från hsitory account & histry contact model.
 //          /// TEMPORARILY COMMENTED OUT. <-----------------------------------------------------
-//  public function getAllAccountInteractionsWithContacts() {
-//     // Step 1: Fetch all account interactions with account name from the model
-//     $accountInteractions = $this->historyAccountInteractionModel->getAllAccountInteractions();
+ public function getAllAccountInteractionsWithContacts() {
+    // Step 1: Fetch all account interactions with account name from the model
+    $accountInteractions = $this->historyAccountInteractionModel->getAllAccountInteractions();
 
-//     // Step 2: Loop through each account interaction and fetch related contact interaction
-//     foreach ($accountInteractions as &$accountInteraction) {
-//         if (!empty($accountInteraction['related_contact_interaction_id'])) {
-//             $relatedContactInteraction = $this->historyContactInteractionModel->getContactInteractionById($accountInteraction['related_contact_interaction_id']);
-//             $accountInteraction['related_contact_interaction'] = $relatedContactInteraction;
-//         } else {
-//             $accountInteraction['related_contact_interaction'] = null;
-//         }
-//     }
+    // Step 2: Loop through each account interaction and fetch related contact interaction
+    foreach ($accountInteractions as &$accountInteraction) {
+        if (!empty($accountInteraction['related_contact_interaction_id'])) {
+            $relatedContactInteraction = $this->historyContactInteractionModel->getContactInteractionById($accountInteraction['related_contact_interaction_id']);
+            $accountInteraction['related_contact_interaction'] = $relatedContactInteraction;
+        } else {
+            $accountInteraction['related_contact_interaction'] = null;
+        }
+    }
 
-//     return $accountInteractions;
-// }
+    return $accountInteractions;
+}
 ////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////// ENHANCED HISTORY
 
