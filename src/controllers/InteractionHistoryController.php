@@ -9,6 +9,32 @@ class InteractionHistoryController {
 
 
     ///HISTORY
+    // Method to show interaction history with filters, sorting, and pagination // STANDARD -LANDING
+    public function showInteractionHistory($filters = [], $orderBy = 'contact_contacted_at', $direction = 'DESC', $page = 1, $limit = 10)
+    {
+        // Retrieve the interaction history data from the service layer
+        $response = $this->interactionHistoryService->getInteractionHistory($filters, $orderBy, $direction, $page, $limit);
+        
+        // Extract data from the response for easy access in the view
+        $interactionHistory = $response['data'];
+        $totalPages = $response['total_pages'];
+        $totalRecords = $response['total_records'];
+
+        // Return data for rendering in the view (could be an associative array for easier access in templates)
+        return [
+            'interactionHistory' => $interactionHistory,
+            'totalPages' => $totalPages,
+            'totalRecords' => $totalRecords,
+            'page' => $page,
+            'limit' => $limit,
+            'filters' => $filters,
+            'orderBy' => $orderBy,
+            'direction' => $direction,
+        ];
+    }
+
+
+
 /////WORK IN PROGRESS(WORKING EXEPT GET DETAILED.) /////
 
 public function showAllInteractionHistory() {

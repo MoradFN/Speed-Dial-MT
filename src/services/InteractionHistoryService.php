@@ -12,7 +12,7 @@ class InteractionHistoryService {
     }
 
   ////HISTORY
-//////////////////////////NEW FLAT-STYLE HISTORY
+//////////////////////////NEW FLAT-STYLE HISTORY STANDARD -LANDING
 
 public function getInteractionHistory($filters = [], $orderBy = 'contact_contacted_at', $direction = 'DESC', $page = 1, $limit = 10) {
     // Define valid order columns (for both account and contact fields)
