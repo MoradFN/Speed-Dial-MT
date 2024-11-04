@@ -9,6 +9,65 @@ class InteractionHistoryController {
 
 
     ///HISTORY
+    // Method to show interaction history with filters, sorting, and pagination // STANDARD -LANDING
+    public function showInteractionHistory()
+    {
+// Capture filter inputs from GET parameters
+$filters = [
+    'user_name' => $_GET['user_name'] ?? null,
+    'campaign_name' => $_GET['campaign_name'] ?? null,
+    'campaign_start_date' => $_GET['campaign_start_date'] ?? null,
+    'campaign_end_date' => $_GET['campaign_end_date'] ?? null,
+    'campaign_status' => $_GET['campaign_status'] ?? null,
+    'target_list_name' => $_GET['target_list_name'] ?? null,
+    'target_list_description' => $_GET['target_list_description'] ?? null,
+    'account_name' => $_GET['account_name'] ?? null,
+    'contact_name' => $_GET['contact_name'] ?? null,
+    'contact_interaction_outcome' => $_GET['contact_interaction_outcome'] ?? null,
+    'contact_phone' => $_GET['contact_phone'] ?? null,
+    'contact_notes' => $_GET['contact_notes'] ?? null,
+    'contact_contacted_at' => $_GET['contact_contacted_at'] ?? null,
+    'contact_next_contact_date' => $_GET['contact_next_contact_date'] ?? null,
+    'contact_interaction_duration' => $_GET['contact_interaction_duration'] ?? null,
+    'date_field' => $_GET['date_field'] ?? null,
+    'date_from' => $_GET['date_from'] ?? null,
+    'date_to' => $_GET['date_to'] ?? null,
+];
+$orderBy = $_GET['orderBy'] ?? 'contact_contacted_at';
+$direction = $_GET['direction'] ?? 'DESC';
+$page = (int)($_GET['page'] ?? 1);
+$limit = (int)($_GET['limit'] ?? 10); //MTTODO / CHECK STANDARD PAGINATION
+
+    // Retrieve data from the service
+    $response = $this->interactionHistoryService->getInteractionHistory($filters, $orderBy, $direction, $page, $limit);
+    $viewData = [
+        'interactionHistory' => $response['data'] ?? [],         // Empty array if no data
+        'totalPages' => $response['total_pages'] ?? 1,           // Default to 1 page
+        'totalRecords' => $response['total_records'] ?? 0,       // Default to 0 records
+        'page' => $page,
+        'limit' => $limit,
+        'filters' => $filters,
+        'orderBy' => $orderBy,
+        'direction' => $direction,
+    ];
+    
+
+    // Check if it's an API request
+    if ($this->isApiRequest()) {
+        header('Content-Type: application/json');
+        echo json_encode($viewData); // return as JSON for API calls
+    } else {
+        include __DIR__ . '/../views/interaction_history.view.php'; // render HTML for standard calls
+    }
+}
+
+// Helper function to check if the request is for an API
+private function isApiRequest() {
+    return isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false;
+}
+
+
+
 /////WORK IN PROGRESS(WORKING EXEPT GET DETAILED.) /////
 
 public function showAllInteractionHistory() {

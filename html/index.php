@@ -52,6 +52,14 @@ if ($method === 'GET') {
             $controller = new TargetListController($targetListService);  // Pass the service to the controller
             $controller->showTargetList($id);
             break;
+
+        case 'interaction-history':
+            // Initialize the controller and call the method
+            $controller = new InteractionHistoryController($interactionHistoryService);
+            $controller->showInteractionHistory();
+            break;
+
+            
         case 'interaction-history-account':
             if (isset($_GET['account_id']) && $_GET['account_id'] !== '') {
                 $controller = new InteractionHistoryController($interactionHistoryService);
