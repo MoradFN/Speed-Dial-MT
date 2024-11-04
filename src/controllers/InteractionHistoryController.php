@@ -12,6 +12,35 @@ class InteractionHistoryController {
     // Method to show interaction history with filters, sorting, and pagination // STANDARD -LANDING
     public function showInteractionHistory($filters = [], $orderBy = 'contact_contacted_at', $direction = 'DESC', $page = 1, $limit = 10)
     {
+// Capture filter inputs from GET parameters
+$filters = [
+    'user_name' => $_GET['user_name'] ?? null,
+
+    'campaign_name' => $_GET['campaign_name'] ?? null,
+    'campaign_start_date' => $_GET['campaign_start_date'] ?? null,
+    'campaign_end_date' => $_GET['campaign_end_date'] ?? null,
+    'campaign_status' => $_GET['campaign_status'] ?? null,
+    
+
+    'target_list_name' => $_GET['target_list_name'] ?? null,
+    'target_list_description' => $_GET['target_list_description'] ?? null,
+
+    'account_name' => $_GET['account_name'] ?? null,
+
+    'contact_name' => $_GET['contact_name'] ?? null,
+    'contact_interaction_outcome' => $_GET['contact_interaction_outcome'] ?? null,
+    'contact_phone' => $_GET['contact_phone'] ?? null,
+    'contact_notes' => $_GET['contact_notes'] ?? null,
+
+    'contact_contacted_at' => $_GET['contact_contacted_at'] ?? null,
+    'contact_next_contact_date' => $_GET['contact_next_contact_date'] ?? null,
+    'contact_interaction_duration' => $_GET['contact_interaction_duration'] ?? null,
+
+    'date_field' => $_GET['date_field'] ?? null,// To indicate which date field to filter
+    'date_from' => $_GET['date_from'] ?? null,
+    'date_to' => $_GET['date_to'] ?? null,
+];
+
         // Retrieve the interaction history data from the service layer
         $response = $this->interactionHistoryService->getInteractionHistory($filters, $orderBy, $direction, $page, $limit);
         
