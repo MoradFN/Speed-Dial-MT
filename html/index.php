@@ -53,16 +53,12 @@ if ($method === 'GET') {
             $controller->showTargetList($id);
             break;
 
-            case 'interaction-history':
-                $controller = new InteractionHistoryController($interactionHistoryService);
-                $viewData = $controller->showInteractionHistory(
-                    $_GET['orderBy'] ?? 'contact_contacted_at', 
-                    $_GET['direction'] ?? 'DESC', 
-                    $_GET['page'] ?? 1, 
-                    $_GET['limit'] ?? 10
-                );
-                include __DIR__ . '/../src/views/interaction_history.view.php';
-                break;
+        case 'interaction-history':
+            // Initialize the controller and call the method
+            $controller = new InteractionHistoryController($interactionHistoryService);
+            $controller->showInteractionHistory();
+            break;
+
             
         case 'interaction-history-account':
             if (isset($_GET['account_id']) && $_GET['account_id'] !== '') {
