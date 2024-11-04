@@ -10,7 +10,7 @@ class InteractionHistoryController {
 
     ///HISTORY
     // Method to show interaction history with filters, sorting, and pagination // STANDARD -LANDING
-    public function showInteractionHistory($orderBy = 'contact_contacted_at', $direction = 'DESC', $page = 1, $limit = 10)
+    public function showInteractionHistory()
     {
 // Capture filter inputs from GET parameters
 $filters = [
@@ -33,26 +33,36 @@ $filters = [
     'date_from' => $_GET['date_from'] ?? null,
     'date_to' => $_GET['date_to'] ?? null,
 ];
-    // Retrieve interaction history data from the service layer
-    $response = $this->interactionHistoryService->getInteractionHistory($filters, $orderBy, $direction, $page, $limit);
-        
-    // Extract data from the response for easy access in the view
-    $interactionHistory = $response['data'];
-    $totalPages = $response['total_pages'];
-    $totalRecords = $response['total_records'];
+$orderBy = $_GET['orderBy'] ?? 'contact_contacted_at';
+$direction = $_GET['direction'] ?? 'DESC';
+$page = (int)($_GET['page'] ?? 1);
+$limit = (int)($_GET['limit'] ?? 10); //MTTODO / CHECK STANDARD PAGINATION
 
-        // Return data for rendering in the view (could be an associative array for easier access in templates)
-        return [
-            'interactionHistory' => $interactionHistory,
-            'totalPages' => $totalPages,
-            'totalRecords' => $totalRecords,
-            'page' => $page,
-            'limit' => $limit,
-            'filters' => $filters,
-            'orderBy' => $orderBy,
-            'direction' => $direction,
-        ];
+    // Retrieve data from the service
+    $response = $this->interactionHistoryService->getInteractionHistory($filters, $orderBy, $direction, $page, $limit);
+    $viewData = [
+        'interactionHistory' => $response['data'] ?? [],         // Empty array if no data
+        'totalPages' => $response['total_pages'] ?? 1,           // Default to 1 page
+        'totalRecords' => $response['total_records'] ?? 0,       // Default to 0 records
+        'page' => $page,
+        'limit' => $limit,
+        'filters' => $filters,
+        'orderBy' => $orderBy,
+        'direction' => $direction,
+    ];
+    
+
+    // Check if it's an API request
+    if ($this->isApiRequest()) {
+        echo json_encode($viewData); // return as JSON for API calls
+    } else {
+        include __DIR__ . '/../views/interaction_history.view.php'; // render HTML for standard calls
     }
+}
+
+private function isApiRequest() {
+    return isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false;
+}
 
 
 
