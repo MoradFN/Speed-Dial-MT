@@ -12,6 +12,40 @@ class InteractionHistoryService {
     }
 
   ////HISTORY
+//////////////////////////NEW FLAT-STYLE HISTORY
+  public function getInteractionHistory($filters = [], $orderBy = 'contact_contacted_at', $direction = 'DESC', $page = 1, $limit = 10) {
+    // Define default sorting and pagination parameters
+    $validOrderColumns = [
+        'user_name', 'campaign_name', 'campaign_status', 'campaign_start_date', 'campaign_end_date', 'campaign_description', 
+        'target_list_name', 'target_list_description', 'account_name', 'contact_name', 
+        'contact_interaction_outcome', 'contact_phone', 'contact_notes', 'contact_contacted_at', 'contact_next_contact_date'
+    ];
+    
+    // Set default order if invalid column is passed
+    $orderBy = in_array($orderBy, $validOrderColumns) ? $orderBy : 'contact_contacted_at';
+
+    // Ensure direction is ASC or DESC
+    $direction = strtoupper($direction) === 'ASC' ? 'ASC' : 'DESC';
+
+    // Ensure page and limit are positive integers
+    $page = max(1, (int)$page);
+    $limit = max(1, (int)$limit);
+
+    // Call the model method with validated parameters
+    return $this->historyAccountInteractionModel->getDetailedInteractionHistory(
+        $filters,
+        $orderBy,
+        $direction,
+        $page,
+        $limit
+    );
+}
+
+
+
+
+
+
 
 
   ////////////////////////WORK IN PROGRESS(WORKING)////////////////////////////////////////////////////
@@ -60,8 +94,6 @@ public function getAllInteractions($orderBy = 'contacted_at', $direction = 'DESC
 
     return $historyInteractions;
 }
-
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 

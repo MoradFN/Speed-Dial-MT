@@ -61,8 +61,8 @@ public function getAllAccountInteractions() {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////WORK IN PROGRESS ENHANCED HISTORY
 // Fetch all interactions with account, contact, target list, and campaign details
-// HistoryAccountInteractionModel.php
 
+///NEW FLAT MODEL FOR INTERACTION HISTORY
 public function getDetailedInteractionHistory($filters = [], $orderBy = 'contact_contacted_at', $direction = 'DESC', $page = 1, $limit = 10) { //MTTODO - if page is not set, default to 1, if limit is not set, default to 10 when querying for pagination. Othetwise fetches all.
     // Define valid order columns (for both account and contact fields)
     $validOrderColumns = [
