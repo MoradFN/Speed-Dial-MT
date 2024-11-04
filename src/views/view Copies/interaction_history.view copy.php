@@ -2,12 +2,7 @@
 // Include the header navigation
 include __DIR__ . '/header.php';
 
-// Capture page and limit, defaulting to 1 and 10 if not provided
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; //MTTODO - PAGINATION
-$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
-
-
-// Extract data from viewData for display
+// Capture filter inputs from GET parameters
 $interactionHistory = $viewData['interactionHistory'];
 $totalPages = $viewData['totalPages'];
 $totalRecords = $viewData['totalRecords'];
@@ -35,11 +30,12 @@ $contactInteractionOutcomeOptions = [
     'Not Interested' => 'Not Interested'
 ];
 
-// Order and direction
-$orderBy = $_GET['orderBy'] ?? 'contact_contacted_at';
-$direction = $_GET['direction'] ?? 'DESC';
-var_dump($route);
 
+// var_dump($route);
+echo '<pre>';
+print_r('GET: ' . http_build_query($_GET));
+echo '</pre>';
+var_dump($filters);
 // Pagination links (Example: Next and Previous) //MTTODO - PAGINATION
 $nextPage = $page < $totalPages ? $page + 1 : $totalPages;
 $prevPage = $page > 1 ? $page - 1 : 1;
@@ -115,30 +111,24 @@ $prevPageUrl = "?" . http_build_query(array_merge($_GET, ['page' => $prevPage]))
 <table border="1">
     <thead>
         <tr>
-        <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'user_name', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">User Name?</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_name', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Campaign Name</a></th>
+        <tr>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'user_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">User Name</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Campaign Name</a></th>
             <th>Campaign Description</th>
-
-            
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_start_date', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Campaign Start Date</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_end_date', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Campaign End Date</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_status', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Campaign Status</a></th>
-
-
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'target_list_name', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Target List Name</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_start_date', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Campaign Start Date</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_end_date', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Campaign End Date</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_status', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Campaign Status</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'target_list_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Target List Name</a></th>
             <th>Target List Description</th>
-            
-
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'account_name', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Account Name</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_name', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Contact Name</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_interaction_outcome', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Contact Outcome</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_phone', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Contact Phone</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'account_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Account Name</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Contact Name</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_interaction_outcome', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Contact Outcome</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_phone', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Contact Phone</a></th>
             <th>Contact Notes</th>
-
-
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_contacted_at', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Contacted At</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_next_contact_date', 'direction' => ($_GET['direction'] ?? 'ASC') === 'ASC' ? 'DESC' : 'ASC'])) ?>">Next Contact Date</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_contacted_at', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Contacted At</a></th>
+            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_next_contact_date', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Next Contact Date</a></th>
             <th>Interaction Duration</th>
+        </tr>
         </tr>
     </thead>
     <tbody>
