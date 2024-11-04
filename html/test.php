@@ -18,11 +18,11 @@ $historyContactInteractionModel = new HistoryContactInteractionModel($db);
 $accountContactRelationModel = new AccountContactRelationModel($db);
 
 // Instantiate the service
-$interactionHistoryService = new InteractionHistoryService(
-    $historyAccountInteractionModel, 
-    $historyContactInteractionModel, 
-    $accountContactRelationModel
-);
+$interactionHistoryService = new InteractionHistoryService($historyAccountInteractionModel, $historyContactInteractionModel, $accountContactRelationModel);
+
+$interactionHistoryController = new InteractionHistoryController($interactionHistoryService);
+
+
 
 // Capture page and limit, defaulting to 1 and 10 if not provided
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; //MTTODO - PAGINATION
@@ -82,10 +82,10 @@ $orderBy = $_GET['orderBy'] ?? 'contact_contacted_at';
 $direction = $_GET['direction'] ?? 'DESC';
 
 // Call the method to get filtered results
-$response = $interactionHistory = $historyAccountInteractionModel->getDetailedInteractionHistory($filters, $orderBy, $direction, $page, $limit); //MTTODO - PAGINATION
-$interactionHistory = $response['data'];
-$totalPages = $response['total_pages'];
-$totalRecords = $response['total_records'];
+$response = $interactionHistoryController->showInteractionHistory($filters, $orderBy, $direction, $page, $limit);
+$interactionHistory = $response['interactionHistory'];
+$totalPages = $response['totalPages'];
+$totalRecords = $response['totalRecords'];
 var_dump($route);
 
 // Pagination links (Example: Next and Previous) //MTTODO - PAGINATION
