@@ -27,7 +27,7 @@ public function showInteractionHistoryDetail($accountId) {
 //////////////
 
 
-//////ENHANCED HISTORY///////////////////////
+//////ENHANCED HISTORY 2///////////////////////
 public function showAllInteractionHistorySorted() {
     $orderBy = isset($_GET['orderBy']) ? $_GET['orderBy'] : 'contacted_at';
     $direction = isset($_GET['direction']) ? $_GET['direction'] : 'DESC';
