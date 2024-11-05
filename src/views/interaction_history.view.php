@@ -59,46 +59,50 @@ $prevPageUrl = "?" . http_build_query(array_merge($_GET, ['page' => $prevPage]))
     
 
 
-<div class="container mt-4">
+<div class="container-fluid">
 
-<form method="get" class="mb-4">
-<input type="hidden" name="route" value="interaction-history">
+    <form method="get" class="mb">
+        <input type="hidden" name="route" value="interaction-history">
 
-<div class="row">
-<div class="form-group col-md-4">
+        <!-- First Row (Campaign Fields) -->
+        <div class="row">
+            <div class="form-group col-md-4">
                 <label for="campaign_name">Campaign Name:</label>
-                <input type="text" class="form-control" name="campaign_name" id="campaign_name" value="<?= htmlspecialchars($_GET['campaign_name'] ?? '') ?>"><br>
+                <input type="text" class="form-control" name="campaign_name" id="campaign_name" value="<?= htmlspecialchars($_GET['campaign_name'] ?? '') ?>">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="campaign_status">Campaign Status:</label>
+                <select name="campaign_status" id="campaign_status" class="form-control">
+                    <option value="">Select a status</option>
+                    <?php foreach ($campaignStatusOptions as $value => $label) : ?>
+                        <option value="<?= htmlspecialchars($value) ?>" <?= (isset($_GET['campaign_status']) && $_GET['campaign_status'] === $value) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($label) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="target_list_name">Target List Name:</label>
+                <input type="text" name="target_list_name" id="target_list_name" class="form-control" value="<?= htmlspecialchars($_GET['target_list_name'] ?? '') ?>">
+            </div>
         </div>
 
-        <div class="form-group col-md-4">
-            <label for="campaign_status">Campaign Status:</label>
-            <select name="campaign_status" id="campaign_status" class="form-control">
-                <option value="">Select a status</option>
-                <?php foreach ($campaignStatusOptions as $value => $label) : ?>
-                    <option value="<?= htmlspecialchars($value) ?>" <?= (isset($_GET['campaign_status']) && $_GET['campaign_status'] === $value) ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($label) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-
-
-        <div class="form-group col-md-4">
+        <!-- Second Row (Account and Contact Fields) -->
+        <div class="row">
+            <div class="form-group col">
                 <label for="account_name">Account Name:</label>
                 <input type="text" class="form-control" name="account_name" id="account_name" value="<?= htmlspecialchars($_GET['account_name'] ?? '') ?>">
             </div>
-        </div>
-
-
-        <div class="row">
-            <div class="form-group col-md-4">
+            <div class="form-group col">
                 <label for="contact_name">Contact Name:</label>
                 <input type="text" class="form-control" name="contact_name" id="contact_name" value="<?= htmlspecialchars($_GET['contact_name'] ?? '') ?>">
             </div>
-
-
-            <div class="form-group col-md-4">
-                <label for="contact_interaction_outcome">Contact Interaction Outcome:</label>
+            <div class="form-group col">
+                <label for="contact_phone">Contact Phone:</label>
+                <input type="text" class="form-control" name="contact_phone" id="contact_phone" value="<?= htmlspecialchars($_GET['contact_phone'] ?? '') ?>">
+            </div>
+            <div class="form-group col">
+                <label for="contact_interaction_outcome">Contact Outcome:</label>
                 <select name="contact_interaction_outcome" id="contact_interaction_outcome" class="form-control">
                     <option value="">Select an outcome</option>
                     <?php foreach ($contactInteractionOutcomeOptions as $value => $label) : ?>
@@ -108,24 +112,11 @@ $prevPageUrl = "?" . http_build_query(array_merge($_GET, ['page' => $prevPage]))
                     <?php endforeach; ?>
                 </select>
             </div>
-
-
-            <div class="form-group col-md-4">
-                <label for="contact_phone">Contact Phone:</label>
-                <input type="text" class="form-control" name="contact_phone" id="contact_phone" value="<?= htmlspecialchars($_GET['contact_phone'] ?? '') ?>">
-            </div>
         </div>
 
+        <!-- Third Row (Outcome and Date Fields) -->
+        <div class="row">
 
-        <!-- ///// FIX -->
-        <div class="form-group col-md-4">
-    <label for="target_list_name">Target List Name:</label>
-    <input type="text" name="target_list_name" id="target_list_name" class="form-control" value="<?= htmlspecialchars($_GET['target_list_name'] ?? '') ?>"><br>
-</div>
- <!-- ///// FIX -->
-
-
- <div class="row">
             <div class="form-group col-md-4">
                 <label for="date_field">Date Field:</label>
                 <select name="date_field" id="date_field" class="form-control">
@@ -142,59 +133,65 @@ $prevPageUrl = "?" . http_build_query(array_merge($_GET, ['page' => $prevPage]))
                 <input type="date" class="form-control" name="date_to" id="date_to" value="<?= htmlspecialchars($_GET['date_to'] ?? '') ?>">
             </div>
         </div>
-        <div class="form-group text-center">
-            <button type="submit" class="btn btn-primary mr-2">Filter</button>
-            <a href="?route=interaction-history" class="btn btn-secondary">Clear Filters</a>
+
+        <!-- Button Row -->
+        <div class="row">
+            <div class="form-group col-md-12 text-center">
+                <button type="submit" class="btn btn-primary mr-2">Filter</button>
+                <a href="?route=interaction-history" class="btn btn-secondary">Clear Filters</a>
+            </div>
         </div>
     </form>
+</div>
 
 
-<!-- Display the filtered results -->
- <div class="table-responsive">
-<table class="table table-striped table-bordered">
-    <thead class="thead-dark">
-        <tr>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'user_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">User Name</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Campaign Name</a></th>
-            <th>Campaign Description</th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_start_date', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Campaign Start Date</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_end_date', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Campaign End Date</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_status', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Campaign Status</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'target_list_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Target List Name</a></th>
-            <th>Target List Description</th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'account_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Account Name</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Contact Name</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_interaction_outcome', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Contact Outcome</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_phone', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Contact Phone</a></th>
-            <th>Contact Notes</th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_contacted_at', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Contacted At</a></th>
-            <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_next_contact_date', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Next Contact Date</a></th>
-            <th>Interaction Duration</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($interactionHistory as $interaction) : ?>
+
+    <!-- Display the filtered results -->
+    <div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
             <tr>
-                <td><?= htmlspecialchars($interaction['user_name']) ?></td>
-                <td><?= htmlspecialchars($interaction['campaign_name']) ?></td>
-                <td><?= htmlspecialchars($interaction['campaign_description']) ?></td>
-                <td><?= htmlspecialchars($interaction['campaign_start_date']) ?></td>
-                <td><?= htmlspecialchars($interaction['campaign_end_date']) ?></td>
-                <td><?= htmlspecialchars($interaction['campaign_status']) ?></td>
-                <td><?= htmlspecialchars($interaction['target_list_name']) ?></td>
-                <td><?= htmlspecialchars($interaction['target_list_description']) ?></td>
-                <td><?= htmlspecialchars($interaction['account_name']) ?></td>
-                <td><?= htmlspecialchars($interaction['contact_name']) ?></td>
-                <td><?= htmlspecialchars($interaction['contact_interaction_outcome']) ?></td>
-                <td><?= htmlspecialchars($interaction['contact_phone']) ?></td>
-                <td><?= htmlspecialchars($interaction['contact_notes'] ?? '') ?></td>
-                <td><?= htmlspecialchars($interaction['contact_contacted_at']) ?></td>
-                <td><?= htmlspecialchars($interaction['contact_next_contact_date'] ?? '') ?></td>
-                <td><?= htmlspecialchars($interaction['contact_interaction_duration'] ?? '') ?></td>
+                <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'user_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">User Name</a></th>
+                <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Campaign Name</a></th>
+                <th>Campaign Description</th>
+                <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_start_date', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Campaign Start Date</a></th>
+                <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_end_date', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Campaign End Date</a></th>
+                <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'campaign_status', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Campaign Status</a></th>
+                <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'target_list_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Target List Name</a></th>
+                <th>Target List Description</th>
+                <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'account_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Account Name</a></th>
+                <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_name', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Contact Name</a></th>
+                <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_interaction_outcome', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Contact Outcome</a></th>
+                <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_phone', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Contact Phone</a></th>
+                <th>Contact Notes</th>
+                <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_contacted_at', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Contacted At</a></th>
+                <th><a href="?<?= http_build_query(array_merge($_GET, ['orderBy' => 'contact_next_contact_date', 'direction' => ($direction === 'ASC' ? 'DESC' : 'ASC')])) ?>">Next Contact Date</a></th>
+                <th>Interaction Duration</th>
             </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <?php foreach ($interactionHistory as $interaction) : ?>
+                <tr>
+                    <td><?= htmlspecialchars($interaction['user_name']) ?></td>
+                    <td><?= htmlspecialchars($interaction['campaign_name']) ?></td>
+                    <td><?= htmlspecialchars($interaction['campaign_description']) ?></td>
+                    <td><?= htmlspecialchars($interaction['campaign_start_date']) ?></td>
+                    <td><?= htmlspecialchars($interaction['campaign_end_date']) ?></td>
+                    <td><?= htmlspecialchars($interaction['campaign_status']) ?></td>
+                    <td><?= htmlspecialchars($interaction['target_list_name']) ?></td>
+                    <td><?= htmlspecialchars($interaction['target_list_description']) ?></td>
+                    <td><?= htmlspecialchars($interaction['account_name']) ?></td>
+                    <td><?= htmlspecialchars($interaction['contact_name']) ?></td>
+                    <td><?= htmlspecialchars($interaction['contact_interaction_outcome']) ?></td>
+                    <td><?= htmlspecialchars($interaction['contact_phone']) ?></td>
+                    <td><?= htmlspecialchars($interaction['contact_notes'] ?? '') ?></td>
+                    <td><?= htmlspecialchars($interaction['contact_contacted_at']) ?></td>
+                    <td><?= htmlspecialchars($interaction['contact_next_contact_date'] ?? '') ?></td>
+                    <td><?= htmlspecialchars($interaction['contact_interaction_duration'] ?? '') ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 </div>
 <!-- //MTTODO - PAGINATION -->
  <nav aria-label="Page navigation">
