@@ -103,6 +103,13 @@ public function showAllInteractionHistorySorted() {
 
     // Log contact interaction + account interaction if provided? see service.
     public function logContactInteraction() {
+            // Set content-type to JSON for API response
+    header('Content-Type: application/json');
+    
+    // Read JSON input
+    $input = json_decode(file_get_contents('php://input'), true);
+
+        // Retrieve variables from JSON input
         $contactId = $_POST['contact_id'];
         $userId = $_POST['user_id'];
         $targetListId = $_POST['target_list_id'] ?? null;
@@ -111,12 +118,20 @@ public function showAllInteractionHistorySorted() {
         $outcome = $_POST['outcome'];
         $contactMethod = $_POST['contact_method'] ?? null;
 
+        // Validate required fields
+    if (!$contactId || !$userId || !$targetListId || !$outcome) {
+        echo json_encode(['success' => false, 'message' => 'Missing required fields.']);
+        http_response_code(400); // Bad request
+        return;
+    }
+
         $this->interactionHistoryService->logContactInteraction(
             $contactId, $userId, $targetListId, $nextContactDate, $notes, $outcome, $contactMethod
         );
 
-        // Redirect or return a response
-        echo json_encode(['success' => true]);
+
+        // Return success response
+        echo json_encode(['success' => true, 'message' => 'Contact interaction record created successfully.']);
     }
 
     // Log account interaction
