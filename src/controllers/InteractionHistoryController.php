@@ -101,7 +101,7 @@ public function showAllInteractionHistorySorted() {
     
 ///HISTORY above
 
-    // Log contact interaction
+    // Log contact interaction + account interaction if provided? see service.
     public function logContactInteraction() {
         $contactId = $_POST['contact_id'];
         $userId = $_POST['user_id'];
@@ -134,10 +134,7 @@ public function showAllInteractionHistorySorted() {
         );
         // Redirect or return a response
         echo json_encode(['success' => true]);
-    }
-    
-
-
+    } 
 
 
 //  // Fetch interaction history for a specific account

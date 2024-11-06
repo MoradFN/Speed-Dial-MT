@@ -137,10 +137,10 @@ public function logContactInteraction($contactId, $userId, $targetListId, $nextC
         $userId,
         $targetListId,
         $contactInteractionId, 
-        $outcome,
-        $notes,
-        $contactMethod,    
-        $nextContactDate
+        // $outcome, // MTTODO
+        // $notes,
+        // $contactMethod,    
+        // $nextContactDate 
     );
 }
     
