@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../helpers/Helpers.php';
 
 class InteractionHistoryController {
     private $interactionHistoryService;
@@ -53,19 +54,12 @@ $limit = (int)($_GET['limit'] ?? 10); //MTTODO / CHECK STANDARD PAGINATION
     
 
     // Check if it's an API request
-    if ($this->isApiRequest()) {
-        header('Content-Type: application/json');
-        echo json_encode($viewData); // return as JSON for API calls
+    if (RequestHelper::isApiRequest()) {
+        ResponseHelper::jsonResponse($viewData);
     } else {
-        include __DIR__ . '/../views/interaction_history.view.php'; // render HTML for standard calls
+        include __DIR__ . '/../views/interaction_history.view.php';
     }
 }
-
-// Helper function to check if the request is for an API
-private function isApiRequest() {
-    return isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false;
-}
-
 
 
 /////WORK IN PROGRESS(WORKING EXEPT GET DETAILED.) /////
@@ -103,20 +97,32 @@ public function showAllInteractionHistorySorted() {
 
     // Log contact interaction + account interaction if provided? see service.
     public function logContactInteraction() {
-        $contactId = $_POST['contact_id'];
-        $userId = $_POST['user_id'];
-        $targetListId = $_POST['target_list_id'] ?? null;
-        $nextContactDate = !empty($_POST['next_contact_date']) ? $_POST['next_contact_date'] : null;
-        $notes = $_POST['notes'] ?? '';
-        $outcome = $_POST['outcome'];
-        $contactMethod = $_POST['contact_method'] ?? null;
+      // HELPER FÖR: Set content-type to JSON for API response och Read JSON input
+    $input = RequestHelper::getInput();
+
+    $requiredFields = ['contact_id', 'user_id', 'target_list_id', 'outcome'];
+    if (!ValidationHelper::validateRequiredFields($requiredFields, $input)) {
+        ResponseHelper::jsonResponse(['success' => false, 'message' => 'Missing required fields.'], 400);
+        return;
+    }
+
+
+        // Retrieve variables from JSON input
+        $contactId = $input['contact_id'];
+        $userId = $input['user_id'];
+        $targetListId = $input['target_list_id'] ?? null;
+        $nextContactDate = !empty($input['next_contact_date']) ? $input['next_contact_date'] : null;
+        $notes = $input['notes'] ?? '';
+        $outcome = $input['outcome'];
+        $contactMethod = $input['contact_method'] ?? null;
+
+
 
         $this->interactionHistoryService->logContactInteraction(
             $contactId, $userId, $targetListId, $nextContactDate, $notes, $outcome, $contactMethod
         );
 
-        // Redirect or return a response
-        echo json_encode(['success' => true]);
+        ResponseHelper::jsonResponse(['success' => true, 'message' => 'Contact interaction record created successfully.']);
     }
 
     // Log account interaction
