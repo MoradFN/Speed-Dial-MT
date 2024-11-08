@@ -108,13 +108,13 @@ public function showAllInteractionHistorySorted() {
 
 
         // Retrieve variables from JSON input
-        $contactId = $_POST['contact_id'];
-        $userId = $_POST['user_id'];
-        $targetListId = $_POST['target_list_id'] ?? null;
-        $nextContactDate = !empty($_POST['next_contact_date']) ? $_POST['next_contact_date'] : null;
-        $notes = $_POST['notes'] ?? '';
-        $outcome = $_POST['outcome'];
-        $contactMethod = $_POST['contact_method'] ?? null;
+        $contactId = $input['contact_id'];
+        $userId = $input['user_id'];
+        $targetListId = $input['target_list_id'] ?? null;
+        $nextContactDate = !empty($input['next_contact_date']) ? $input['next_contact_date'] : null;
+        $notes = $input['notes'] ?? '';
+        $outcome = $input['outcome'];
+        $contactMethod = $input['contact_method'] ?? null;
 
 
 
