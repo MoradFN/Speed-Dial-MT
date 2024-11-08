@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../helpers/Helpers.php';
 
 class InteractionHistoryController {
     private $interactionHistoryService;
@@ -53,19 +54,12 @@ $limit = (int)($_GET['limit'] ?? 10); //MTTODO / CHECK STANDARD PAGINATION
     
 
     // Check if it's an API request
-    if ($this->isApiRequest()) {
-        header('Content-Type: application/json');
-        echo json_encode($viewData); // return as JSON for API calls
+    if (RequestHelper::isApiRequest()) {
+        ResponseHelper::jsonResponse($viewData);
     } else {
-        include __DIR__ . '/../views/interaction_history.view.php'; // render HTML for standard calls
+        include __DIR__ . '/../views/interaction_history.view.php';
     }
 }
-
-// Helper function to check if the request is for an API
-private function isApiRequest() {
-    return isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false;
-}
-
 
 
 /////WORK IN PROGRESS(WORKING EXEPT GET DETAILED.) /////
@@ -103,11 +97,15 @@ public function showAllInteractionHistorySorted() {
 
     // Log contact interaction + account interaction if provided? see service.
     public function logContactInteraction() {
-            // Set content-type to JSON for API response
-    header('Content-Type: application/json');
-    
-    // Read JSON input
-    $input = json_decode(file_get_contents('php://input'), true);
+      // HELPER FÖR: Set content-type to JSON for API response och Read JSON input
+    $input = RequestHelper::getInput();
+
+    $requiredFields = ['contact_id', 'user_id', 'target_list_id', 'outcome'];
+    if (!ValidationHelper::validateRequiredFields($requiredFields, $input)) {
+        ResponseHelper::jsonResponse(['success' => false, 'message' => 'Missing required fields.'], 400);
+        return;
+    }
+
 
         // Retrieve variables from JSON input
         $contactId = $_POST['contact_id'];
@@ -118,20 +116,13 @@ public function showAllInteractionHistorySorted() {
         $outcome = $_POST['outcome'];
         $contactMethod = $_POST['contact_method'] ?? null;
 
-        // Validate required fields
-    if (!$contactId || !$userId || !$targetListId || !$outcome) {
-        echo json_encode(['success' => false, 'message' => 'Missing required fields.']);
-        http_response_code(400); // Bad request
-        return;
-    }
+
 
         $this->interactionHistoryService->logContactInteraction(
             $contactId, $userId, $targetListId, $nextContactDate, $notes, $outcome, $contactMethod
         );
 
-
-        // Return success response
-        echo json_encode(['success' => true, 'message' => 'Contact interaction record created successfully.']);
+        ResponseHelper::jsonResponse(['success' => true, 'message' => 'Contact interaction record created successfully.']);
     }
 
     // Log account interaction
