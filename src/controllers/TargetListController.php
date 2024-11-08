@@ -12,20 +12,32 @@ class TargetListController {
     ////////////////////////////////////////////////////     DONE   //////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Display all target lists with optional filtering
-    public function listAllTargetLists($filters = []) {
-        try {
-            // Get all target lists from the service layer
-            $targetLists = $this->targetListService->getAllTargetLists($filters);
-    
-            // Render the view or return a JSON response
-            include __DIR__ . '/../views/targetlist.view.php'; // Render HTML view
-            // Alternatively, you can return as JSON if this is an API:
-            // echo json_encode(['targetLists' => $targetLists]);
-        } catch (Exception $e) {
-            // Handle any exceptions that occur
+   public function listAllTargetLists($filters = []) {
+    try {
+        // Get all target lists from the service layer
+        $targetLists = $this->targetListService->getAllTargetLists($filters);
+
+        // Check if this is an API request
+        if (RequestHelper::isApiRequest()) {
+            // Return JSON response for API requests
+            ResponseHelper::jsonResponse(['targetLists' => $targetLists]);
+        } else {
+            // Render HTML view for standard requests
+            include __DIR__ . '/../views/targetlist.view.php';
+        }
+    } catch (Exception $e) {
+        // Handle exceptions and return error response if API
+        if (RequestHelper::isApiRequest()) {
+            ResponseHelper::jsonResponse(['error' => $e->getMessage()], 500);
+        } else {
             $this->handleError($e->getMessage());
         }
     }
+}
+
+
+
+    
 
     // Display a single target list along with its accounts and contacts
     public function showTargetList($targetListId) {
@@ -41,6 +53,7 @@ class TargetListController {
             $this->handleError($e->getMessage());
         }
     }
+    
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
