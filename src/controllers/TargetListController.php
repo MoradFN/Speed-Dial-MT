@@ -44,13 +44,22 @@ class TargetListController {
         try {
             // Fetch the target list with accounts and contacts
             $targetList = $this->targetListService->getTargetListWithAccountsAndContacts($targetListId);
-            // Render the view or return as JSON
-            include __DIR__ . '/../views/targetlist_detail.view.php'; // Render HTML view for a detailed list
-            // For API response:
-            // echo json_encode(['targetList' => $targetList]);
+
+            // Check if this is an API request
+            if (RequestHelper::isApiRequest()) {
+                // Return JSON response for API requests
+                ResponseHelper::jsonResponse(['targetList' => $targetList]);
+            } else {
+                // Render HTML view for standard requests
+                include __DIR__ . '/../views/targetlist_detail.view.php';
+            }
         } catch (Exception $e) {
-            // Handle any exceptions that occur
-            $this->handleError($e->getMessage());
+            // Handle exceptions and return error response if API
+            if (RequestHelper::isApiRequest()) {
+                ResponseHelper::jsonResponse(['error' => $e->getMessage()], 500);
+            } else {
+                $this->handleError($e->getMessage());
+            }
         }
     }
     
