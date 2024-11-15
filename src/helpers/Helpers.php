@@ -2,9 +2,13 @@
 
 class RequestHelper {
     public static function isApiRequest() {
-        return (isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false)
-            || (isset($_GET['api']) && $_GET['api'] === 'true');
+        return 
+        (isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false) ||
+        (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) ||
+        (isset($_GET['api']) && $_GET['api'] === 'true');
     }
+
+    
 
     public static function getInput() {
         return self::isApiRequest() ? json_decode(file_get_contents('php://input'), true) : $_POST;
